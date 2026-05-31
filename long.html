@@ -211,39 +211,6 @@
             font-size: 12px;
             font-weight: 600;
         }
-        
-        /* ✅ شريط علوي للصفحات الداخلية */
-        .top-header {
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(15px);
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            border-bottom: 1px solid rgba(245, 166, 35, 0.2);
-            box-shadow: 0 0 15px rgba(245, 166, 35, 0.2);
-        }
-        .top-header .header-logo {
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--gold);
-            text-shadow: 0 0 10px rgba(245, 166, 35, 0.4);
-            white-space: nowrap;
-        }
-        .top-header .header-slogan {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--white);
-            white-space: nowrap;
-        }
-        .header-logo-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            object-fit: cover;
-            border: 1px solid rgba(245, 166, 35, 0.3);
-        }
     </style>
 </head>
 <body>
@@ -517,31 +484,28 @@
             btn.disabled = true;
             btn.innerHTML = '<span class="loader-spinner"></span> جاري الإرسال...';
             
-            auth.sendPasswordResetEmail(email, {
-                url: window.location.origin + '/long.html',
-                handleCodeInApp: false
-            })
-            .then(() => {
-                btn.disabled = false;
-                btn.innerHTML = '📧 إرسال رابط الاستعادة';
-                successText.innerText = '✅ تم إرسال رابط استعادة كلمة المرور إلى بريدك الإلكتروني. رجاءً تفقد صندوق الوارد والبريد المزعج.';
-                successDiv.classList.remove('hidden');
-                document.getElementById('resetEmail').value = '';
-            })
-            .catch(err => {
-                btn.disabled = false;
-                btn.innerHTML = '📧 إرسال رابط الاستعادة';
-                
-                let errorMessage = err.message;
-                if (err.code === 'auth/user-not-found') {
-                    errorMessage = '❌ لا يوجد حساب بهذا البريد الإلكتروني';
-                } else if (err.code === 'auth/invalid-email') {
-                    errorMessage = '❌ صيغة البريد الإلكتروني غير صحيحة';
-                }
-                
-                errorText.innerText = errorMessage;
-                errorDiv.classList.remove('hidden');
-            });
+            auth.sendPasswordResetEmail(email)
+                .then(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = '📧 إرسال رابط الاستعادة';
+                    successText.innerText = '✅ تم إرسال رابط استعادة كلمة المرور إلى بريدك الإلكتروني. رجاءً تفقد صندوق الوارد والبريد المزعج.';
+                    successDiv.classList.remove('hidden');
+                    document.getElementById('resetEmail').value = '';
+                })
+                .catch(err => {
+                    btn.disabled = false;
+                    btn.innerHTML = '📧 إرسال رابط الاستعادة';
+                    
+                    let errorMessage = err.message;
+                    if (err.code === 'auth/user-not-found') {
+                        errorMessage = '❌ لا يوجد حساب بهذا البريد الإلكتروني';
+                    } else if (err.code === 'auth/invalid-email') {
+                        errorMessage = '❌ صيغة البريد الإلكتروني غير صحيحة';
+                    }
+                    
+                    errorText.innerText = errorMessage;
+                    errorDiv.classList.remove('hidden');
+                });
         }
 
         // ========== دعم زر Enter ==========
