@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Gaming Libya</title>
+    <title>Gaming Libya للألعاب والخدمات</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/jpeg" href="zad.jpg">
@@ -298,10 +298,10 @@
 
     <div class="top-bar">
         <div class="top-bar-left">
-            <img class="header-logo-img" src="zad.jpg" alt="زاد" onerror="this.style.display='none'">
+            <img class="header-logo-img" src="zad.jpg" alt="Gaming Libya" onerror="this.style.display='none'">
             <div class="header-logo-text">
-                <span class="main-title">Gaming </span>
-                <span class="sub-title">Libya</span>
+                <span class="main-title">Gaming Libya</span>
+                <span class="sub-title">للألعاب والخدمات الإلكترونية</span>
             </div>
             <span class="header-slogan">كل ما تحتاجه لدينا</span>
         </div>
@@ -345,17 +345,26 @@
                     <div class="payment-method-btn" onclick="switchPaymentMethod('crypto', this)"><span class="icon">₿</span>عملات رقمية</div>
                 </div>
             </div>
+            
+            <!-- ✅ قسم التحويل - أرقام جديدة -->
             <div id="paymentLibyana" class="wallet-card">
                 <h3 style="color:var(--gold);margin-bottom:8px;">📞 تحويل ليبيانا ومدار</h3>
-                <div class="bank-row"><div><span style="color:var(--muted);">ليبيانا</span></div><div class="num">0942119641</div></div>
-                <button class="copy-btn" onclick="copyText('0942119641')" style="width:100%;margin-bottom:4px;">📋 نسخ</button>
-                <div class="bank-row"><div><span style="color:var(--muted);">مدار</span></div><div class="num">0915634775</div></div>
-                <button class="copy-btn" onclick="copyText('0915634775')" style="width:100%;margin-bottom:10px;">📋 نسخ</button>
+                <div class="bank-row">
+                    <div><span style="color:var(--muted);">ليبيانا</span></div>
+                    <div class="num">0946730213</div>
+                </div>
+                <button class="copy-btn" onclick="copyText('0946730213')" style="width:100%;margin-bottom:4px;">📋 نسخ</button>
+                <div class="bank-row">
+                    <div><span style="color:var(--muted);">مدار</span></div>
+                    <div class="num">0915307725</div>
+                </div>
+                <button class="copy-btn" onclick="copyText('0915307725')" style="width:100%;margin-bottom:10px;">📋 نسخ</button>
                 <p style="font-size:11px;color:var(--muted);margin-bottom:8px;">بعد التحويل، أدخل رقم هاتفك والمبلغ</p>
                 <input type="text" id="phone_libyana" class="notify-input" placeholder="رقم الهاتف" dir="ltr">
                 <input type="number" id="amount_libyana" class="notify-input" placeholder="المبلغ (د.ل)" dir="ltr">
                 <button class="notify-btn" onclick="submitTransfer('Libyana/Madar')">✅ تأكيد</button>
             </div>
+            
             <div id="paymentCards" class="wallet-card hidden">
                 <h3 style="color:var(--gold);margin-bottom:8px;">💳 كروت التعبئة</h3>
                 <select id="depositProvider" class="notify-input" style="text-align:right;direction:rtl;"><option value="Libyana">ليبيانا</option><option value="Madar">مدار</option></select>
@@ -363,17 +372,26 @@
                 <input type="number" id="depositAmount" class="notify-input" placeholder="قيمة الكرت" dir="ltr">
                 <button class="notify-btn" onclick="submitDeposit()">✅ إرسال</button>
             </div>
+            
+            <!-- ✅ قسم العملات الرقمية - أرقام جديدة -->
             <div id="paymentCrypto" class="wallet-card hidden">
                 <h3 style="color:var(--gold);margin-bottom:8px;">₿ عملات رقمية</h3>
-                <div class="bank-row"><div><span style="color:var(--muted);">بايننس</span></div><div class="num">1132499294</div></div>
+                <div class="bank-row">
+                    <div><span style="color:var(--muted);">بايننس</span></div>
+                    <div class="num">1132499294</div>
+                </div>
                 <button class="copy-btn" onclick="copyText('1132499294')" style="width:100%;margin-bottom:4px;">📋 نسخ</button>
-                <div class="bank-row"><div><span style="color:var(--muted);">بايبت</span></div><div class="num">563391734</div></div>
-                <button class="copy-btn" onclick="copyText('563391734')" style="width:100%;margin-bottom:10px;">📋 نسخ</button>
+                <div class="bank-row">
+                    <div><span style="color:var(--muted);">بايبت</span></div>
+                    <div class="num">450397558</div>
+                </div>
+                <button class="copy-btn" onclick="copyText('450397558')" style="width:100%;margin-bottom:10px;">📋 نسخ</button>
                 <div class="note-box">💡 1 دولار = 12 دينار</div>
                 <input type="text" id="crypto_id" class="notify-input" placeholder="المعرف (ID)" dir="ltr">
                 <input type="number" id="crypto_amount" class="notify-input" placeholder="المبلغ ($)" dir="ltr">
                 <button class="notify-btn" onclick="submitCryptoTransfer()">✅ تأكيد</button>
             </div>
+            
             <div class="wallet-card">
                 <h3 style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--gold);">📋 طريقة الشحن</h3>
                 <ol style="font-size:11px;color:var(--muted);padding-right:16px;line-height:2.2;">
@@ -410,7 +428,7 @@
         <div class="nav-item" data-tab="account" onclick="switchTab('account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>حسابي</div>
     </div>
 
-    <!-- ✅ المودال المعدل مع إضافة رقم التواصل -->
+    <!-- مودال الشراء مع رقم التواصل -->
     <div id="detailModal" class="modal-overlay hidden" onclick="closeDetailModal()">
         <div class="modal" onclick="event.stopPropagation()">
             <button class="close" onclick="closeDetailModal()">✕</button>
@@ -428,7 +446,6 @@
                 </ul>
             </div>
             <input type="text" id="targetInput" placeholder="معرف اللاعب (ID)" dir="ltr">
-            <!-- ✅ حقل رقم التواصل الجديد -->
             <input type="text" id="contactPhone" placeholder="📞 رقم التواصل (للتواصل معك)" dir="ltr">
             <button class="buy-btn" onclick="confirmPurchase()">✅ تأكيد الشراء</button>
         </div>
@@ -507,18 +524,10 @@
         function loadAllData() { 
             db.collection("categories").get().then(catsSnap => {
                 allCategories = [];
-                catsSnap.forEach(doc => {
-                    const c = doc.data();
-                    c.id = doc.id;
-                    allCategories.push(c);
-                });
+                catsSnap.forEach(doc => { const c = doc.data(); c.id = doc.id; allCategories.push(c); });
                 db.collection("services").get().then(servicesSnap => {
                     allProducts = [];
-                    servicesSnap.forEach(doc => {
-                        const s = doc.data();
-                        s.service_id = doc.id;
-                        allProducts.push(s);
-                    });
+                    servicesSnap.forEach(doc => { const s = doc.data(); s.service_id = doc.id; allProducts.push(s); });
                     renderCategories();
                 });
             });
@@ -526,10 +535,7 @@
         
         function renderCategories() { 
             const grid = document.getElementById('catsGrid'); 
-            if (!allCategories.length) { 
-                grid.innerHTML = '<div class="loading">لا توجد أقسام متاحة حالياً</div>'; 
-                return; 
-            } 
+            if (!allCategories.length) { grid.innerHTML = '<div class="loading">لا توجد أقسام متاحة حالياً</div>'; return; } 
             grid.innerHTML = allCategories.map(cat => { 
                 const img = getImageUrl(cat.image || cat.cover); 
                 return `<div class="cat-card" onclick="openCategory('${cat.id}', '${cat.name}')">
@@ -560,10 +566,7 @@
             }).join(''); 
         }
         
-        function showCategories() { 
-            document.getElementById('productsView').classList.add('hidden'); 
-            document.getElementById('categoriesView').classList.remove('hidden'); 
-        }
+        function showCategories() { document.getElementById('productsView').classList.add('hidden'); document.getElementById('categoriesView').classList.remove('hidden'); }
         
         function openDetail(serviceId) { 
             const prod = allProducts.find(p => p.service_id === serviceId); 
@@ -627,15 +630,7 @@
             if (!phone) return alert('⚠️ أدخل رقم هاتفك'); 
             if (!amount) return alert('⚠️ أدخل المبلغ'); 
             try { 
-                await db.collection("deposits").add({ 
-                    userId: auth.currentUser.uid, 
-                    userName: userData?.name || '', 
-                    userPhone: phone, 
-                    provider: provider, 
-                    amount: parseFloat(amount), 
-                    status: "pending", 
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp() 
-                }); 
+                await db.collection("deposits").add({ userId: auth.currentUser.uid, userName: userData?.name || '', userPhone: phone, provider: provider, amount: parseFloat(amount), status: "pending", createdAt: firebase.firestore.FieldValue.serverTimestamp() }); 
                 alert('✅ تم إرسال طلب الشحن بنجاح!'); 
                 document.getElementById('phone_libyana').value = ''; 
                 document.getElementById('amount_libyana').value = ''; 
@@ -649,15 +644,7 @@
             if (!cardCode) return alert('⚠️ أدخل رقم الكرت'); 
             if (!amount) return alert('⚠️ أدخل قيمة الكرت'); 
             try { 
-                await db.collection("deposits").add({ 
-                    userId: auth.currentUser.uid, 
-                    userName: userData?.name || '', 
-                    provider: provider, 
-                    card_code: cardCode, 
-                    amount: parseFloat(amount), 
-                    status: "pending", 
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp() 
-                }); 
+                await db.collection("deposits").add({ userId: auth.currentUser.uid, userName: userData?.name || '', provider: provider, card_code: cardCode, amount: parseFloat(amount), status: "pending", createdAt: firebase.firestore.FieldValue.serverTimestamp() }); 
                 alert('✅ تم إرسال الكرت بنجاح!'); 
                 document.getElementById('depositCardCode').value = ''; 
                 document.getElementById('depositAmount').value = ''; 
@@ -671,16 +658,7 @@
             if (!amount) return alert('⚠️ أدخل المبلغ بالدولار'); 
             const amountLYD = parseFloat(amount) * 12; 
             try { 
-                await db.collection("deposits").add({ 
-                    userId: auth.currentUser.uid, 
-                    userName: userData?.name || '', 
-                    provider: 'Crypto', 
-                    card_code: cryptoId, 
-                    amount: amountLYD, 
-                    crypto_amount: parseFloat(amount), 
-                    status: "pending", 
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp() 
-                }); 
+                await db.collection("deposits").add({ userId: auth.currentUser.uid, userName: userData?.name || '', provider: 'Crypto', card_code: cryptoId, amount: amountLYD, crypto_amount: parseFloat(amount), status: "pending", createdAt: firebase.firestore.FieldValue.serverTimestamp() }); 
                 alert('✅ تم إرسال طلب الشحن بنجاح!'); 
                 document.getElementById('crypto_id').value = ''; 
                 document.getElementById('crypto_amount').value = ''; 
