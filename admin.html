@@ -2,815 +2,489 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>نظام إدارة التغطية الشامل v4.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>زاد | لوحة تحكم الإدارة</title>
     
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <style>
         :root {
-            --p-color: #a52a2a;      /* أحمر هوية التغطية */
-            --s-color: #0f172a;      /* كحلي ملكي */
-            --bg-app: #f1f5f9;       /* رمادي فاتح جداً */
-            --white: #ffffff;
-            --text-dark: #1e293b;
-            --text-muted: #64748b;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --radius-xl: 32px;
-            --radius-lg: 20px;
-            --radius-sm: 12px;
-            --shadow-flat: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-float: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --sidebar-bg: #111111;
+            --gold: #f5a623;
+            --gold-light: #ffd700;
+            --white: #fff;
+            --muted: #a1a1aa;
+            --border: rgba(245,166,35,0.2);
+            --neon-gold: 0 0 15px rgba(245,166,35,0.2), 0 0 30px rgba(245,166,35,0.05);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Cairo', sans-serif;
-            -webkit-tap-highlight-color: transparent;
+        body { font-family: 'Cairo', sans-serif; background-color: var(--bg); color: var(--white); }
+        .card-bg { background-color: var(--card-bg); border: 1px solid var(--border); box-shadow: var(--neon-gold); }
+        .sidebar-bg { background-color: var(--sidebar-bg); border-color: var(--border); }
+        .gold-text { color: var(--gold); }
+        .gold-bg { background: linear-gradient(135deg, #b8860b, var(--gold)); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: var(--bg); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes shake { 0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-5px)}20%,40%,60%,80%{transform:translateX(5px)}}
+        .shake { animation: shake 0.5s ease-in-out; }
+        .animate-spin { animation: spin 1s linear infinite; }
+        .cat-card-admin {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+            padding: 14px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 12px;
+            box-shadow: var(--neon-gold);
         }
-
-        body {
-            background-color: var(--bg-app);
-            color: var(--text-dark);
-            overflow-x: hidden;
-            padding-bottom: 110px;
-            line-height: 1.5;
+        .cat-card-admin:hover { border-color: var(--gold); background: rgba(245,166,35,0.05); }
+        .cat-card-admin.active { border-color: var(--gold); background: rgba(245,166,35,0.08); }
+        .cat-card-admin img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; }
+        .discount-badge-admin { background: #ef4444; color: #fff; font-size: 10px; font-weight: 900; padding: 2px 6px; border-radius: 6px; }
+        input, select, textarea {
+            background-color: #0a0a0a !important;
+            border: 1px solid var(--border) !important;
+            color: #fff !important;
         }
-
-        /* --- Header & Top Bar --- */
-        .app-header {
-            background: linear-gradient(135deg, var(--s-color) 0%, #1e293b 100%);
-            padding: 35px 25px 60px 25px;
-            border-radius: 0 0 40px 40px;
-            color: var(--white);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: var(--shadow-float);
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--gold) !important;
+            box-shadow: var(--neon-gold) !important;
         }
-
-        .top-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .user-meta {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .user-meta img {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            border: 3px solid var(--p-color);
-            padding: 2px;
-            background: white;
-        }
-
-        .greeting h2 { font-size: 1.1rem; font-weight: 900; }
-        .greeting p { font-size: 0.75rem; color: #94a3b8; }
-
-        .action-icons i {
-            font-size: 1.3rem;
-            margin-right: 15px;
-            cursor: pointer;
-            position: relative;
-        }
-
-        /* --- Bottom Navigation --- */
-        .bottom-nav {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            height: 75px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            border-radius: 25px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            z-index: 2000;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            color: var(--text-muted);
-            text-decoration: none;
-            cursor: pointer;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            flex: 1;
-        }
-
-        .nav-item i { font-size: 1.5rem; transition: 0.3s; }
-        .nav-item span { font-size: 0.7rem; font-weight: 800; }
-
-        .nav-item.active { color: var(--p-color); transform: translateY(-5px); }
-        .nav-item.active i { transform: scale(1.1); }
-
-        .add-btn-main {
-            background: var(--p-color);
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white !important;
-            margin-top: -50px;
-            box-shadow: 0 8px 20px rgba(165, 42, 42, 0.4);
-            border: 6px solid var(--bg-app);
-        }
-
-        /* --- Pages & Sections --- */
-        .page {
-            display: none;
-            padding: 25px 20px;
-            animation: slideFade 0.5s ease-out forwards;
-        }
-
-        .page.active { display: block; }
-
-        @keyframes slideFade {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- Dashboard UI --- */
-        .stat-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: -40px;
-            margin-bottom: 30px;
-        }
-
-        .card-stat {
-            background: var(--white);
-            padding: 20px;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-flat);
-            border: 1px solid #e2e8f0;
-        }
-
-        .card-stat i {
-            color: var(--p-color);
-            background: #fff1f1;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            margin-bottom: 12px;
-        }
-
-        .card-stat h3 { font-size: 1.4rem; font-weight: 900; color: var(--s-color); }
-        .card-stat p { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; }
-
-        .chart-section {
-            background: var(--white);
-            padding: 25px;
-            border-radius: var(--radius-xl);
-            margin-bottom: 25px;
-            box-shadow: var(--shadow-flat);
-        }
-
-        /* --- Forms & Inputs --- */
-        .form-container {
-            background: var(--white);
-            padding: 30px 25px;
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-float);
-        }
-
-        .section-title {
-            font-size: 1.2rem;
-            font-weight: 900;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--s-color);
-        }
-
-        .input-group { margin-bottom: 20px; }
-        .input-group label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-            color: var(--text-dark);
-        }
-
-        .input-group input, .input-group select, .input-group textarea {
-            width: 100%;
-            padding: 16px;
-            border: 2px solid #f1f5f9;
-            border-radius: var(--radius-sm);
-            background: #f8fafc;
-            outline: none;
-            font-size: 0.95rem;
-            transition: 0.3s;
-        }
-
-        .input-group input:focus { border-color: var(--p-color); background: white; box-shadow: 0 0 0 4px rgba(165,42,42,0.1); }
-
-        .primary-btn {
-            width: 100%;
-            padding: 18px;
-            background: var(--p-color);
-            color: white;
-            border: none;
-            border-radius: var(--radius-sm);
-            font-weight: 900;
-            font-size: 1.1rem;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(165,42,42,0.3);
-            transition: 0.3s;
-        }
-
-        /* --- Inventory & List --- */
-        .search-bar {
-            background: white;
-            padding: 15px 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: var(--shadow-flat);
-        }
-
-        .search-bar input { border: none; outline: none; width: 100%; font-size: 0.9rem; }
-
-        .prod-card {
-            background: white;
-            padding: 15px;
-            border-radius: var(--radius-lg);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: var(--shadow-flat);
-            position: relative;
-            border-right: 6px solid var(--p-color);
-        }
-
-        .prod-card img {
-            width: 85px;
-            height: 85px;
-            border-radius: 15px;
-            object-fit: cover;
-            background: #f1f5f9;
-        }
-
-        .prod-info { flex: 1; }
-        .prod-info h4 { font-size: 0.95rem; font-weight: 900; margin-bottom: 5px; }
-        .prod-info p { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; }
-
-        .badge-price {
-            background: #fff1f1;
-            color: var(--p-color);
-            padding: 5px 12px;
-            border-radius: 8px;
-            font-weight: 900;
-            font-size: 0.85rem;
-        }
-
-        .badge-cat {
-            font-size: 0.65rem;
-            background: #f1f5f9;
-            color: var(--text-muted);
-            padding: 3px 8px;
-            border-radius: 5px;
-            margin-right: 5px;
-        }
-
-        .card-actions { display: flex; flex-direction: column; gap: 15px; }
-        .card-actions i { font-size: 1.2rem; cursor: pointer; }
-        .del-i { color: var(--danger); }
-        .edit-i { color: var(--s-color); }
-
-        /* --- Categories Tags --- */
-        .cat-scroll {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-
-        .cat-tag {
-            white-space: nowrap;
-            padding: 8px 20px;
-            background: white;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            box-shadow: var(--shadow-flat);
-            cursor: pointer;
-        }
-
-        .cat-tag.active { background: var(--p-color); color: white; }
-
-        /* --- Modal (Category System) --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            display: none;
-            z-index: 3000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background: white;
-            width: 90%;
-            max-width: 400px;
-            padding: 30px;
-            border-radius: 25px;
-            animation: zoomIn 0.3s ease;
-        }
-
-        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col md:flex-row">
 
-    <header class="app-header">
-        <div class="top-info">
-            <div class="user-meta">
-                <img src="tg.jpg" alt="Admin">
-                <div class="greeting">
-                    <p id="dateDisplay">جاري التحميل...</p>
-                    <h2>أهلاً، مدير التغطية 👋</h2>
-                </div>
+    <!-- شاشة القفل -->
+    <div id="adminGuardScreen" class="fixed inset-0 bg-[#0a0a0a] z-[999] flex flex-col items-center justify-center text-center p-4">
+        <div class="card-bg p-8 rounded-2xl border shadow-2xl max-w-sm w-full space-y-5" id="guardCard">
+            <div class="w-16 h-16 bg-[#1a1a1a] rounded-full flex items-center justify-center text-2xl gold-text mx-auto border" style="border-color:var(--border);box-shadow:var(--neon-gold);">
+                <i class="fa-solid fa-lock"></i>
             </div>
-            <div class="action-icons">
-                <i class="fas fa-bell"></i>
-                <i class="fas fa-search" onclick="switchPage('inventory')"></i>
+            <h2 class="text-lg font-bold">لوحة تحكم زاد</h2>
+            <p class="text-xs" style="color:var(--muted);">أدخل رمز الوصول للمتابعة</p>
+            <div class="space-y-3">
+                <div class="relative">
+                    <span class="absolute inset-y-0 right-0 flex items-center pr-3" style="color:var(--muted);"><i class="fa-solid fa-key"></i></span>
+                    <input type="password" id="accessCode" placeholder="أدخل رمز الوصول" class="w-full rounded-xl py-3 pr-9 pl-3 text-sm text-center" autocomplete="off" onkeydown="if(event.key==='Enter')checkAccessCode()">
+                </div>
+                <button onclick="checkAccessCode()" class="w-full gold-bg text-black font-bold py-3 rounded-xl text-sm transition-all shadow-md">
+                    <i class="fa-solid fa-arrow-left"></i> دخول
+                </button>
+                <p id="accessError" class="text-red-400 text-xs hidden">❌ رمز الوصول غير صحيح</p>
             </div>
-        </div>
-    </header>
-
-    <main>
-        
-        <div id="homePage" class="page active">
-            <div class="stat-grid">
-                <div class="card-stat">
-                    <i class="fas fa-wallet"></i>
-                    <p>مبيعات الشهر</p>
-                    <h3 id="statTotalSales">0.00</h3>
-                </div>
-                <div class="card-stat">
-                    <i class="fas fa-shopping-cart"></i>
-                    <p>الطلبات الجديدة</p>
-                    <h3 id="statNewOrders">0</h3>
-                </div>
-                <div class="card-stat">
-                    <i class="fas fa-box-open"></i>
-                    <p>إجمالي المنتجات</p>
-                    <h3 id="statProducts">0</h3>
-                </div>
-                <div class="card-stat">
-                    <i class="fas fa-tags"></i>
-                    <p>الأقسام النشطة</p>
-                    <h3 id="statCategories">0</h3>
-                </div>
-            </div>
-
-            <div class="chart-section">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h4 style="font-size: 0.9rem;">أداء المبيعات الأسبوعي</h4>
-                    <span style="font-size: 0.6rem; color: var(--success); font-weight: 900;">+24% نمو</span>
-                </div>
-                <canvas id="salesChart" height="150"></canvas>
-            </div>
-
-            <h4 style="margin-bottom: 15px; font-weight: 900;">إدارة الأقسام السريعة</h4>
-            <div class="cat-scroll" id="quickCats">
-                </div>
-            
-            <button class="primary-btn" style="background: var(--s-color);" onclick="openCatModal()">
-                <i class="fas fa-plus-circle"></i> إضافة قسم جديد للمتجر
-            </button>
-        </div>
-
-        <div id="inventoryPage" class="page">
-            <div class="search-bar">
-                <i class="fas fa-search" style="color: #ccc;"></i>
-                <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="ابحث باسم المنتج أو القسم...">
-            </div>
-
-            <div class="cat-scroll" id="filterCats">
-                <div class="cat-tag active" onclick="filterByCat('all', this)">الكل</div>
-                </div>
-
-            <div id="inventoryList">
-                </div>
-        </div>
-
-        <div id="addPage" class="page">
-            <div class="form-container">
-                <div class="section-title">
-                    <i class="fas fa-plus-square" style="color: var(--p-color);"></i>
-                    نشر منتج جديد بالمتجر
-                </div>
-
-                <form id="productForm" onsubmit="saveProduct(event)">
-                    <div class="input-group">
-                        <label>اسم المنتج الفني</label>
-                        <input type="text" id="pName" placeholder="مثال: كاميرا 8MP الذكية" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label>اسم الصورة المرفوعة على GitHub</label>
-                        <input type="text" id="pImg" placeholder="مثال: pic1.jpg" required>
-                        <small style="font-size: 0.6rem; color: var(--text-muted);">* ضع الصورة في مجلد images واكتب اسمها فقط هنا.</small>
-                    </div>
-
-                    <div class="input-group">
-                        <label>اختر القسم (Dynamic)</label>
-                        <select id="pCatSelect" required>
-                            </select>
-                    </div>
-
-                    <div class="input-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div>
-                            <label>سعر البيع (د.ل)</label>
-                            <input type="number" id="pPrice" placeholder="0.00" required>
-                        </div>
-                        <div>
-                            <label>الكمية بالمخزن</label>
-                            <input type="number" id="pQty" value="1" required>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label>وصف المنتج (التعمق)</label>
-                        <textarea id="pDesc" rows="4" placeholder="اشرح مميزات المنتج بالتفصيل..."></textarea>
-                    </div>
-
-                    <div class="input-group">
-                        <label>المواصفات التقنية (Specs)</label>
-                        <textarea id="pSpecs" rows="3" placeholder="الدقة، الوزن، التخزين، الضمان..."></textarea>
-                    </div>
-
-                    <button type="submit" class="primary-btn">تأكيد النشر الفوري</button>
-                </form>
-            </div>
-        </div>
-
-        <div id="ordersPage" class="page">
-            <h3 style="margin-bottom: 20px;">الطلبات الواردة</h3>
-            <div id="ordersList">
-                </div>
-        </div>
-
-        <div id="settingsPage" class="page">
-            <h3 style="margin-bottom: 25px;">الإعدادات العامة</h3>
-            <div class="form-container">
-                <div class="input-group">
-                    <label>اسم النشاط التجاري</label>
-                    <input type="text" value="شركة التغطية">
-                </div>
-                <div class="input-group">
-                    <label>عملة المتجر</label>
-                    <input type="text" value="دينار ليبي (د.ل)">
-                </div>
-                <div class="input-group">
-                    <label>رابط الواتساب للمبيعات</label>
-                    <input type="text" value="+218910000000">
-                </div>
-                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #f1f5f9;">
-                <button class="primary-btn" style="background: #2d3436; margin-bottom: 10px;" onclick="exportJSON()">تصدير قاعدة البيانات</button>
-                <button class="primary-btn" style="background: var(--danger);" onclick="factoryReset()">إعادة ضبط المصنع</button>
-            </div>
-        </div>
-
-    </main>
-
-    <nav class="bottom-nav">
-        <a class="nav-item active" onclick="switchPage('home', this)">
-            <i class="fas fa-home"></i>
-            <span>الرئيسية</span>
-        </a>
-        <a class="nav-item" onclick="switchPage('inventory', this)">
-            <i class="fas fa-th-list"></i>
-            <span>المخزون</span>
-        </a>
-        <a class="nav-item add-btn-main" onclick="switchPage('add', this)">
-            <i class="fas fa-plus"></i>
-        </a>
-        <a class="nav-item" onclick="switchPage('orders', this)">
-            <i class="fas fa-shopping-bag"></i>
-            <span>الطلبات</span>
-        </a>
-        <a class="nav-item" onclick="switchPage('settings', this)">
-            <i class="fas fa-user-shield"></i>
-            <span>الإدارة</span>
-        </a>
-    </nav>
-
-    <div class="modal-overlay" id="catModal">
-        <div class="modal-content">
-            <h3 style="margin-bottom: 20px;">إضافة قسم جديد</h3>
-            <div class="input-group">
-                <label>اسم القسم (مثل: كاميرات مراقبة)</label>
-                <input type="text" id="newCatName" placeholder="ادخل الاسم هنا...">
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button class="primary-btn" onclick="addNewCategory()">حفظ</button>
-                <button class="primary-btn" style="background: #ccc;" onclick="closeCatModal()">إلغاء</button>
-            </div>
+            <a href="index.html" class="block text-gray-500 hover:text-white text-xs">العودة للمتجر</a>
         </div>
     </div>
 
+    <!-- الشريط الجانبي -->
+    <aside class="sidebar-bg w-full md:w-64 border-b md:border-b-0 md:border-l flex flex-col justify-between shrink-0" style="border-color:var(--border);">
+        <div>
+            <div class="p-5 border-b flex items-center justify-between" style="border-color:var(--border);">
+                <div class="flex items-center gap-2">
+                    <span class="gold-bg text-black px-2 py-0.5 rounded text-sm font-black">زاد</span>
+                    <span class="text-md font-bold">الإدارة</span>
+                </div>
+                <span class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded">v1.0</span>
+            </div>
+            <nav class="p-3 space-y-1">
+                <button onclick="switchTab('dashboardTab',this)" class="tab-btn w-full text-right gold-bg text-black font-bold px-4 py-3 rounded-xl text-xs flex items-center gap-3">
+                    <i class="fa-solid fa-chart-pie"></i> الإحصائيات
+                </button>
+                <button onclick="switchTab('ordersTab',this)" class="tab-btn w-full text-right text-gray-400 hover:text-white hover:bg-[#1a1a1a] px-4 py-3 rounded-xl text-xs flex items-center gap-3">
+                    <i class="fa-solid fa-cart-shopping"></i> الطلبات
+                </button>
+                <button onclick="switchTab('depositsTab',this)" class="tab-btn w-full text-right text-gray-400 hover:text-white hover:bg-[#1a1a1a] px-4 py-3 rounded-xl text-xs flex items-center gap-3">
+                    <i class="fa-solid fa-money-bill-wave"></i> الإيداعات
+                </button>
+                <button onclick="switchTab('servicesTab',this)" class="tab-btn w-full text-right text-gray-400 hover:text-white hover:bg-[#1a1a1a] px-4 py-3 rounded-xl text-xs flex items-center gap-3">
+                    <i class="fa-solid fa-cubes"></i> الخدمات
+                </button>
+                <button onclick="switchTab('usersTab',this)" class="tab-btn w-full text-right text-gray-400 hover:text-white hover:bg-[#1a1a1a] px-4 py-3 rounded-xl text-xs flex items-center gap-3">
+                    <i class="fa-solid fa-users"></i> المستخدمين
+                </button>
+            </nav>
+        </div>
+        <div class="p-4 border-t flex items-center justify-between" style="background:#0a0a0a;border-color:var(--border);">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg gold-bg text-black flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-user-gear"></i></div>
+                <div><p class="text-xs font-bold">المدير</p><p class="text-[9px]" style="color:var(--muted);">تحكم كامل</p></div>
+            </div>
+            <button onclick="location.reload()" class="text-gray-500 hover:text-red-400 text-sm"><i class="fa-solid fa-power-off"></i></button>
+        </div>
+    </aside>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="flex-grow p-4 md:p-8 max-w-7xl w-full mx-auto space-y-6 overflow-x-hidden">
+
+        <!-- الإحصائيات -->
+        <section id="dashboardTab" class="admin-tab space-y-6">
+            <h1 class="text-xl font-black gold-text">📊 نظرة عامة</h1>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="card-bg p-4 rounded-2xl"><p class="text-[10px]" style="color:var(--muted);">إجمالي المبيعات</p><p class="text-xl font-black gold-text" id="statRevenue">0.00 د.ل</p></div>
+                <div class="card-bg p-4 rounded-2xl"><p class="text-[10px]" style="color:var(--muted);">طلبات معلقة</p><p class="text-xl font-black text-red-400" id="statPendingOrders">0</p></div>
+                <div class="card-bg p-4 rounded-2xl"><p class="text-[10px]" style="color:var(--muted);">المستخدمين</p><p class="text-xl font-black text-blue-400" id="statTotalUsers">0</p></div>
+                <div class="card-bg p-4 rounded-2xl"><p class="text-[10px]" style="color:var(--muted);">خدمات نشطة</p><p class="text-xl font-black text-emerald-400" id="statActiveServices">0</p></div>
+            </div>
+        </section>
+
+        <!-- الطلبات -->
+        <section id="ordersTab" class="admin-tab hidden space-y-4">
+            <div class="flex justify-between">
+                <h1 class="text-xl font-black gold-text">📦 الطلبات</h1>
+                <button onclick="deleteSelectedOrders()" class="bg-red-600/20 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white px-4 py-2 rounded-xl text-xs font-bold">
+                    <i class="fa-solid fa-trash-can"></i> حذف المحدد
+                </button>
+            </div>
+            <div class="card-bg rounded-2xl overflow-hidden">
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-right text-xs">
+                        <thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);">
+                            <tr>
+                                <th class="p-4"><input type="checkbox" id="selectAllOrders" onclick="toggleSelectAll('orderCheckbox',this)" class="accent-[#f5a623]"></th>
+                                <th class="p-4">العميل</th><th class="p-4">الخدمة</th><th class="p-4">البيانات</th>
+                                <th class="p-4">المبلغ</th><th class="p-4">الحالة</th><th class="p-4">إجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody"><tr><td colspan="7" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- الإيداعات -->
+        <section id="depositsTab" class="admin-tab hidden space-y-4">
+            <h1 class="text-xl font-black gold-text">💰 الإيداعات</h1>
+            <div class="card-bg rounded-2xl overflow-hidden">
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-right text-xs">
+                        <thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);">
+                            <tr>
+                                <th class="p-4">المستخدم</th><th class="p-4">المزود</th><th class="p-4">كود البطاقة</th>
+                                <th class="p-4">المبلغ</th><th class="p-4">الحالة</th><th class="p-4">إجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody id="depositsTableBody"><tr><td colspan="6" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- الخدمات -->
+        <section id="servicesTab" class="admin-tab hidden space-y-6">
+            <div class="flex justify-between items-center">
+                <h1 class="text-xl font-black gold-text">🎮 الخدمات</h1>
+                <button onclick="openServiceModal()" class="gold-bg text-black text-xs font-bold px-4 py-2.5 rounded-xl">
+                    <i class="fa-solid fa-plus"></i> إضافة خدمة
+                </button>
+            </div>
+
+            <!-- مودال الخدمة -->
+            <div id="serviceModal" class="hidden card-bg p-5 rounded-2xl max-w-2xl mx-auto space-y-4" style="border-color:var(--gold);">
+                <div class="flex justify-between">
+                    <h3 id="serviceModalTitle" class="text-sm font-bold gold-text">إضافة خدمة جديدة</h3>
+                    <button onclick="closeServiceModal()" class="text-gray-500"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <form onsubmit="saveService(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                    <input type="hidden" id="serviceId">
+                    <div class="md:col-span-2"><label class="text-gray-400">اسم الخدمة *</label><input type="text" id="serviceTitle" required class="w-full rounded-xl p-3"></div>
+                    <div><label class="text-gray-400">القسم</label><input type="text" id="serviceCategory" placeholder="binance, gaming, social_media..." class="w-full rounded-xl p-3"></div>
+                    <div><label class="text-gray-400">السعر (د.ل) *</label><input type="number" step="0.001" id="servicePrice" required class="w-full rounded-xl p-3"></div>
+                    <div><label class="text-gray-400">النوع</label>
+                        <select id="serviceType" class="w-full rounded-xl p-3">
+                            <option value="id">ID لاعب</option>
+                            <option value="phone">رقم هاتف</option>
+                            <option value="none">بدون إدخال</option>
+                        </select>
+                    </div>
+                    <div><label class="text-gray-400">الخصم %</label><input type="number" id="serviceDiscount" value="0" min="0" max="99" class="w-full rounded-xl p-3"></div>
+                    <div class="md:col-span-2"><label class="text-gray-400">الوصف</label><textarea id="serviceDescription" rows="2" class="w-full rounded-xl p-3"></textarea></div>
+                    <div><label class="text-gray-400">الحالة</label>
+                        <select id="serviceStatus" class="w-full rounded-xl p-3">
+                            <option value="true">✅ نشط</option>
+                            <option value="false">❌ مخفي</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-2"><button type="submit" class="gold-bg text-black font-bold py-3 rounded-xl w-full">حفظ الخدمة</button></div>
+                </form>
+            </div>
+
+            <!-- جدول الخدمات -->
+            <div class="card-bg rounded-2xl overflow-hidden">
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-right text-xs">
+                        <thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);">
+                            <tr>
+                                <th class="p-4"><input type="checkbox" id="selectAllServices" onclick="toggleSelectAll('serviceCheckbox',this)" class="accent-[#f5a623]"></th>
+                                <th class="p-4">اسم</th><th class="p-4">قسم</th><th class="p-4">سعر</th>
+                                <th class="p-4">خصم</th><th class="p-4">نوع</th><th class="p-4">حالة</th><th class="p-4">تحكم</th>
+                            </tr>
+                        </thead>
+                        <tbody id="servicesTableBody"><tr><td colspan="8" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- المستخدمين -->
+        <section id="usersTab" class="admin-tab hidden space-y-4">
+            <h1 class="text-xl font-black gold-text">👥 المستخدمين</h1>
+            <input type="text" oninput="searchUsers(this.value)" placeholder="🔍 بحث..." class="w-full max-w-xs rounded-xl py-2.5 px-4 text-xs">
+            <div class="card-bg rounded-2xl overflow-hidden">
+                <table class="w-full text-right text-xs">
+                    <thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);">
+                        <tr><th class="p-4">اسم</th><th class="p-4">هاتف</th><th class="p-4">إيميل</th><th class="p-4">رصيد</th><th class="p-4">رتبة</th><th class="p-4">شحن/خصم</th></tr>
+                    </thead>
+                    <tbody id="usersTableBody"><tr><td colspan="6" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
     <script>
-        /* -----------------------------------------------------------
-           1. نظام إدارة البيانات (Database Management)
-           ----------------------------------------------------------- */
-        let products = JSON.parse(localStorage.getItem('TAGHTIA_PRODS')) || [];
-        let orders = JSON.parse(localStorage.getItem('TAGHTIA_ORDERS')) || [
-            {id: 701, name: "محمد الباروني", total: 450, status: "pending", date: "24/04/2026"},
-            {id: 702, name: "إسماعيل القطروني", total: 1200, status: "completed", date: "23/04/2026"}
-        ];
-        let categories = JSON.parse(localStorage.getItem('TAGHTIA_CATS')) || ["كاميرات مراقبة", "أجهزة شبكات", "حواسيب"];
+        const firebaseConfig = {
+            apiKey: "AIzaSyAjgwaMBoGwxM5BEK9nRrzNg04U0dHyAV0",
+            authDomain: "zad1-85d66.firebaseapp.com",
+            projectId: "zad1-85d66",
+            storageBucket: "zad1-85d66.firebasestorage.app",
+            messagingSenderId: "130593925562",
+            appId: "1:130593925562:web:709293e6c0827103d31583",
+            measurementId: "G-8JSD5S7P05"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-        const GITHUB_PATH = "images/"; // مسار الصور الافتراضي
+        const ACCESS_CODE = "zad123";
+        let allUsers = [];
+        let allServices = [];
 
-        document.addEventListener('DOMContentLoaded', () => {
-            initApp();
-            updateTime();
-            setInterval(updateTime, 1000);
-        });
-
-        function initApp() {
-            renderProducts();
-            renderOrders();
-            renderCategories();
-            updateStats();
-            initChart();
-        }
-
-        /* -----------------------------------------------------------
-           2. الملاحة والتبديل (Navigation Logic)
-           ----------------------------------------------------------- */
-        function switchPage(pageId, element) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
-            document.getElementById(pageId + 'Page').classList.add('active');
-            if(element) element.classList.add('active');
-            
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
-
-        function updateTime() {
-            const now = new Date();
-            document.getElementById('dateDisplay').innerText = now.toLocaleString('ar-LY', {weekday: 'long', day: 'numeric', month: 'long'});
-        }
-
-        /* -----------------------------------------------------------
-           3. نظام الأقسام الديناميكي (Dynamic Category System)
-           ----------------------------------------------------------- */
-        function openCatModal() { document.getElementById('catModal').style.display = 'flex'; }
-        function closeCatModal() { document.getElementById('catModal').style.display = 'none'; }
-
-        function addNewCategory() {
-            const name = document.getElementById('newCatName').value.trim();
-            if(!name) return Swal.fire('خطأ', 'يرجى كتابة اسم القسم', 'error');
-            
-            if(categories.includes(name)) return Swal.fire('تنبيه', 'هذا القسم موجود مسبقاً', 'warning');
-
-            categories.push(name);
-            saveData();
-            document.getElementById('newCatName').value = '';
-            closeCatModal();
-            renderCategories();
-            updateStats();
-            Swal.fire('تم!', 'تم إضافة القسم الجديد للمتجر', 'success');
-        }
-
-        function renderCategories() {
-            const quickBox = document.getElementById('quickCats');
-            const filterBox = document.getElementById('filterCats');
-            const selectBox = document.getElementById('pCatSelect');
-
-            // 1. تحديث قائمة الاختيار في فورم الإضافة
-            selectBox.innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
-
-            // 2. تحديث التاجات في الرئيسية
-            quickBox.innerHTML = categories.map(c => `<div class="cat-tag">${c}</div>`).join('');
-
-            // 3. تحديث التاجات في المخزن
-            filterBox.innerHTML = `<div class="cat-tag active" onclick="filterByCat('all', this)">الكل</div>` + 
-                                  categories.map(c => `<div class="cat-tag" onclick="filterByCat('${c}', this)">${c}</div>`).join('');
-        }
-
-        /* -----------------------------------------------------------
-           4. نظام المنتجات (Product CRUD)
-           ----------------------------------------------------------- */
-        function saveProduct(e) {
-            e.preventDefault();
-            
-            const newProd = {
-                id: Date.now(),
-                name: document.getElementById('pName').value,
-                img: document.getElementById('pImg').value,
-                cat: document.getElementById('pCatSelect').value,
-                price: parseFloat(document.getElementById('pPrice').value),
-                qty: document.getElementById('pQty').value,
-                desc: document.getElementById('pDesc').value,
-                specs: document.getElementById('pSpecs').value,
-                date: new Date().toLocaleDateString()
-            };
-
-            products.unshift(newProd);
-            saveData();
-            e.target.reset();
-            Swal.fire({
-                title: 'تم النشر!',
-                text: 'المنتج متاح الآن في قسم ' + newProd.cat,
-                icon: 'success',
-                confirmButtonText: 'ممتاز'
-            });
-            renderProducts();
-            updateStats();
-            switchPage('inventory', document.querySelectorAll('.nav-item')[1]);
-        }
-
-        function renderProducts(data = products) {
-            const list = document.getElementById('inventoryList');
-            if(data.length === 0) {
-                list.innerHTML = `<div style="text-align:center; padding:50px; color:#999;">لا توجد منتجات مطابقة</div>`;
-                return;
-            }
-
-            list.innerHTML = data.map(p => `
-                <div class="prod-card">
-                    <img src="${GITHUB_PATH + p.img}" onerror="this.src='https://via.placeholder.com/85?text=Img+Missing'">
-                    <div class="prod-info">
-                        <span class="badge-cat">${p.cat}</span>
-                        <h4>${p.name}</h4>
-                        <p>المخزون: ${p.qty} قطعة</p>
-                        <span class="badge-price">${p.price.toFixed(2)} د.ل</span>
-                    </div>
-                    <div class="card-actions">
-                        <i class="fas fa-trash-alt del-i" onclick="deleteProd(${p.id})"></i>
-                        <i class="fas fa-edit edit-i" onclick="editProd(${p.id})"></i>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function deleteProd(id) {
-            Swal.fire({
-                title: 'هل أنت متأكد؟',
-                text: "سيتم حذف المنتج نهائياً من المتجر!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#a52a2a',
-                confirmButtonText: 'نعم، احذفه',
-                cancelButtonText: 'إلغاء'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    products = products.filter(p => p.id !== id);
-                    saveData();
-                    renderProducts();
-                    updateStats();
-                }
-            });
-        }
-
-        /* -----------------------------------------------------------
-           5. البحث والفلترة (Search & Filter)
-           ----------------------------------------------------------- */
-        function filterProducts() {
-            const val = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = products.filter(p => p.name.toLowerCase().includes(val) || p.cat.toLowerCase().includes(val));
-            renderProducts(filtered);
-        }
-
-        function filterByCat(cat, btn) {
-            document.querySelectorAll('#filterCats .cat-tag').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
-
-            if(cat === 'all') {
-                renderProducts();
+        function checkAccessCode() {
+            if (document.getElementById("accessCode").value.trim() === ACCESS_CODE) {
+                document.getElementById("adminGuardScreen").classList.add("hidden");
+                initDashboard();
             } else {
-                const filtered = products.filter(p => p.cat === cat);
-                renderProducts(filtered);
+                document.getElementById("accessError").classList.remove("hidden");
+                document.getElementById("guardCard").classList.add("shake");
+                setTimeout(() => document.getElementById("guardCard").classList.remove("shake"), 500);
             }
         }
 
-        /* -----------------------------------------------------------
-           6. الإحصائيات (Advanced Stats)
-           ----------------------------------------------------------- */
-        function updateStats() {
-            document.getElementById('statProducts').innerText = products.length;
-            document.getElementById('statCategories').innerText = categories.length;
-            document.getElementById('statNewOrders').innerText = orders.filter(o => o.status === 'pending').length;
-            
-            const total = orders.reduce((sum, o) => sum + o.total, 0);
-            document.getElementById('statTotalSales').innerText = total.toLocaleString() + " د.ل";
+        function initDashboard() { loadStats(); loadOrders(); loadDeposits(); loadServices(); loadUsers(); }
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+            document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('gold-bg', 'text-black'); b.classList.add('text-gray-400'); });
+            btn.classList.add('gold-bg', 'text-black'); btn.classList.remove('text-gray-400');
         }
 
-        function initChart() {
-            const ctx = document.getElementById('salesChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'],
-                    datasets: [{
-                        label: 'المبيعات',
-                        data: [450, 1200, 800, 2400, 1800, 3200, 2100],
-                        borderColor: '#a52a2a',
-                        borderWidth: 4,
-                        pointBackgroundColor: '#fff',
-                        pointBorderColor: '#a52a2a',
-                        pointRadius: 5,
-                        tension: 0.4,
-                        fill: true,
-                        backgroundColor: 'rgba(165, 42, 42, 0.05)'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { display: false },
-                        x: { grid: { display: false }, ticks: { font: { family: 'Cairo', weight: '700' } } }
-                    }
-                }
+        function toggleSelectAll(className, master) { document.querySelectorAll(`.${className}`).forEach(cb => cb.checked = master.checked); }
+
+        function loadStats() {
+            db.collection("orders").get().then(snap => {
+                let rev = 0, pend = 0;
+                snap.forEach(doc => { const d = doc.data(); if (d.status === "completed") rev += Number(d.total_price || 0); if (d.status === "pending") pend++; });
+                document.getElementById("statRevenue").innerText = rev.toFixed(2) + ' د.ل';
+                document.getElementById("statPendingOrders").innerText = pend;
+            });
+            db.collection("users").get().then(s => document.getElementById("statTotalUsers").innerText = s.size);
+            db.collection("services").where("status", "==", true).get().then(s => document.getElementById("statActiveServices").innerText = s.size);
+        }
+
+        function loadOrders() {
+            db.collection("orders").orderBy("ordered_at", "desc").limit(100).onSnapshot(snap => {
+                const tbody = document.getElementById("ordersTableBody");
+                tbody.innerHTML = "";
+                if (snap.empty) { tbody.innerHTML = '<tr><td colspan="7" class="text-center p-6" style="color:var(--muted);">لا توجد طلبات</td></tr>'; return; }
+                snap.forEach(doc => {
+                    const o = doc.data();
+                    const badge = o.status === 'completed' ? '✅' : o.status === 'processing' ? '⏳' : '🕒';
+                    tbody.innerHTML += `<tr class="border-b" style="border-color:var(--border);">
+                        <td class="p-4"><input type="checkbox" value="${doc.id}" class="orderCheckbox accent-[#f5a623]"></td>
+                        <td class="p-4">${o.user_id||'---'}</td>
+                        <td class="p-4 gold-text">${o.service_title||'---'}</td>
+                        <td class="p-4">${o.target_input||'---'}</td>
+                        <td class="p-4">${(o.total_price||0).toFixed(2)} د.ل</td>
+                        <td class="p-4">${badge} ${o.status||'pending'}</td>
+                        <td class="p-4">${o.status==='pending'?`<button onclick="updateOrderStatus('${doc.id}')" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px]">قبول</button>`:'<span class="text-gray-500">تم</span>'}</td>
+                    </tr>`;
+                });
             });
         }
 
-        /* -----------------------------------------------------------
-           7. الخدمات العامة (Utilities)
-           ----------------------------------------------------------- */
-        function renderOrders() {
-            const list = document.getElementById('ordersList');
-            list.innerHTML = orders.map(o => `
-                <div class="prod-card" style="border-right-color: ${o.status === 'completed' ? '#10b981' : '#f59e0b'}">
-                    <div class="prod-info">
-                        <div style="display:flex; justify-content:space-between;">
-                            <span style="font-size:0.6rem; color:#999;">${o.date}</span>
-                            <span style="font-size:0.6rem; font-weight:900; color:${o.status === 'completed' ? '#10b981' : '#f59e0b'}">${o.status === 'completed' ? 'مكتمل' : 'قيد الانتظار'}</span>
-                        </div>
-                        <h4 style="margin-top:5px;">${o.name}</h4>
-                        <span class="badge-price">${o.total} د.ل</span>
-                    </div>
-                </div>
-            `).join('');
+        function updateOrderStatus(id) { db.collection("orders").doc(id).update({ status: "completed" }).then(loadStats); }
+        function deleteSelectedOrders() {
+            const cbs = document.querySelectorAll('.orderCheckbox:checked');
+            if (!cbs.length) return alert("حدد طلباً");
+            if (!confirm(`حذف ${cbs.length} طلب؟`)) return;
+            const batch = db.batch(); cbs.forEach(cb => batch.delete(db.collection("orders").doc(cb.value)));
+            batch.commit().then(() => { document.getElementById("selectAllOrders").checked = false; loadStats(); });
         }
 
-        function saveData() {
-            localStorage.setItem('TAGHTIA_PRODS', JSON.stringify(products));
-            localStorage.setItem('TAGHTIA_CATS', JSON.stringify(categories));
-            localStorage.setItem('TAGHTIA_ORDERS', JSON.stringify(orders));
-        }
-
-        function factoryReset() {
-            Swal.fire({
-                title: 'مسح شامل؟',
-                text: "سيتم حذف كل الأقسام والمنتجات، لا يمكن التراجع!",
-                icon: 'danger',
-                showCancelButton: true,
-                confirmButtonText: 'نعم، امسح الكل'
-            }).then((res) => {
-                if(res.isConfirmed) {
-                    localStorage.clear();
-                    location.reload();
-                }
+        function loadDeposits() {
+            db.collection("deposits").orderBy("submitted_at", "desc").limit(100).onSnapshot(snap => {
+                const tbody = document.getElementById("depositsTableBody");
+                tbody.innerHTML = "";
+                if (snap.empty) { tbody.innerHTML = '<tr><td colspan="6" class="text-center p-6" style="color:var(--muted);">لا توجد إيداعات</td></tr>'; return; }
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    const badge = d.status === 'approved' ? '✅' : d.status === 'rejected' ? '❌' : '🕒';
+                    tbody.innerHTML += `<tr class="border-b" style="border-color:var(--border);">
+                        <td class="p-4">${d.user_id||'---'}</td>
+                        <td class="p-4">${d.provider||'---'}</td>
+                        <td class="p-4 font-mono">${d.card_code||'---'}</td>
+                        <td class="p-4 gold-text">${(d.amount||0).toFixed(2)} د.ل</td>
+                        <td class="p-4">${badge} ${d.status||'pending'}</td>
+                        <td class="p-4">${d.status==='pending'?`<button onclick="approveDeposit('${doc.id}','${d.user_id}',${d.amount||0})" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px]">قبول</button> <button onclick="rejectDeposit('${doc.id}')" class="bg-red-600 text-white px-2 py-1 rounded text-[10px]">رفض</button>`:'<span class="text-gray-500">تم</span>'}</td>
+                    </tr>`;
+                });
             });
         }
 
-        function exportJSON() {
-            const data = JSON.stringify({products, categories, orders}, null, 2);
-            navigator.clipboard.writeText(data);
-            Swal.fire('تم النسخ', 'تم نسخ قاعدة البيانات لـ Clipboard بنجاح', 'success');
+        async function approveDeposit(id, userId, amount) {
+            try {
+                const userDoc = await db.collection("users").doc(userId).get();
+                const currentBalance = userDoc.exists ? (userDoc.data().wallet_balance || 0) : 0;
+                await db.collection("users").doc(userId).update({ wallet_balance: currentBalance + amount });
+                await db.collection("deposits").doc(id).update({ status: "approved" });
+            } catch (e) { alert("❌ " + e.message); }
         }
 
+        async function rejectDeposit(id) {
+            try { await db.collection("deposits").doc(id).update({ status: "rejected" }); } catch (e) { alert("❌ " + e.message); }
+        }
+
+        function loadServices() {
+            db.collection("services").orderBy("price").onSnapshot(snap => {
+                allServices = [];
+                const tbody = document.getElementById("servicesTableBody");
+                tbody.innerHTML = "";
+                if (snap.empty) { tbody.innerHTML = '<tr><td colspan="8" class="text-center p-6" style="color:var(--muted);">لا توجد خدمات</td></tr>'; return; }
+                snap.forEach(doc => {
+                    const s = doc.data(); s.service_id = doc.id; allServices.push(s);
+                    const discount = s.discount || 0;
+                    tbody.innerHTML += `<tr class="border-b" style="border-color:var(--border);">
+                        <td class="p-4"><input type="checkbox" value="${doc.id}" class="serviceCheckbox accent-[#f5a623]"></td>
+                        <td class="p-4 font-bold">${s.title||'---'}</td>
+                        <td class="p-4">${s.category||'---'}</td>
+                        <td class="p-4 gold-text">${(s.price||0).toFixed(3)}</td>
+                        <td class="p-4">${discount>0?`<span class="discount-badge-admin">-${discount}%</span>`:'--'}</td>
+                        <td class="p-4">${s.type==='phone'?'📞':s.type==='none'?'📦':'🎮'}</td>
+                        <td class="p-4">${s.status!==false?'✅':'❌'}</td>
+                        <td class="p-4"><button onclick="editService('${doc.id}')" class="text-blue-400 text-[10px]"><i class="fa-solid fa-pen"></i></button> <button onclick="deleteService('${doc.id}')" class="text-red-400 text-[10px] mr-1"><i class="fa-solid fa-trash"></i></button></td>
+                    </tr>`;
+                });
+            });
+        }
+
+        function openServiceModal() {
+            document.getElementById("serviceId").value = "";
+            document.getElementById("serviceTitle").value = "";
+            document.getElementById("serviceCategory").value = "";
+            document.getElementById("servicePrice").value = "";
+            document.getElementById("serviceDiscount").value = "0";
+            document.getElementById("serviceDescription").value = "";
+            document.getElementById("serviceStatus").value = "true";
+            document.getElementById("serviceType").value = "id";
+            document.getElementById("serviceModalTitle").innerText = "إضافة خدمة جديدة";
+            document.getElementById("serviceModal").classList.remove("hidden");
+        }
+
+        function editService(id) {
+            const s = allServices.find(x => x.service_id === id);
+            if (!s) return;
+            document.getElementById("serviceId").value = id;
+            document.getElementById("serviceTitle").value = s.title || "";
+            document.getElementById("serviceCategory").value = s.category || "";
+            document.getElementById("servicePrice").value = s.price || 0;
+            document.getElementById("serviceDiscount").value = s.discount || 0;
+            document.getElementById("serviceDescription").value = s.description || "";
+            document.getElementById("serviceStatus").value = String(s.status !== false);
+            document.getElementById("serviceType").value = s.type || "id";
+            document.getElementById("serviceModalTitle").innerText = "تعديل خدمة";
+            document.getElementById("serviceModal").classList.remove("hidden");
+        }
+
+        function closeServiceModal() { document.getElementById("serviceModal").classList.add("hidden"); }
+
+        function saveService(e) {
+            e.preventDefault();
+            const id = document.getElementById("serviceId").value;
+            const data = {
+                title: document.getElementById("serviceTitle").value,
+                category: document.getElementById("serviceCategory").value,
+                price: parseFloat(document.getElementById("servicePrice").value) || 0,
+                discount: parseInt(document.getElementById("serviceDiscount").value) || 0,
+                description: document.getElementById("serviceDescription").value,
+                status: document.getElementById("serviceStatus").value === "true",
+                type: document.getElementById("serviceType").value
+            };
+            if (id) db.collection("services").doc(id).update(data);
+            else db.collection("services").add(data);
+            closeServiceModal();
+            loadStats();
+        }
+
+        function deleteService(id) {
+            if (confirm("حذف هذه الخدمة؟")) db.collection("services").doc(id).delete();
+        }
+
+        function deleteSelectedServices() {
+            const cbs = document.querySelectorAll('.serviceCheckbox:checked');
+            if (!cbs.length) return alert("حدد خدمات");
+            if (!confirm(`حذف ${cbs.length} خدمة؟`)) return;
+            const batch = db.batch(); cbs.forEach(cb => batch.delete(db.collection("services").doc(cb.value)));
+            batch.commit().then(() => { document.getElementById("selectAllServices").checked = false; loadStats(); });
+        }
+
+        function loadUsers() {
+            db.collection("users").limit(100).onSnapshot(snap => {
+                allUsers = [];
+                snap.forEach(doc => { const u = doc.data(); u.uid = doc.id; allUsers.push(u); });
+                renderUsersTable(allUsers);
+            });
+        }
+
+        function renderUsersTable(arr) {
+            const t = document.getElementById("usersTableBody");
+            t.innerHTML = "";
+            if (!arr.length) { t.innerHTML = '<tr><td colspan="6" class="text-center p-6" style="color:var(--muted);">لا يوجد</td></tr>'; return; }
+            arr.forEach(u => {
+                t.innerHTML += `<tr class="border-b" style="border-color:var(--border);">
+                    <td class="p-4">${u.name||'---'}</td>
+                    <td class="p-4 font-mono">${u.phone||'---'}</td>
+                    <td class="p-4 text-[11px]">${u.email||'---'}</td>
+                    <td class="p-4 gold-text">${(u.wallet_balance||0).toFixed(4)}</td>
+                    <td class="p-4">${u.role==='admin'?'👑':'👤'}</td>
+                    <td class="p-4"><input type="number" step="0.01" id="wallet_${u.uid}" class="w-16 rounded p-1 text-center text-xs" placeholder="مبلغ" style="background:#0a0a0a;border:1px solid var(--border);color:#fff;">
+                    <button onclick="updateWallet('${u.uid}','add')" class="bg-emerald-600 text-white px-2 py-0.5 rounded text-[10px]">+</button>
+                    <button onclick="updateWallet('${u.uid}','sub')" class="bg-red-600 text-white px-2 py-0.5 rounded text-[10px]">-</button></td>
+                </tr>`;
+            });
+        }
+
+        function updateWallet(uid, type) {
+            const v = parseFloat(document.getElementById(`wallet_${uid}`).value);
+            if (!v || v <= 0) return;
+            const u = allUsers.find(x => x.uid === uid);
+            if (!u) return;
+            const nb = type === 'add' ? (u.wallet_balance||0)+v : Math.max(0,(u.wallet_balance||0)-v);
+            db.collection("users").doc(uid).update({ wallet_balance: nb }).then(() => {
+                document.getElementById(`wallet_${uid}`).value = "";
+                loadStats();
+            });
+        }
+
+        function searchUsers(term) {
+            const t = term.toLowerCase().trim();
+            if (!t) { renderUsersTable(allUsers); return; }
+            renderUsersTable(allUsers.filter(u => (u.name||'').toLowerCase().includes(t) || (u.phone||'').includes(t) || (u.email||'').toLowerCase().includes(t)));
+        }
     </script>
 </body>
 </html>
-
