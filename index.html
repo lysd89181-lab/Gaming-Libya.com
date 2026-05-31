@@ -30,7 +30,6 @@
             padding-bottom: 80px;
             -webkit-overflow-scrolling: touch;
         }
-
         .top-bar {
             background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(15px);
@@ -56,13 +55,10 @@
             box-shadow: var(--neon-gold);
             color: var(--gold);
         }
-
         .hero { text-align: center; padding: 25px 16px 15px; }
         .hero h1 { font-size: 24px; font-weight: 900; margin-bottom: 4px; color: var(--gold); text-shadow: 0 0 15px rgba(245, 166, 35, 0.4); }
         .hero p { font-size: 13px; color: var(--muted); }
-
         .container { max-width: 900px; margin: 0 auto; padding: 0 12px; }
-
         .section-title {
             font-size: 16px; font-weight: 700; margin: 20px 0 12px;
             display: flex; align-items: center; gap: 8px; color: var(--gold);
@@ -72,7 +68,6 @@
             background: linear-gradient(180deg, var(--gold), #b8860b);
             border-radius: 2px;
         }
-
         .cats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .cat-card {
             background: var(--card-bg); backdrop-filter: blur(10px);
@@ -89,7 +84,6 @@
             color: #000; padding: 5px 14px; border-radius: 20px;
             font-size: 10px; font-weight: 700; margin-top: 8px; box-shadow: var(--neon-gold);
         }
-
         .back-btn {
             display: inline-flex; align-items: center; gap: 6px;
             background: var(--card-bg); border: var(--border-gold);
@@ -115,7 +109,6 @@
             background: var(--red); color: #fff; font-size: 9px; font-weight: 900;
             padding: 2px 6px; border-radius: 6px; z-index: 5;
         }
-
         .wallet-card {
             background: var(--card-bg); backdrop-filter: blur(10px);
             border: var(--border-gold); border-radius: 20px;
@@ -152,7 +145,6 @@
             width: 100%; padding: 12px; background: var(--red); color: #fff;
             border: none; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 13px;
         }
-
         .dropdown { position: relative; display: inline-block; width: 100%; }
         .dropdown-content {
             display: none; position: absolute; background: #1a1a1a;
@@ -166,7 +158,6 @@
         }
         .dropdown-content a:hover { background: rgba(245,166,35,0.1); color: var(--gold); }
         .dropdown:hover .dropdown-content { display: block; }
-
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 999;
             display: flex; align-items: center; justify-content: center; padding: 12px;
@@ -202,7 +193,6 @@
             margin: 8px 0; outline: none; font-family: 'Cairo', sans-serif;
         }
         .modal input:focus { border-color: var(--gold); }
-
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
             background: rgba(20,20,20,0.98); border-top: var(--border-gold);
@@ -221,7 +211,6 @@
             box-shadow: var(--neon-gold);
         }
         .nav-item svg { width: 20px; height: 20px; }
-
         .hidden { display: none !important; }
         .loading { text-align: center; padding: 30px; color: var(--muted); font-size: 13px; }
         .note-box {
@@ -234,7 +223,6 @@
             color: var(--gold);
             text-align: center;
         }
-
         @media (min-width: 768px) { .cats-grid { grid-template-columns: repeat(3, 1fr); } .prods-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (min-width: 1024px) { .cats-grid { grid-template-columns: repeat(4, 1fr); } .prods-grid { grid-template-columns: repeat(4, 1fr); } }
     </style>
@@ -312,12 +300,14 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // ==================== Firebase Config (Media Plus) ====================
+        // ========== إعدادات مشروع زاد الرسمية ==========
         const firebaseConfig = {
-            apiKey: "AIzaSyARNJOPAycWU3YJdZSBN1d9uoLrvso3i4Y",
-            authDomain: "cd-card-87365.firebaseapp.com",
-            projectId: "cd-card-87365",
-            storageBucket: "cd-card-87365.firebasestorage.app"
+            apiKey: "AIzaSyAJgwaMBo5wxM5BEK9nRrrNg04UGdHyAV0",
+            authDomain: "zad1-85d66.firebaseapp.com",
+            projectId: "zad1-85d66",
+            storageBucket: "zad1-85d66.firebasestorage.app",
+            messagingSenderId: "130593925562",
+            appId: "1:130593925562:web:709293e6c0827103d31583"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
@@ -330,27 +320,262 @@
         let userBalance = 0;
         let currentProduct = null;
 
-        function switchTab(tab) { document.querySelectorAll('.page').forEach(p => p.classList.add('hidden')); document.getElementById(tab + 'Page').classList.remove('hidden'); document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); document.querySelector(`[data-tab="${tab}"]`).classList.add('active'); }
-        function showPaymentSection(type) { document.querySelectorAll('[id^="payment"]').forEach(el => el.classList.add('hidden')); const map = { libyana: 'paymentLibyana', cards: 'paymentCards', crypto: 'paymentCrypto' }; if (map[type]) document.getElementById(map[type]).classList.remove('hidden'); }
+        function switchTab(tab) { 
+            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden')); 
+            document.getElementById(tab + 'Page').classList.remove('hidden'); 
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); 
+            const navItem = document.querySelector(`[data-tab="${tab}"]`);
+            if (navItem) navItem.classList.add('active'); 
+        }
+        
+        function showPaymentSection(type) { 
+            document.querySelectorAll('[id^="payment"]').forEach(el => el.classList.add('hidden')); 
+            const map = { libyana: 'paymentLibyana', cards: 'paymentCards', crypto: 'paymentCrypto' }; 
+            if (map[type]) document.getElementById(map[type]).classList.remove('hidden'); 
+        }
 
-        auth.onAuthStateChanged(user => { if (!user) { window.location.href = 'long.html'; return; } db.collection("users").doc(user.uid).onSnapshot(doc => { if (doc.exists) { userData = doc.data(); userBalance = userData.balance || userData.wallet_balance || 0; updateAllBalances(); } }); setTimeout(loadAllData, 500); });
+        auth.onAuthStateChanged(user => { 
+            if (!user) { 
+                window.location.href = 'long.html'; 
+                return; 
+            } 
+            db.collection("users").doc(user.uid).onSnapshot(doc => { 
+                if (doc.exists) { 
+                    userData = doc.data(); 
+                    userBalance = userData.balance || 0; 
+                    updateAllBalances(); 
+                } 
+            }); 
+            setTimeout(loadAllData, 500); 
+        });
 
-        function updateAllBalances() { document.getElementById('topBalance').innerText = userBalance.toFixed(3); document.getElementById('walletBalance').innerText = userBalance.toFixed(3); document.getElementById('accBalance').innerText = userBalance.toFixed(3) + ' د.ل'; if (userData) { document.getElementById('accName').innerText = userData.name || userData.username || '---'; document.getElementById('accName2').innerText = userData.name || userData.username || '---'; document.getElementById('accEmail').innerText = userData.email || '---'; document.getElementById('accEmail2').innerText = userData.email || '---'; document.getElementById('accPhone').innerText = userData.phone || '---'; } }
-        function logout() { auth.signOut().then(() => { window.location.href = 'long.html'; }); }
-        function copyText(text) { navigator.clipboard.writeText(text).then(() => alert('✅ تم النسخ: ' + text)); }
-        function getImageUrl(img) { if (!img) return ''; if (img.startsWith('http')) return img; return BASE_IMAGE_URL + img; }
+        function updateAllBalances() { 
+            document.getElementById('topBalance').innerText = userBalance.toFixed(3); 
+            document.getElementById('walletBalance').innerText = userBalance.toFixed(3); 
+            document.getElementById('accBalance').innerText = userBalance.toFixed(3) + ' د.ل'; 
+            if (userData) { 
+                document.getElementById('accName').innerText = userData.name || '---'; 
+                document.getElementById('accName2').innerText = userData.name || '---'; 
+                document.getElementById('accEmail').innerText = userData.email || '---'; 
+                document.getElementById('accEmail2').innerText = userData.email || '---'; 
+                document.getElementById('accPhone').innerText = userData.phone || '---'; 
+            } 
+        }
+        
+        function logout() { 
+            auth.signOut().then(() => { 
+                window.location.href = 'long.html'; 
+            }); 
+        }
+        
+        function copyText(text) { 
+            navigator.clipboard.writeText(text).then(() => alert('✅ تم النسخ: ' + text)); 
+        }
+        
+        function getImageUrl(img) { 
+            if (!img) return ''; 
+            if (img.startsWith('http')) return img; 
+            return BASE_IMAGE_URL + img; 
+        }
 
-        async function submitTransfer(provider) { const phone = document.getElementById('phone_libyana').value.trim(); const amount = document.getElementById('amount_libyana').value.trim(); if (!phone) return alert('⚠️ أدخل رقم هاتفك'); if (!amount) return alert('⚠️ أدخل المبلغ'); try { await db.collection("deposits").add({ userId: auth.currentUser.uid, userName: userData?.name || userData?.username, userPhone: phone, provider: provider, amount: parseFloat(amount), status: "pending", createdAt: firebase.firestore.FieldValue.serverTimestamp() }); alert('✅ تم الإرسال!'); document.getElementById('phone_libyana').value = ''; document.getElementById('amount_libyana').value = ''; } catch (e) { alert('❌ خطأ: ' + e.message); } }
-        async function submitDeposit() { const provider = document.getElementById('depositProvider').value; const cardCode = document.getElementById('depositCardCode').value.trim(); const amount = document.getElementById('depositAmount').value.trim(); if (!cardCode) return alert('⚠️ أدخل رقم الكرت'); if (!amount) return alert('⚠️ أدخل قيمة الكرت'); try { await db.collection("deposits").add({ userId: auth.currentUser.uid, userName: userData?.name || userData?.username, provider: provider, card_code: cardCode, amount: parseFloat(amount), status: "pending", createdAt: firebase.firestore.FieldValue.serverTimestamp() }); alert('✅ تم الإرسال!'); document.getElementById('depositCardCode').value = ''; document.getElementById('depositAmount').value = ''; } catch (e) { alert('❌ خطأ: ' + e.message); } }
-        async function submitCryptoTransfer() { const cryptoId = document.getElementById('crypto_id').value.trim(); const amount = document.getElementById('crypto_amount').value.trim(); if (!cryptoId) return alert('⚠️ أدخل المعرف'); if (!amount) return alert('⚠️ أدخل المبلغ بالدولار'); try { await db.collection("deposits").add({ userId: auth.currentUser.uid, userName: userData?.name || userData?.username, provider: 'Crypto', card_code: cryptoId, amount: parseFloat(amount) * 12, crypto_amount: parseFloat(amount), status: "pending", createdAt: firebase.firestore.FieldValue.serverTimestamp() }); alert('✅ تم الإرسال!'); document.getElementById('crypto_id').value = ''; document.getElementById('crypto_amount').value = ''; } catch (e) { alert('❌ خطأ: ' + e.message); } }
+        // ========== نظام الإيداع الموحد ==========
+        async function submitTransfer(provider) { 
+            const phone = document.getElementById('phone_libyana').value.trim(); 
+            const amount = document.getElementById('amount_libyana').value.trim(); 
+            if (!phone) return alert('⚠️ أدخل رقم هاتفك'); 
+            if (!amount) return alert('⚠️ أدخل المبلغ'); 
+            try { 
+                await db.collection("deposits").add({ 
+                    userId: auth.currentUser.uid, 
+                    userName: userData?.name || '', 
+                    userPhone: phone, 
+                    provider: provider, 
+                    amount: parseFloat(amount), 
+                    status: "pending", 
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp() 
+                }); 
+                alert('✅ تم الإرسال!'); 
+                document.getElementById('phone_libyana').value = ''; 
+                document.getElementById('amount_libyana').value = ''; 
+            } catch (e) { 
+                alert('❌ خطأ: ' + e.message); 
+            } 
+        }
+        
+        async function submitDeposit() { 
+            const provider = document.getElementById('depositProvider').value; 
+            const cardCode = document.getElementById('depositCardCode').value.trim(); 
+            const amount = document.getElementById('depositAmount').value.trim(); 
+            if (!cardCode) return alert('⚠️ أدخل رقم الكرت'); 
+            if (!amount) return alert('⚠️ أدخل قيمة الكرت'); 
+            try { 
+                await db.collection("deposits").add({ 
+                    userId: auth.currentUser.uid, 
+                    userName: userData?.name || '', 
+                    provider: provider, 
+                    card_code: cardCode, 
+                    amount: parseFloat(amount), 
+                    status: "pending", 
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp() 
+                }); 
+                alert('✅ تم الإرسال!'); 
+                document.getElementById('depositCardCode').value = ''; 
+                document.getElementById('depositAmount').value = ''; 
+            } catch (e) { 
+                alert('❌ خطأ: ' + e.message); 
+            } 
+        }
+        
+        async function submitCryptoTransfer() { 
+            const cryptoId = document.getElementById('crypto_id').value.trim(); 
+            const amount = document.getElementById('crypto_amount').value.trim(); 
+            if (!cryptoId) return alert('⚠️ أدخل المعرف'); 
+            if (!amount) return alert('⚠️ أدخل المبلغ بالدولار'); 
+            const amountLYD = parseFloat(amount) * 12; 
+            try { 
+                await db.collection("deposits").add({ 
+                    userId: auth.currentUser.uid, 
+                    userName: userData?.name || '', 
+                    provider: 'Crypto', 
+                    card_code: cryptoId, 
+                    amount: amountLYD, 
+                    crypto_amount: parseFloat(amount), 
+                    status: "pending", 
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp() 
+                }); 
+                alert('✅ تم الإرسال!'); 
+                document.getElementById('crypto_id').value = ''; 
+                document.getElementById('crypto_amount').value = ''; 
+            } catch (e) { 
+                alert('❌ خطأ: ' + e.message); 
+            } 
+        }
 
-        function loadAllData() { db.collection("services").get().then(snap => { const catsMap = {}; allProducts = []; snap.forEach(doc => { const s = doc.data(); s.service_id = doc.id; allProducts.push(s); if (!catsMap[s.category]) { catsMap[s.category] = { id: s.category, name: s.category, image: s.categoryImage || '' }; } }); allCategories = Object.values(catsMap); renderCategories(); }).catch(() => { allCategories = [{ id: "binance", name: "💰 Binance", image: "" },{ id: "gaming", name: "🎮 شحن الألعاب", image: "" },{ id: "social_media", name: "📱 سوشيال ميديا", image: "" },{ id: "subscriptions", name: "🎬 الاشتراكات", image: "" }]; allProducts = [{ service_id: "b1", category: "binance", title: "1 USDT", price: 15, status: true, type: "id" },{ service_id: "b2", category: "binance", title: "5 USDT", price: 72, status: true, type: "id" },{ service_id: "g1", category: "gaming", title: "شدات ببجي 60UC", price: 10.350, status: true, type: "id" },{ service_id: "s1", category: "social_media", title: "سناب شات بلس 3 شهور", price: 38, status: true, type: "none" },{ service_id: "sub1", category: "subscriptions", title: "شاهد VIP شهر", price: 25, status: true, type: "none" }]; renderCategories(); }); }
-        function renderCategories() { const grid = document.getElementById('catsGrid'); if (!allCategories.length) { grid.innerHTML = '<div class="loading">لا توجد أقسام</div>'; return; } grid.innerHTML = allCategories.map(cat => { const img = getImageUrl(cat.image); return `<div class="cat-card" onclick="openCategory('${cat.id}', '${cat.name}')">${img ? `<img src="${img}" loading="lazy" onerror="this.style.display='none'">` : `<div style="font-size:35px;">📂</div>`}<h3>${cat.name}</h3><div class="desc">تصفح الخدمات</div><span class="btn">تصفح القسم</span></div>`; }).join(''); }
-        function openCategory(catId, catName) { document.getElementById('categoriesView').classList.add('hidden'); document.getElementById('productsView').classList.remove('hidden'); document.getElementById('productsTitle').innerText = catName; const prods = allProducts.filter(p => p.category === catId && p.status !== false); const grid = document.getElementById('prodsGrid'); if (!prods.length) { grid.innerHTML = '<div class="loading">لا توجد خدمات</div>'; return; } grid.innerHTML = prods.map(p => { const img = getImageUrl(p.image); const discount = p.discount || 0; const finalPrice = discount > 0 ? (p.price||0) - ((p.price||0)*discount/100) : (p.price||0); return `<div class="prod-card" onclick="openDetail('${p.service_id}')">${discount>0?`<div class="discount-badge">-${discount}%</div>`:''}${img ? `<img src="${img}" loading="lazy" onerror="this.style.display='none'">` : `<div style="font-size:35px;">📦</div>`}<h4>${p.title}</h4>${discount>0?`<div class="old-price">${(p.price||0).toFixed(3)} د.ل</div>`:''}<div class="price">${finalPrice.toFixed(3)} د.ل</div></div>`; }).join(''); }
-        function showCategories() { document.getElementById('productsView').classList.add('hidden'); document.getElementById('categoriesView').classList.remove('hidden'); }
-        function openDetail(serviceId) { const prod = allProducts.find(p => p.service_id === serviceId); if (!prod) return; currentProduct = prod; const discount = prod.discount || 0; const finalPrice = discount > 0 ? (prod.price||0) - ((prod.price||0)*discount/100) : (prod.price||0); document.getElementById('dImg').src = getImageUrl(prod.image); document.getElementById('dName').innerText = prod.title; const badge = document.getElementById('dDiscountBadge'); const oldPrice = document.getElementById('dOldPrice'); if (discount > 0) { badge.innerHTML = `<span class="discount-badge-big">🔥 خصم ${discount}%</span>`; oldPrice.classList.remove('hidden'); oldPrice.innerText = `${(prod.price||0).toFixed(3)} د.ل`; document.getElementById('dPrice').innerHTML = `${finalPrice.toFixed(3)} د.ل <span style="color:#4ade80;font-size:13px;">(وفر ${((prod.price||0)-finalPrice).toFixed(3)})</span>`; } else { badge.innerHTML = ''; oldPrice.classList.add('hidden'); document.getElementById('dPrice').innerText = finalPrice.toFixed(3) + ' د.ل'; } document.getElementById('targetInput').value = ''; document.getElementById('detailModal').classList.remove('hidden'); }
-        function closeDetailModal() { document.getElementById('detailModal').classList.add('hidden'); }
-        async function confirmPurchase() { if (!currentProduct) return; const targetInput = document.getElementById('targetInput').value.trim(); const user = auth.currentUser; if (!user) return alert('⚠️ سجل دخول أولاً'); const discount = currentProduct.discount || 0; const finalPrice = discount > 0 ? (currentProduct.price||0) - ((currentProduct.price||0)*discount/100) : (currentProduct.price||0); if (currentProduct.type !== 'none' && !targetInput) return alert('⚠️ أدخل البيانات المطلوبة'); if (userBalance < finalPrice) return alert('⚠️ رصيد غير كافٍ'); const newBalance = userBalance - finalPrice; try { await db.collection("users").doc(user.uid).update({ balance: newBalance }); await db.collection("orders").add({ userId: user.uid, cardName: currentProduct.title, serviceName: currentProduct.title, amount: finalPrice, price: finalPrice, playerID: targetInput || 'مباشر', status: 'pending', createdAt: firebase.firestore.FieldValue.serverTimestamp() }); closeDetailModal(); alert('🎉 تم الطلب بنجاح!\n' + currentProduct.title + '\n' + finalPrice.toFixed(3) + ' د.ل'); } catch (e) { alert('❌ خطأ: ' + e.message); } }
+        // ========== تحميل الخدمات والأقسام ==========
+        function loadAllData() { 
+            db.collection("services").get().then(snap => { 
+                const catsMap = {}; 
+                allProducts = []; 
+                snap.forEach(doc => { 
+                    const s = doc.data(); 
+                    s.service_id = doc.id; 
+                    allProducts.push(s); 
+                    if (!catsMap[s.category]) { 
+                        catsMap[s.category] = { 
+                            id: s.category, 
+                            name: s.category, 
+                            image: s.categoryImage || '' 
+                        }; 
+                    } 
+                }); 
+                allCategories = Object.values(catsMap); 
+                renderCategories(); 
+            }); 
+        }
+        
+        function renderCategories() { 
+            const grid = document.getElementById('catsGrid'); 
+            if (!allCategories.length) { 
+                grid.innerHTML = '<div class="loading">لا توجد أقسام</div>'; 
+                return; 
+            } 
+            grid.innerHTML = allCategories.map(cat => { 
+                const img = getImageUrl(cat.image); 
+                return `<div class="cat-card" onclick="openCategory('${cat.id}', '${cat.name}')">
+                    ${img ? `<img src="${img}" loading="lazy" onerror="this.style.display='none'">` : `<div style="font-size:35px;">📂</div>`}
+                    <h3>${cat.name}</h3>
+                    <div class="desc">تصفح الخدمات</div>
+                    <span class="btn">تصفح القسم</span>
+                </div>`; 
+            }).join(''); 
+        }
+        
+        function openCategory(catId, catName) { 
+            document.getElementById('categoriesView').classList.add('hidden'); 
+            document.getElementById('productsView').classList.remove('hidden'); 
+            document.getElementById('productsTitle').innerText = catName; 
+            const prods = allProducts.filter(p => p.category === catId && p.status !== false); 
+            const grid = document.getElementById('prodsGrid'); 
+            if (!prods.length) { 
+                grid.innerHTML = '<div class="loading">لا توجد خدمات</div>'; 
+                return; 
+            } 
+            grid.innerHTML = prods.map(p => { 
+                const img = getImageUrl(p.image); 
+                const discount = p.discount || 0; 
+                const finalPrice = discount > 0 ? (p.price||0) - ((p.price||0)*discount/100) : (p.price||0); 
+                return `<div class="prod-card" onclick="openDetail('${p.service_id}')">
+                    ${discount>0?`<div class="discount-badge">-${discount}%</div>`:''}
+                    ${img ? `<img src="${img}" loading="lazy" onerror="this.style.display='none'">` : `<div style="font-size:35px;">📦</div>`}
+                    <h4>${p.title}</h4>
+                    ${discount>0?`<div class="old-price">${(p.price||0).toFixed(3)} د.ل</div>`:''}
+                    <div class="price">${finalPrice.toFixed(3)} د.ل</div>
+                </div>`; 
+            }).join(''); 
+        }
+        
+        function showCategories() { 
+            document.getElementById('productsView').classList.add('hidden'); 
+            document.getElementById('categoriesView').classList.remove('hidden'); 
+        }
+        
+        function openDetail(serviceId) { 
+            const prod = allProducts.find(p => p.service_id === serviceId); 
+            if (!prod) return; 
+            currentProduct = prod; 
+            const discount = prod.discount || 0; 
+            const finalPrice = discount > 0 ? (prod.price||0) - ((prod.price||0)*discount/100) : (prod.price||0); 
+            document.getElementById('dImg').src = getImageUrl(prod.image); 
+            document.getElementById('dName').innerText = prod.title; 
+            const badge = document.getElementById('dDiscountBadge'); 
+            const oldPrice = document.getElementById('dOldPrice'); 
+            if (discount > 0) { 
+                badge.innerHTML = `<span class="discount-badge-big">🔥 خصم ${discount}%</span>`; 
+                oldPrice.classList.remove('hidden'); 
+                oldPrice.innerText = `${(prod.price||0).toFixed(3)} د.ل`; 
+                document.getElementById('dPrice').innerHTML = `${finalPrice.toFixed(3)} د.ل <span style="color:#4ade80;font-size:13px;">(وفر ${((prod.price||0)-finalPrice).toFixed(3)})</span>`; 
+            } else { 
+                badge.innerHTML = ''; 
+                oldPrice.classList.add('hidden'); 
+                document.getElementById('dPrice').innerText = finalPrice.toFixed(3) + ' د.ل'; 
+            } 
+            document.getElementById('targetInput').value = ''; 
+            document.getElementById('detailModal').classList.remove('hidden'); 
+        }
+        
+        function closeDetailModal() { 
+            document.getElementById('detailModal').classList.add('hidden'); 
+        }
+        
+        async function confirmPurchase() { 
+            if (!currentProduct) return; 
+            const targetInput = document.getElementById('targetInput').value.trim(); 
+            const user = auth.currentUser; 
+            if (!user) return alert('⚠️ سجل دخول أولاً'); 
+            const discount = currentProduct.discount || 0; 
+            const finalPrice = discount > 0 ? (currentProduct.price||0) - ((currentProduct.price||0)*discount/100) : (currentProduct.price||0); 
+            if (currentProduct.type !== 'none' && !targetInput) return alert('⚠️ أدخل البيانات المطلوبة'); 
+            if (userBalance < finalPrice) return alert('⚠️ رصيد غير كافٍ'); 
+            const newBalance = userBalance - finalPrice; 
+            try { 
+                await db.collection("users").doc(user.uid).update({ 
+                    balance: newBalance 
+                }); 
+                await db.collection("orders").add({ 
+                    userId: user.uid, 
+                    userName: userData?.name || '', 
+                    serviceTitle: currentProduct.title, 
+                    targetInput: targetInput || 'مباشر', 
+                    totalPrice: finalPrice, 
+                    status: "pending", 
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp() 
+                }); 
+                closeDetailModal(); 
+                alert(`🎉 تم الطلب بنجاح!\n${currentProduct.title}\n${finalPrice.toFixed(3)} د.ل`); 
+            } catch (e) { 
+                alert('❌ خطأ: ' + e.message); 
+            } 
+        }
     </script>
 </body>
 </html>
