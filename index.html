@@ -225,7 +225,6 @@
 
         .hidden { display: none !important; }
         .loading { text-align: center; padding: 30px; color: var(--muted); font-size: 13px; }
-
         .note-box {
             background: rgba(245,166,35,0.08);
             border: 1px solid rgba(245,166,35,0.25);
@@ -277,7 +276,6 @@
         </div>
     </div>
 
-    <!-- المحفظة -->
     <div id="walletPage" class="page hidden">
         <div class="container" style="margin-top:10px;">
             <div class="section-title">💰 المحفظة وشحن الرصيد</div>
@@ -286,13 +284,10 @@
                 <div class="big-number"><span id="walletBalance">0.000</span> د.ل</div>
             </div>
 
-            <!-- قائمة طرق الدفع -->
             <div class="wallet-card">
                 <h3 style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--gold);">💳 اختر طريقة الدفع</h3>
                 <div class="dropdown">
-                    <button style="background:var(--card-bg);border:var(--border-gold);color:var(--gold);padding:10px 20px;border-radius:12px;cursor:pointer;font-weight:700;font-size:13px;width:100%;box-shadow:var(--neon-gold);">
-                        📋 اختر طريقة التحويل ▼
-                    </button>
+                    <button style="background:var(--card-bg);border:var(--border-gold);color:var(--gold);padding:10px 20px;border-radius:12px;cursor:pointer;font-weight:700;font-size:13px;width:100%;box-shadow:var(--neon-gold);">📋 اختر طريقة التحويل ▼</button>
                     <div class="dropdown-content">
                         <a onclick="showPaymentSection('libyana')" style="font-weight:700;color:var(--gold);">📞 ليبيانا ومدار (تحويل)</a>
                         <a onclick="showPaymentSection('cards')" style="font-weight:700;color:var(--gold);">💳 كروت التعبئة</a>
@@ -301,7 +296,6 @@
                 </div>
             </div>
 
-            <!-- قسم ليبيانا ومدار - تحويل -->
             <div id="paymentLibyana" class="wallet-card hidden">
                 <h3 style="color:var(--gold);margin-bottom:8px;">📞 تحويل ليبيانا ومدار</h3>
                 <div class="bank-row"><div><span style="color:var(--muted);">ليبيانا</span></div><div class="num">0942119641</div></div>
@@ -314,20 +308,15 @@
                 <button class="notify-btn" onclick="submitTransfer('Libyana/Madar')">✅ تأكيد التحويل</button>
             </div>
 
-            <!-- قسم كروت التعبئة -->
             <div id="paymentCards" class="wallet-card hidden">
                 <h3 style="color:var(--gold);margin-bottom:8px;">💳 شحن عبر كروت التعبئة</h3>
                 <p style="font-size:11px;color:var(--muted);margin-bottom:8px;">أدخل رقم الكرت وقيمته</p>
-                <select id="depositProvider" class="notify-input" style="text-align:right;direction:rtl;">
-                    <option value="Libyana">ليبيانا</option>
-                    <option value="Madar">مدار</option>
-                </select>
+                <select id="depositProvider" class="notify-input" style="text-align:right;direction:rtl;"><option value="Libyana">ليبيانا</option><option value="Madar">مدار</option></select>
                 <input type="text" id="depositCardCode" class="notify-input" placeholder="رقم كرت التعبئة" dir="ltr">
                 <input type="number" id="depositAmount" class="notify-input" placeholder="قيمة الكرت (د.ل)" dir="ltr">
                 <button class="notify-btn" onclick="submitDeposit()">✅ إرسال طلب الشحن</button>
             </div>
 
-            <!-- قسم العملات الرقمية -->
             <div id="paymentCrypto" class="wallet-card hidden">
                 <h3 style="color:var(--gold);margin-bottom:8px;">₿ تحويل عملات رقمية</h3>
                 <div class="bank-row"><div><span style="color:var(--muted);">بايننس</span></div><div class="num">1132499294</div></div>
@@ -341,7 +330,6 @@
                 <button class="notify-btn" onclick="submitCryptoTransfer()">✅ تأكيد التحويل</button>
             </div>
 
-            <!-- شرح -->
             <div class="wallet-card">
                 <h3 style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--gold);">📋 طريقة الشحن</h3>
                 <ol style="font-size:11px;color:var(--muted);padding-right:16px;line-height:2.2;">
@@ -354,7 +342,6 @@
         </div>
     </div>
 
-    <!-- الحساب -->
     <div id="accountPage" class="page hidden">
         <div class="container" style="margin-top:10px;">
             <div class="section-title">👤 حسابي</div>
@@ -374,15 +361,9 @@
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item active" data-tab="home" onclick="switchTab('home')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>الرئيسية
-        </div>
-        <div class="nav-item" data-tab="wallet" onclick="switchTab('wallet')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3"/></svg>المحفظة
-        </div>
-        <div class="nav-item" data-tab="account" onclick="switchTab('account')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>حسابي
-        </div>
+        <div class="nav-item active" data-tab="home" onclick="switchTab('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>الرئيسية</div>
+        <div class="nav-item" data-tab="wallet" onclick="switchTab('wallet')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3"/></svg>المحفظة</div>
+        <div class="nav-item" data-tab="account" onclick="switchTab('account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>حسابي</div>
     </div>
 
     <div id="detailModal" class="modal-overlay hidden" onclick="closeDetailModal()">
@@ -393,14 +374,7 @@
             <div id="dDiscountBadge" style="text-align:center;"></div>
             <div class="old-price-big hidden" id="dOldPrice"></div>
             <div class="price" id="dPrice"></div>
-            <div class="rules">
-                <h5>⚠️ الشروط والأحكام</h5>
-                <ul>
-                    <li>المنتج <b style="color:#f87171">غير قابل للاسترداد</b> بعد الشراء</li>
-                    <li>تأكد من <b style="color:#fff">صحة البيانات</b> المدخلة</li>
-                    <li>التعويض خلال <b style="color:#fff">24 ساعة</b> في حالة الخطأ التقني</li>
-                </ul>
-            </div>
+            <div class="rules"><h5>⚠️ الشروط والأحكام</h5><ul><li>المنتج <b style="color:#f87171">غير قابل للاسترداد</b> بعد الشراء</li><li>تأكد من <b style="color:#fff">صحة البيانات</b></li><li>التعويض خلال <b style="color:#fff">24 ساعة</b></li></ul></div>
             <input type="text" id="targetInput" placeholder="معرف اللاعب (ID) أو رابط الحساب" dir="ltr">
             <button class="buy-btn" onclick="confirmPurchase()">✅ تأكيد الشراء</button>
         </div>
@@ -430,217 +404,31 @@
         let userBalance = 0;
         let currentProduct = null;
 
-        function switchTab(tab) {
-            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-            document.getElementById(tab + 'Page').classList.remove('hidden');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
-        }
+        function switchTab(tab) { document.querySelectorAll('.page').forEach(p => p.classList.add('hidden')); document.getElementById(tab + 'Page').classList.remove('hidden'); document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); document.querySelector(`[data-tab="${tab}"]`).classList.add('active'); }
+        function showPaymentSection(type) { document.querySelectorAll('[id^="payment"]').forEach(el => el.classList.add('hidden')); const map = { libyana: 'paymentLibyana', cards: 'paymentCards', crypto: 'paymentCrypto' }; if (map[type]) document.getElementById(map[type]).classList.remove('hidden'); }
 
-        function showPaymentSection(type) {
-            document.querySelectorAll('[id^="payment"]').forEach(el => el.classList.add('hidden'));
-            const map = { libyana: 'paymentLibyana', cards: 'paymentCards', crypto: 'paymentCrypto' };
-            if (map[type]) document.getElementById(map[type]).classList.remove('hidden');
-        }
+        auth.onAuthStateChanged(user => { if (!user) { window.location.href = 'long.html'; return; } db.collection("users").doc(user.uid).onSnapshot(doc => { if (doc.exists) { userData = doc.data(); userBalance = userData.wallet_balance || 0; updateAllBalances(); } }); setTimeout(loadAllData, 500); });
 
-        // ==================== دخول إجباري ====================
-        auth.onAuthStateChanged(user => {
-            if (!user) { window.location.href = 'long.html'; return; }
-            db.collection("users").doc(user.uid).onSnapshot(doc => {
-                if (doc.exists) { userData = doc.data(); userBalance = userData.wallet_balance || 0; updateAllBalances(); }
-            });
-            setTimeout(loadAllData, 500);
-        });
-
-        function updateAllBalances() {
-            document.getElementById('topBalance').innerText = userBalance.toFixed(3);
-            document.getElementById('walletBalance').innerText = userBalance.toFixed(3);
-            document.getElementById('accBalance').innerText = userBalance.toFixed(3) + ' د.ل';
-            if (userData) {
-                document.getElementById('accName').innerText = userData.name || '---';
-                document.getElementById('accName2').innerText = userData.name || '---';
-                document.getElementById('accEmail').innerText = userData.email || '---';
-                document.getElementById('accEmail2').innerText = userData.email || '---';
-                document.getElementById('accPhone').innerText = userData.phone || '---';
-            }
-        }
-
+        function updateAllBalances() { document.getElementById('topBalance').innerText = userBalance.toFixed(3); document.getElementById('walletBalance').innerText = userBalance.toFixed(3); document.getElementById('accBalance').innerText = userBalance.toFixed(3) + ' د.ل'; if (userData) { document.getElementById('accName').innerText = userData.name || '---'; document.getElementById('accName2').innerText = userData.name || '---'; document.getElementById('accEmail').innerText = userData.email || '---'; document.getElementById('accEmail2').innerText = userData.email || '---'; document.getElementById('accPhone').innerText = userData.phone || '---'; } }
         function logout() { auth.signOut().then(() => { window.location.href = 'long.html'; }); }
         function copyText(text) { navigator.clipboard.writeText(text).then(() => alert('✅ تم النسخ: ' + text)); }
+        function getImageUrl(img) { if (!img) return ''; if (img.startsWith('http')) return img; return BASE_IMAGE_URL + img; }
 
-        function getImageUrl(img) {
-            if (!img) return '';
-            if (img.startsWith('http')) return img;
-            return BASE_IMAGE_URL + img;
-        }
+        async function submitTransfer(provider) { const phone = document.getElementById('phone_libyana').value.trim(); const amount = document.getElementById('amount_libyana').value.trim(); if (!phone) return alert('⚠️ أدخل رقم هاتفك'); if (!amount) return alert('⚠️ أدخل المبلغ'); try { await db.collection("deposits").add({ user_id: auth.currentUser.uid, provider: provider, card_code: phone, amount: parseFloat(amount), status: "pending", submitted_at: firebase.firestore.FieldValue.serverTimestamp() }); alert('✅ تم الإرسال!'); document.getElementById('phone_libyana').value = ''; document.getElementById('amount_libyana').value = ''; } catch (e) { alert('❌ خطأ: ' + e.message); } }
+        async function submitDeposit() { const provider = document.getElementById('depositProvider').value; const cardCode = document.getElementById('depositCardCode').value.trim(); const amount = document.getElementById('depositAmount').value.trim(); if (!cardCode) return alert('⚠️ أدخل رقم الكرت'); if (!amount) return alert('⚠️ أدخل قيمة الكرت'); try { await db.collection("deposits").add({ user_id: auth.currentUser.uid, provider: provider, card_code: cardCode, amount: parseFloat(amount), status: "pending", submitted_at: firebase.firestore.FieldValue.serverTimestamp() }); alert('✅ تم الإرسال!'); document.getElementById('depositCardCode').value = ''; document.getElementById('depositAmount').value = ''; } catch (e) { alert('❌ خطأ: ' + e.message); } }
+        async function submitCryptoTransfer() { const cryptoId = document.getElementById('crypto_id').value.trim(); const amount = document.getElementById('crypto_amount').value.trim(); if (!cryptoId) return alert('⚠️ أدخل المعرف'); if (!amount) return alert('⚠️ أدخل المبلغ بالدولار'); const amountLYD = parseFloat(amount) * 12; try { await db.collection("deposits").add({ user_id: auth.currentUser.uid, provider: 'Crypto', card_code: cryptoId, amount: amountLYD, crypto_amount: parseFloat(amount), status: "pending", submitted_at: firebase.firestore.FieldValue.serverTimestamp() }); alert(`✅ تم الإرسال!\nالمبلغ: ${amount} دولار = ${amountLYD.toFixed(2)} د.ل`); document.getElementById('crypto_id').value = ''; document.getElementById('crypto_amount').value = ''; } catch (e) { alert('❌ خطأ: ' + e.message); } }
 
-        async function submitTransfer(provider) {
-            const phone = document.getElementById('phone_libyana').value.trim();
-            const amount = document.getElementById('amount_libyana').value.trim();
-            if (!phone) return alert('⚠️ أدخل رقم هاتفك');
-            if (!amount) return alert('⚠️ أدخل المبلغ');
-            try {
-                await db.collection("deposits").add({
-                    user_id: auth.currentUser.uid,
-                    provider: provider,
-                    card_code: phone,
-                    amount: parseFloat(amount),
-                    status: "pending",
-                    submitted_at: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                alert('✅ تم الإرسال! سيتم مراجعة طلبك قريباً.');
-                document.getElementById('phone_libyana').value = '';
-                document.getElementById('amount_libyana').value = '';
-            } catch (e) { alert('❌ خطأ: ' + e.message); }
-        }
+        function loadAllData() { db.collection("services").get().then(snap => { const catsMap = {}; allProducts = []; snap.forEach(doc => { const s = doc.data(); s.service_id = doc.id; allProducts.push(s); if (!catsMap[s.category]) { catsMap[s.category] = { id: s.category, name: s.category, image: s.categoryImage || '' }; } }); allCategories = Object.values(catsMap); renderCategories(); }).catch(() => { allCategories = [{ id: "binance", name: "💰 Binance", image: "" },{ id: "gaming", name: "🎮 شحن الألعاب", image: "" },{ id: "social_media", name: "📱 سوشيال ميديا", image: "" },{ id: "subscriptions", name: "🎬 الاشتراكات", image: "" }]; allProducts = [{ service_id: "b1", category: "binance", title: "1 USDT", price: 15, status: true, type: "id", image: "" },{ service_id: "b2", category: "binance", title: "5 USDT", price: 72, status: true, type: "id", image: "" },{ service_id: "g1", category: "gaming", title: "شدات ببجي 60UC", price: 10.350, status: true, type: "id", image: "" },{ service_id: "s1", category: "social_media", title: "سناب شات بلس 3 شهور", price: 38, status: true, type: "none", image: "" },{ service_id: "sub1", category: "subscriptions", title: "شاهد VIP شهر", price: 25, status: true, type: "none", image: "" }]; renderCategories(); }); }
 
-        async function submitDeposit() {
-            const provider = document.getElementById('depositProvider').value;
-            const cardCode = document.getElementById('depositCardCode').value.trim();
-            const amount = document.getElementById('depositAmount').value.trim();
-            if (!cardCode) return alert('⚠️ أدخل رقم الكرت');
-            if (!amount) return alert('⚠️ أدخل قيمة الكرت');
-            try {
-                await db.collection("deposits").add({
-                    user_id: auth.currentUser.uid,
-                    provider: provider,
-                    card_code: cardCode,
-                    amount: parseFloat(amount),
-                    status: "pending",
-                    submitted_at: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                alert('✅ تم الإرسال! سيتم مراجعة طلبك قريباً.');
-                document.getElementById('depositCardCode').value = '';
-                document.getElementById('depositAmount').value = '';
-            } catch (e) { alert('❌ خطأ: ' + e.message); }
-        }
+        function renderCategories() { const grid = document.getElementById('catsGrid'); if (!allCategories.length) { grid.innerHTML = '<div class="loading">لا توجد أقسام</div>'; return; } grid.innerHTML = allCategories.map(cat => { const img = getImageUrl(cat.image); return `<div class="cat-card" onclick="openCategory('${cat.id}', '${cat.name}')">${img ? `<img src="${img}" loading="lazy" onerror="this.style.display='none'">` : `<div style="font-size:35px;">📂</div>`}<h3>${cat.name}</h3><div class="desc">تصفح الخدمات</div><span class="btn">تصفح القسم</span></div>`; }).join(''); }
 
-        async function submitCryptoTransfer() {
-            const cryptoId = document.getElementById('crypto_id').value.trim();
-            const amount = document.getElementById('crypto_amount').value.trim();
-            if (!cryptoId) return alert('⚠️ أدخل المعرف');
-            if (!amount) return alert('⚠️ أدخل المبلغ بالدولار');
-            const amountLYD = parseFloat(amount) * 12;
-            try {
-                await db.collection("deposits").add({
-                    user_id: auth.currentUser.uid,
-                    provider: 'Crypto',
-                    card_code: cryptoId,
-                    amount: amountLYD,
-                    crypto_amount: parseFloat(amount),
-                    status: "pending",
-                    submitted_at: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                alert(`✅ تم الإرسال!\nالمبلغ: ${amount} دولار = ${amountLYD.toFixed(2)} د.ل`);
-                document.getElementById('crypto_id').value = '';
-                document.getElementById('crypto_amount').value = '';
-            } catch (e) { alert('❌ خطأ: ' + e.message); }
-        }
-
-        function loadAllData() {
-            db.collection("services").get().then(snap => {
-                const catsMap = {}; allProducts = [];
-                snap.forEach(doc => { const s = doc.data(); s.service_id = doc.id; allProducts.push(s); if (!catsMap[s.category]) { catsMap[s.category] = { id: s.category, name: s.category, image: s.categoryImage || '' }; } });
-                allCategories = Object.values(catsMap);
-                renderCategories();
-            }).catch(() => {
-                allCategories = [{ id: "binance", name: "💰 Binance", image: "" },{ id: "gaming", name: "🎮 شحن الألعاب", image: "" },{ id: "social_media", name: "📱 سوشيال ميديا", image: "" },{ id: "subscriptions", name: "🎬 الاشتراكات", image: "" }];
-                allProducts = [{ service_id: "b1", category: "binance", title: "1 USDT", price: 15.000, status: true, type: "id", image: "" },{ service_id: "b2", category: "binance", title: "5 USDT", price: 72.000, status: true, type: "id", image: "" },{ service_id: "g1", category: "gaming", title: "شدات ببجي 60UC", price: 10.350, status: true, type: "id", image: "" },{ service_id: "s1", category: "social_media", title: "سناب شات بلس 3 شهور", price: 38.000, status: true, type: "none", image: "" },{ service_id: "sub1", category: "subscriptions", title: "شاهد VIP شهر", price: 25.000, status: true, type: "none", image: "" }];
-                renderCategories();
-            });
-        }
-
-        function renderCategories() {
-            const grid = document.getElementById('catsGrid');
-            if (!allCategories.length) { grid.innerHTML = '<div class="loading">لا توجد أقسام</div>'; return; }
-            grid.innerHTML = allCategories.map(cat => {
-                const img = getImageUrl(cat.image);
-                return `<div class="cat-card" onclick="openCategory('${cat.id}', '${cat.name}')">
-                    ${img ? `<img src="${img}" loading="lazy" onerror="this.style.display='none'">` : `<div style="font-size:35px;">📂</div>`}
-                    <h3>${cat.name}</h3>
-                    <div class="desc">تصفح الخدمات</div>
-                    <span class="btn">تصفح القسم</span>
-                </div>`;
-            }).join('');
-        }
-
-        function openCategory(catId, catName) {
-            document.getElementById('categoriesView').classList.add('hidden');
-            document.getElementById('productsView').classList.remove('hidden');
-            document.getElementById('productsTitle').innerText = catName;
-            const prods = allProducts.filter(p => p.category === catId && p.status !== false);
-            const grid = document.getElementById('prodsGrid');
-            if (!prods.length) { grid.innerHTML = '<div class="loading">لا توجد خدمات</div>'; return; }
-            grid.innerHTML = prods.map(p => {
-                const img = getImageUrl(p.image);
-                const discount = p.discount || 0;
-                const finalPrice = discount > 0 ? (p.price||0) - ((p.price||0)*discount/100) : (p.price||0);
-                return `<div class="prod-card" onclick="openDetail('${p.service_id}')">
-                    ${discount>0?`<div class="discount-badge">-${discount}%</div>`:''}
-                    ${img ? `<img src="${img}" loading="lazy" onerror="this.style.display='none'">` : `<div style="font-size:35px;">📦</div>`}
-                    <h4>${p.title}</h4>
-                    ${discount>0?`<div class="old-price">${(p.price||0).toFixed(3)} د.ل</div>`:''}
-                    <div class="price">${finalPrice.toFixed(3)} د.ل</div>
-                </div>`;
-            }).join('');
-        }
-
+        function openCategory(catId, catName) { document.getElementById('categoriesView').classList.add('hidden'); document.getElementById('productsView').classList.remove('hidden'); document.getElementById('productsTitle').innerText = catName; const prods = allProducts.filter(p => p.category === catId && p.status !== false); const grid = document.getElementById('prodsGrid'); if (!prods.length) { grid.innerHTML = '<div class="loading">لا توجد خدمات</div>'; return; } grid.innerHTML = prods.map(p => { const img = getImageUrl(p.image); const discount = p.discount || 0; const finalPrice = discount > 0 ? (p.price||0) - ((p.price||0)*discount/100) : (p.price||0); return `<div class="prod-card" onclick="openDetail('${p.service_id}')">${discount>0?`<div class="discount-badge">-${discount}%</div>`:''}${img ? `<img src="${img}" loading="lazy" onerror="this.style.display='none'">` : `<div style="font-size:35px;">📦</div>`}<h4>${p.title}</h4>${discount>0?`<div class="old-price">${(p.price||0).toFixed(3)} د.ل</div>`:''}<div class="price">${finalPrice.toFixed(3)} د.ل</div></div>`; }).join(''); }
         function showCategories() { document.getElementById('productsView').classList.add('hidden'); document.getElementById('categoriesView').classList.remove('hidden'); }
 
-        function openDetail(serviceId) {
-            const prod = allProducts.find(p => p.service_id === serviceId);
-            if (!prod) return;
-            currentProduct = prod;
-            const discount = prod.discount || 0;
-            const finalPrice = discount > 0 ? (prod.price||0) - ((prod.price||0)*discount/100) : (prod.price||0);
-            
-            document.getElementById('dImg').src = getImageUrl(prod.image);
-            document.getElementById('dName').innerText = prod.title;
-            
-            const badge = document.getElementById('dDiscountBadge');
-            const oldPrice = document.getElementById('dOldPrice');
-            if (discount > 0) {
-                badge.innerHTML = `<span class="discount-badge-big">🔥 خصم ${discount}%</span>`;
-                oldPrice.classList.remove('hidden');
-                oldPrice.innerText = `${(prod.price||0).toFixed(3)} د.ل`;
-                document.getElementById('dPrice').innerHTML = `${finalPrice.toFixed(3)} د.ل <span style="color:#4ade80;font-size:13px;">(وفر ${((prod.price||0)-finalPrice).toFixed(3)})</span>`;
-            } else {
-                badge.innerHTML = '';
-                oldPrice.classList.add('hidden');
-                document.getElementById('dPrice').innerText = finalPrice.toFixed(3) + ' د.ل';
-            }
-            
-            document.getElementById('targetInput').value = '';
-            document.getElementById('detailModal').classList.remove('hidden');
-        }
-
+        function openDetail(serviceId) { const prod = allProducts.find(p => p.service_id === serviceId); if (!prod) return; currentProduct = prod; const discount = prod.discount || 0; const finalPrice = discount > 0 ? (prod.price||0) - ((prod.price||0)*discount/100) : (prod.price||0); document.getElementById('dImg').src = getImageUrl(prod.image); document.getElementById('dName').innerText = prod.title; const badge = document.getElementById('dDiscountBadge'); const oldPrice = document.getElementById('dOldPrice'); if (discount > 0) { badge.innerHTML = `<span class="discount-badge-big">🔥 خصم ${discount}%</span>`; oldPrice.classList.remove('hidden'); oldPrice.innerText = `${(prod.price||0).toFixed(3)} د.ل`; document.getElementById('dPrice').innerHTML = `${finalPrice.toFixed(3)} د.ل <span style="color:#4ade80;font-size:13px;">(وفر ${((prod.price||0)-finalPrice).toFixed(3)})</span>`; } else { badge.innerHTML = ''; oldPrice.classList.add('hidden'); document.getElementById('dPrice').innerText = finalPrice.toFixed(3) + ' د.ل'; } document.getElementById('targetInput').value = ''; document.getElementById('detailModal').classList.remove('hidden'); }
         function closeDetailModal() { document.getElementById('detailModal').classList.add('hidden'); }
 
-        async function confirmPurchase() {
-            if (!currentProduct) return;
-            const targetInput = document.getElementById('targetInput').value.trim();
-            const user = auth.currentUser;
-            if (!user) return alert('⚠️ سجل دخول أولاً');
-            
-            const discount = currentProduct.discount || 0;
-            const finalPrice = discount > 0 ? (currentProduct.price||0) - ((currentProduct.price||0)*discount/100) : (currentProduct.price||0);
-            
-            if (currentProduct.type !== 'none' && !targetInput) return alert('⚠️ أدخل البيانات المطلوبة');
-            if (userBalance < finalPrice) return alert('⚠️ رصيد غير كافٍ');
-            
-            const newBalance = userBalance - finalPrice;
-            try {
-                await db.collection("users").doc(user.uid).update({ wallet_balance: newBalance });
-                await db.collection("orders").add({
-                    user_id: user.uid, service_id: currentProduct.service_id,
-                    service_title: currentProduct.title, quantity: 1,
-                    total_price: finalPrice, target_input: targetInput || 'مباشر',
-                    status: 'pending', ordered_at: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                closeDetailModal();
-                alert('🎉 تم الطلب بنجاح!\n' + currentProduct.title + '\n' + finalPrice.toFixed(3) + ' د.ل');
-            } catch (e) { alert('❌ خطأ: ' + e.message); }
-        }
+        async function confirmPurchase() { if (!currentProduct) return; const targetInput = document.getElementById('targetInput').value.trim(); const user = auth.currentUser; if (!user) return alert('⚠️ سجل دخول أولاً'); const discount = currentProduct.discount || 0; const finalPrice = discount > 0 ? (currentProduct.price||0) - ((currentProduct.price||0)*discount/100) : (currentProduct.price||0); if (currentProduct.type !== 'none' && !targetInput) return alert('⚠️ أدخل البيانات المطلوبة'); if (userBalance < finalPrice) return alert('⚠️ رصيد غير كافٍ'); const newBalance = userBalance - finalPrice; try { await db.collection("users").doc(user.uid).update({ wallet_balance: newBalance }); await db.collection("orders").add({ user_id: user.uid, service_id: currentProduct.service_id, service_title: currentProduct.title, quantity: 1, total_price: finalPrice, target_input: targetInput || 'مباشر', status: 'pending', ordered_at: firebase.firestore.FieldValue.serverTimestamp() }); closeDetailModal(); alert('🎉 تم الطلب بنجاح!\n' + currentProduct.title + '\n' + finalPrice.toFixed(3) + ' د.ل'); } catch (e) { alert('❌ خطأ: ' + e.message); } }
     </script>
 </body>
 </html>
