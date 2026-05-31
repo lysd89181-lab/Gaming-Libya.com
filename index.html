@@ -145,19 +145,39 @@
             width: 100%; padding: 12px; background: var(--red); color: #fff;
             border: none; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 13px;
         }
-        .dropdown { position: relative; display: inline-block; width: 100%; }
-        .dropdown-content {
-            display: none; position: absolute; background: #1a1a1a;
-            width: 100%; border: var(--border-gold); border-radius: 12px;
-            box-shadow: var(--neon-gold); z-index: 10; left: 0; top: 100%;
+        
+        /* أزرار طرق الدفع */
+        .payment-methods-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
         }
-        .dropdown-content a {
-            color: var(--white); padding: 10px 14px; text-decoration: none;
-            display: block; font-size: 11px; border-bottom: 1px solid rgba(245,166,35,0.1);
+        .payment-method-btn {
+            background: rgba(245,166,35,0.1);
+            border: 1px solid rgba(245,166,35,0.3);
+            border-radius: 12px;
+            padding: 10px 6px;
+            text-align: center;
             cursor: pointer;
+            transition: all 0.3s;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--white);
         }
-        .dropdown-content a:hover { background: rgba(245,166,35,0.1); color: var(--gold); }
-        .dropdown:hover .dropdown-content { display: block; }
+        .payment-method-btn.active {
+            background: linear-gradient(135deg, #b8860b, var(--gold));
+            color: #000;
+            border-color: var(--gold);
+            box-shadow: var(--neon-gold);
+        }
+        .payment-method-btn:hover {
+            border-color: var(--gold);
+            background: rgba(245,166,35,0.2);
+        }
+        .payment-method-btn .icon {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 999;
             display: flex; align-items: center; justify-content: center; padding: 12px;
@@ -223,7 +243,7 @@
             color: var(--gold);
             text-align: center;
         }
-        @media (min-width: 768px) { .cats-grid { grid-template-columns: repeat(3, 1fr); } .prods-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 768px) { .cats-grid { grid-template-columns: repeat(3, 1fr); } .prods-grid { grid-template-columns: repeat(3, 1fr); } .payment-methods-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (min-width: 1024px) { .cats-grid { grid-template-columns: repeat(4, 1fr); } .prods-grid { grid-template-columns: repeat(4, 1fr); } }
     </style>
 </head>
@@ -249,7 +269,7 @@
                 <div class="section-title" id="productsTitle"></div>
                 <div class="prods-grid" id="prodsGrid"></div>
             </div>
-            <div style="display:flex;gap:10px;margin-top:20px;justify-content:center;">
+            <div style="display:flex;gap:10px;margin-top:20px;justify-content:center;flex-wrap:wrap;">
                 <a href="https://wa.me/218925877382" target="_blank" style="background:#25D366;color:#fff;padding:10px 20px;border-radius:25px;text-decoration:none;font-weight:700;font-size:12px;">💬 واتساب</a>
                 <a href="https://t.me/m0a21_a" target="_blank" style="background:#0088cc;color:#fff;padding:10px 20px;border-radius:25px;text-decoration:none;font-weight:700;font-size:12px;">✈️ تيليجرام</a>
             </div>
@@ -259,37 +279,141 @@
     <div id="walletPage" class="page hidden">
         <div class="container" style="margin-top:10px;">
             <div class="section-title">💰 المحفظة وشحن الرصيد</div>
-            <div class="wallet-card" style="text-align:center;"><div style="font-size:12px;color:var(--muted);">رصيدك الحالي</div><div class="big-number"><span id="walletBalance">0.000</span> د.ل</div></div>
-            <div class="wallet-card"><h3 style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--gold);">💳 اختر طريقة الدفع</h3><div class="dropdown"><button style="background:var(--card-bg);border:var(--border-gold);color:var(--gold);padding:10px 20px;border-radius:12px;cursor:pointer;font-weight:700;font-size:13px;width:100%;box-shadow:var(--neon-gold);">📋 اختر طريقة التحويل ▼</button><div class="dropdown-content"><a onclick="showPaymentSection('libyana')" style="font-weight:700;color:var(--gold);">📞 ليبيانا ومدار (تحويل)</a><a onclick="showPaymentSection('cards')" style="font-weight:700;color:var(--gold);">💳 كروت التعبئة</a><a onclick="showPaymentSection('crypto')" style="font-weight:700;color:var(--gold);">₿ بايننس وبايبت</a></div></div></div>
-            <div id="paymentLibyana" class="wallet-card hidden"><h3 style="color:var(--gold);margin-bottom:8px;">📞 تحويل ليبيانا ومدار</h3><div class="bank-row"><div><span style="color:var(--muted);">ليبيانا</span></div><div class="num">0942119641</div></div><button class="copy-btn" onclick="copyText('0942119641')" style="width:100%;margin-bottom:4px;">📋 نسخ</button><div class="bank-row"><div><span style="color:var(--muted);">مدار</span></div><div class="num">0915634775</div></div><button class="copy-btn" onclick="copyText('0915634775')" style="width:100%;margin-bottom:10px;">📋 نسخ</button><p style="font-size:11px;color:var(--muted);margin-bottom:8px;">بعد التحويل، أدخل رقم هاتفك والمبلغ</p><input type="text" id="phone_libyana" class="notify-input" placeholder="رقم الهاتف" dir="ltr"><input type="number" id="amount_libyana" class="notify-input" placeholder="المبلغ (د.ل)" dir="ltr"><button class="notify-btn" onclick="submitTransfer('Libyana/Madar')">✅ تأكيد</button></div>
-            <div id="paymentCards" class="wallet-card hidden"><h3 style="color:var(--gold);margin-bottom:8px;">💳 كروت التعبئة</h3><select id="depositProvider" class="notify-input" style="text-align:right;direction:rtl;"><option value="Libyana">ليبيانا</option><option value="Madar">مدار</option></select><input type="text" id="depositCardCode" class="notify-input" placeholder="رقم الكرت" dir="ltr"><input type="number" id="depositAmount" class="notify-input" placeholder="قيمة الكرت" dir="ltr"><button class="notify-btn" onclick="submitDeposit()">✅ إرسال</button></div>
-            <div id="paymentCrypto" class="wallet-card hidden"><h3 style="color:var(--gold);margin-bottom:8px;">₿ عملات رقمية</h3><div class="bank-row"><div><span style="color:var(--muted);">بايننس</span></div><div class="num">1132499294</div></div><button class="copy-btn" onclick="copyText('1132499294')" style="width:100%;margin-bottom:4px;">📋 نسخ</button><div class="bank-row"><div><span style="color:var(--muted);">بايبت</span></div><div class="num">563391734</div></div><button class="copy-btn" onclick="copyText('563391734')" style="width:100%;margin-bottom:10px;">📋 نسخ</button><div class="note-box">💡 1 دولار = 12 دينار</div><input type="text" id="crypto_id" class="notify-input" placeholder="المعرف (ID)" dir="ltr"><input type="number" id="crypto_amount" class="notify-input" placeholder="المبلغ ($)" dir="ltr"><button class="notify-btn" onclick="submitCryptoTransfer()">✅ تأكيد</button></div>
-            <div class="wallet-card"><h3 style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--gold);">📋 طريقة الشحن</h3><ol style="font-size:11px;color:var(--muted);padding-right:16px;line-height:2.2;"><li>اختر طريقة الدفع من القائمة أعلاه</li><li>انسخ الرقم وحول المبلغ</li><li>أدخل بياناتك والمبلغ</li><li>اضغط تأكيد - سيتم شحن رصيدك خلال دقائق</li></ol></div>
+            <div class="wallet-card" style="text-align:center;">
+                <div style="font-size:12px;color:var(--muted);">رصيدك الحالي</div>
+                <div class="big-number"><span id="walletBalance">0.000</span> د.ل</div>
+            </div>
+            
+            <!-- أزرار طرق الدفع - جنب بعض -->
+            <div class="wallet-card">
+                <h3 style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--gold);text-align:center;">💳 اختر طريقة الدفع</h3>
+                <div class="payment-methods-grid">
+                    <div class="payment-method-btn active" onclick="switchPaymentMethod('libyana', this)">
+                        <span class="icon">📞</span>
+                        تحويل
+                    </div>
+                    <div class="payment-method-btn" onclick="switchPaymentMethod('cards', this)">
+                        <span class="icon">💳</span>
+                        كروت تعبئة
+                    </div>
+                    <div class="payment-method-btn" onclick="switchPaymentMethod('crypto', this)">
+                        <span class="icon">₿</span>
+                        عملات رقمية
+                    </div>
+                </div>
+            </div>
+            
+            <!-- قسم التحويل -->
+            <div id="paymentLibyana" class="wallet-card">
+                <h3 style="color:var(--gold);margin-bottom:8px;">📞 تحويل ليبيانا ومدار</h3>
+                <div class="bank-row">
+                    <div><span style="color:var(--muted);">ليبيانا</span></div>
+                    <div class="num">0942119641</div>
+                </div>
+                <button class="copy-btn" onclick="copyText('0942119641')" style="width:100%;margin-bottom:4px;">📋 نسخ</button>
+                <div class="bank-row">
+                    <div><span style="color:var(--muted);">مدار</span></div>
+                    <div class="num">0915634775</div>
+                </div>
+                <button class="copy-btn" onclick="copyText('0915634775')" style="width:100%;margin-bottom:10px;">📋 نسخ</button>
+                <p style="font-size:11px;color:var(--muted);margin-bottom:8px;">بعد التحويل، أدخل رقم هاتفك والمبلغ</p>
+                <input type="text" id="phone_libyana" class="notify-input" placeholder="رقم الهاتف" dir="ltr">
+                <input type="number" id="amount_libyana" class="notify-input" placeholder="المبلغ (د.ل)" dir="ltr">
+                <button class="notify-btn" onclick="submitTransfer('Libyana/Madar')">✅ تأكيد</button>
+            </div>
+            
+            <!-- قسم كروت التعبئة -->
+            <div id="paymentCards" class="wallet-card hidden">
+                <h3 style="color:var(--gold);margin-bottom:8px;">💳 كروت التعبئة</h3>
+                <select id="depositProvider" class="notify-input" style="text-align:right;direction:rtl;">
+                    <option value="Libyana">ليبيانا</option>
+                    <option value="Madar">مدار</option>
+                </select>
+                <input type="text" id="depositCardCode" class="notify-input" placeholder="رقم الكرت" dir="ltr">
+                <input type="number" id="depositAmount" class="notify-input" placeholder="قيمة الكرت" dir="ltr">
+                <button class="notify-btn" onclick="submitDeposit()">✅ إرسال</button>
+            </div>
+            
+            <!-- قسم العملات الرقمية -->
+            <div id="paymentCrypto" class="wallet-card hidden">
+                <h3 style="color:var(--gold);margin-bottom:8px;">₿ عملات رقمية</h3>
+                <div class="bank-row">
+                    <div><span style="color:var(--muted);">بايننس</span></div>
+                    <div class="num">1132499294</div>
+                </div>
+                <button class="copy-btn" onclick="copyText('1132499294')" style="width:100%;margin-bottom:4px;">📋 نسخ</button>
+                <div class="bank-row">
+                    <div><span style="color:var(--muted);">بايبت</span></div>
+                    <div class="num">563391734</div>
+                </div>
+                <button class="copy-btn" onclick="copyText('563391734')" style="width:100%;margin-bottom:10px;">📋 نسخ</button>
+                <div class="note-box">💡 1 دولار = 12 دينار</div>
+                <input type="text" id="crypto_id" class="notify-input" placeholder="المعرف (ID)" dir="ltr">
+                <input type="number" id="crypto_amount" class="notify-input" placeholder="المبلغ ($)" dir="ltr">
+                <button class="notify-btn" onclick="submitCryptoTransfer()">✅ تأكيد</button>
+            </div>
+            
+            <div class="wallet-card">
+                <h3 style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--gold);">📋 طريقة الشحن</h3>
+                <ol style="font-size:11px;color:var(--muted);padding-right:16px;line-height:2.2;">
+                    <li>اختر طريقة الدفع من الأعلى</li>
+                    <li>انسخ الرقم وحول المبلغ</li>
+                    <li>أدخل بياناتك والمبلغ</li>
+                    <li>اضغط تأكيد - سيتم شحن رصيدك خلال دقائق</li>
+                </ol>
+            </div>
         </div>
     </div>
 
     <div id="accountPage" class="page hidden">
         <div class="container" style="margin-top:10px;">
             <div class="section-title">👤 حسابي</div>
-            <div class="wallet-card" style="text-align:center;"><div style="width:55px;height:55px;background:rgba(245,166,35,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:28px;border:var(--border-gold);">👤</div><div style="font-size:16px;font-weight:700;" id="accName">---</div><div style="font-size:11px;color:var(--muted);" id="accEmail">---</div></div>
-            <div class="wallet-card"><div class="info-row"><span>الاسم</span><span id="accName2" style="font-weight:700;">---</span></div><div class="info-row"><span>الإيميل</span><span id="accEmail2" style="font-weight:700;font-size:11px;">---</span></div><div class="info-row"><span>الهاتف</span><span id="accPhone" style="font-weight:700;">---</span></div><div class="info-row"><span>الرصيد</span><span id="accBalance" style="font-weight:700;color:var(--gold);">0.000 د.ل</span></div></div>
+            <div class="wallet-card" style="text-align:center;">
+                <div style="width:55px;height:55px;background:rgba(245,166,35,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:28px;border:var(--border-gold);">👤</div>
+                <div style="font-size:16px;font-weight:700;" id="accName">---</div>
+                <div style="font-size:11px;color:var(--muted);" id="accEmail">---</div>
+            </div>
+            <div class="wallet-card">
+                <div class="info-row"><span>الاسم</span><span id="accName2" style="font-weight:700;">---</span></div>
+                <div class="info-row"><span>الإيميل</span><span id="accEmail2" style="font-weight:700;font-size:11px;">---</span></div>
+                <div class="info-row"><span>الهاتف</span><span id="accPhone" style="font-weight:700;">---</span></div>
+                <div class="info-row"><span>الرصيد</span><span id="accBalance" style="font-weight:700;color:var(--gold);">0.000 د.ل</span></div>
+            </div>
             <button class="btn-red" onclick="logout()">🚪 تسجيل الخروج</button>
         </div>
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item active" data-tab="home" onclick="switchTab('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>الرئيسية</div>
-        <div class="nav-item" data-tab="wallet" onclick="switchTab('wallet')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3"/></svg>المحفظة</div>
-        <div class="nav-item" data-tab="account" onclick="switchTab('account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>حسابي</div>
+        <div class="nav-item active" data-tab="home" onclick="switchTab('home')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+            الرئيسية
+        </div>
+        <div class="nav-item" data-tab="wallet" onclick="switchTab('wallet')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3"/></svg>
+            المحفظة
+        </div>
+        <div class="nav-item" data-tab="account" onclick="switchTab('account')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            حسابي
+        </div>
     </div>
 
     <div id="detailModal" class="modal-overlay hidden" onclick="closeDetailModal()">
         <div class="modal" onclick="event.stopPropagation()">
             <button class="close" onclick="closeDetailModal()">✕</button>
-            <img id="dImg" src="" alt=""><h3 id="dName"></h3>
+            <img id="dImg" src="" alt="">
+            <h3 id="dName"></h3>
             <div id="dDiscountBadge" style="text-align:center;"></div>
-            <div class="old-price-big hidden" id="dOldPrice"></div><div class="price" id="dPrice"></div>
-            <div class="rules"><h5>⚠️ الشروط</h5><ul><li>المنتج <b style="color:#f87171">غير قابل للاسترداد</b></li><li>تأكد من <b style="color:#fff">صحة البيانات</b></li><li>التعويض خلال <b style="color:#fff">24 ساعة</b></li></ul></div>
+            <div class="old-price-big hidden" id="dOldPrice"></div>
+            <div class="price" id="dPrice"></div>
+            <div class="rules">
+                <h5>⚠️ الشروط</h5>
+                <ul>
+                    <li>المنتج <b style="color:#f87171">غير قابل للاسترداد</b></li>
+                    <li>تأكد من <b style="color:#fff">صحة البيانات</b></li>
+                    <li>التعويض خلال <b style="color:#fff">24 ساعة</b></li>
+                </ul>
+            </div>
             <input type="text" id="targetInput" placeholder="معرف اللاعب (ID)" dir="ltr">
             <button class="buy-btn" onclick="confirmPurchase()">✅ تأكيد الشراء</button>
         </div>
@@ -300,7 +424,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // ========== إعدادات مشروع زاد الرسمية ==========
+        // ==================== إعدادات مشروع زاد الرسمية ====================
         const firebaseConfig = {
             apiKey: "AIzaSyAJgwaMBo5wxM5BEK9nRrrNg04UGdHyAV0",
             authDomain: "zad1-85d66.firebaseapp.com",
@@ -313,13 +437,13 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        const BASE_IMAGE_URL = "https://raw.githubusercontent.com/mediaplusly/assets/main/";
         let allCategories = [];
         let allProducts = [];
         let userData = null;
         let userBalance = 0;
         let currentProduct = null;
 
+        // ==================== التنقل بين الصفحات ====================
         function switchTab(tab) { 
             document.querySelectorAll('.page').forEach(p => p.classList.add('hidden')); 
             document.getElementById(tab + 'Page').classList.remove('hidden'); 
@@ -328,12 +452,22 @@
             if (navItem) navItem.classList.add('active'); 
         }
         
-        function showPaymentSection(type) { 
-            document.querySelectorAll('[id^="payment"]').forEach(el => el.classList.add('hidden')); 
-            const map = { libyana: 'paymentLibyana', cards: 'paymentCards', crypto: 'paymentCrypto' }; 
-            if (map[type]) document.getElementById(map[type]).classList.remove('hidden'); 
+        function switchPaymentMethod(type, btn) {
+            // إخفاء جميع أقسام الدفع
+            document.getElementById('paymentLibyana').classList.add('hidden');
+            document.getElementById('paymentCards').classList.add('hidden');
+            document.getElementById('paymentCrypto').classList.add('hidden');
+            
+            // إظهار القسم المحدد
+            const map = { libyana: 'paymentLibyana', cards: 'paymentCards', crypto: 'paymentCrypto' };
+            if (map[type]) document.getElementById(map[type]).classList.remove('hidden');
+            
+            // تحديث الأزرار النشطة
+            document.querySelectorAll('.payment-method-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
         }
 
+        // ==================== المصادقة والمستخدم ====================
         auth.onAuthStateChanged(user => { 
             if (!user) { 
                 window.location.href = 'long.html'; 
@@ -354,8 +488,8 @@
             document.getElementById('walletBalance').innerText = userBalance.toFixed(3); 
             document.getElementById('accBalance').innerText = userBalance.toFixed(3) + ' د.ل'; 
             if (userData) { 
-                document.getElementById('accName').innerText = userData.name || '---'; 
-                document.getElementById('accName2').innerText = userData.name || '---'; 
+                document.getElementById('accName').innerText = userData.name || userData.username || '---'; 
+                document.getElementById('accName2').innerText = userData.name || userData.username || '---'; 
                 document.getElementById('accEmail').innerText = userData.email || '---'; 
                 document.getElementById('accEmail2').innerText = userData.email || '---'; 
                 document.getElementById('accPhone').innerText = userData.phone || '---'; 
@@ -375,112 +509,42 @@
         function getImageUrl(img) { 
             if (!img) return ''; 
             if (img.startsWith('http')) return img; 
-            return BASE_IMAGE_URL + img; 
+            return img; 
         }
 
-        // ========== نظام الإيداع الموحد ==========
-        async function submitTransfer(provider) { 
-            const phone = document.getElementById('phone_libyana').value.trim(); 
-            const amount = document.getElementById('amount_libyana').value.trim(); 
-            if (!phone) return alert('⚠️ أدخل رقم هاتفك'); 
-            if (!amount) return alert('⚠️ أدخل المبلغ'); 
-            try { 
-                await db.collection("deposits").add({ 
-                    userId: auth.currentUser.uid, 
-                    userName: userData?.name || '', 
-                    userPhone: phone, 
-                    provider: provider, 
-                    amount: parseFloat(amount), 
-                    status: "pending", 
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp() 
-                }); 
-                alert('✅ تم الإرسال!'); 
-                document.getElementById('phone_libyana').value = ''; 
-                document.getElementById('amount_libyana').value = ''; 
-            } catch (e) { 
-                alert('❌ خطأ: ' + e.message); 
-            } 
-        }
-        
-        async function submitDeposit() { 
-            const provider = document.getElementById('depositProvider').value; 
-            const cardCode = document.getElementById('depositCardCode').value.trim(); 
-            const amount = document.getElementById('depositAmount').value.trim(); 
-            if (!cardCode) return alert('⚠️ أدخل رقم الكرت'); 
-            if (!amount) return alert('⚠️ أدخل قيمة الكرت'); 
-            try { 
-                await db.collection("deposits").add({ 
-                    userId: auth.currentUser.uid, 
-                    userName: userData?.name || '', 
-                    provider: provider, 
-                    card_code: cardCode, 
-                    amount: parseFloat(amount), 
-                    status: "pending", 
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp() 
-                }); 
-                alert('✅ تم الإرسال!'); 
-                document.getElementById('depositCardCode').value = ''; 
-                document.getElementById('depositAmount').value = ''; 
-            } catch (e) { 
-                alert('❌ خطأ: ' + e.message); 
-            } 
-        }
-        
-        async function submitCryptoTransfer() { 
-            const cryptoId = document.getElementById('crypto_id').value.trim(); 
-            const amount = document.getElementById('crypto_amount').value.trim(); 
-            if (!cryptoId) return alert('⚠️ أدخل المعرف'); 
-            if (!amount) return alert('⚠️ أدخل المبلغ بالدولار'); 
-            const amountLYD = parseFloat(amount) * 12; 
-            try { 
-                await db.collection("deposits").add({ 
-                    userId: auth.currentUser.uid, 
-                    userName: userData?.name || '', 
-                    provider: 'Crypto', 
-                    card_code: cryptoId, 
-                    amount: amountLYD, 
-                    crypto_amount: parseFloat(amount), 
-                    status: "pending", 
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp() 
-                }); 
-                alert('✅ تم الإرسال!'); 
-                document.getElementById('crypto_id').value = ''; 
-                document.getElementById('crypto_amount').value = ''; 
-            } catch (e) { 
-                alert('❌ خطأ: ' + e.message); 
-            } 
-        }
-
-        // ========== تحميل الخدمات والأقسام ==========
+        // ==================== تحميل البيانات ====================
         function loadAllData() { 
-            db.collection("services").get().then(snap => { 
-                const catsMap = {}; 
-                allProducts = []; 
-                snap.forEach(doc => { 
-                    const s = doc.data(); 
-                    s.service_id = doc.id; 
-                    allProducts.push(s); 
-                    if (!catsMap[s.category]) { 
-                        catsMap[s.category] = { 
-                            id: s.category, 
-                            name: s.category, 
-                            image: s.categoryImage || '' 
-                        }; 
-                    } 
-                }); 
-                allCategories = Object.values(catsMap); 
-                renderCategories(); 
-            }); 
+            // جلب الأقسام من مجموعة categories
+            db.collection("categories").get().then(catsSnap => {
+                allCategories = [];
+                catsSnap.forEach(doc => {
+                    const c = doc.data();
+                    c.id = doc.id;
+                    allCategories.push(c);
+                });
+                
+                // جلب الخدمات من مجموعة services
+                db.collection("services").get().then(servicesSnap => {
+                    allProducts = [];
+                    servicesSnap.forEach(doc => {
+                        const s = doc.data();
+                        s.service_id = doc.id;
+                        allProducts.push(s);
+                    });
+                    
+                    renderCategories();
+                });
+            });
         }
         
         function renderCategories() { 
             const grid = document.getElementById('catsGrid'); 
             if (!allCategories.length) { 
-                grid.innerHTML = '<div class="loading">لا توجد أقسام</div>'; 
+                grid.innerHTML = '<div class="loading">لا توجد أقسام متاحة حالياً</div>'; 
                 return; 
             } 
             grid.innerHTML = allCategories.map(cat => { 
-                const img = getImageUrl(cat.image); 
+                const img = getImageUrl(cat.image || cat.cover); 
                 return `<div class="cat-card" onclick="openCategory('${cat.id}', '${cat.name}')">
                     ${img ? `<img src="${img}" loading="lazy" onerror="this.style.display='none'">` : `<div style="font-size:35px;">📂</div>`}
                     <h3>${cat.name}</h3>
@@ -497,7 +561,7 @@
             const prods = allProducts.filter(p => p.category === catId && p.status !== false); 
             const grid = document.getElementById('prodsGrid'); 
             if (!prods.length) { 
-                grid.innerHTML = '<div class="loading">لا توجد خدمات</div>'; 
+                grid.innerHTML = '<div class="loading">لا توجد خدمات في هذا القسم</div>'; 
                 return; 
             } 
             grid.innerHTML = prods.map(p => { 
@@ -572,6 +636,79 @@
                 }); 
                 closeDetailModal(); 
                 alert(`🎉 تم الطلب بنجاح!\n${currentProduct.title}\n${finalPrice.toFixed(3)} د.ل`); 
+            } catch (e) { 
+                alert('❌ خطأ: ' + e.message); 
+            } 
+        }
+
+        // ==================== الإيداع والشحن ====================
+        async function submitTransfer(provider) { 
+            const phone = document.getElementById('phone_libyana').value.trim(); 
+            const amount = document.getElementById('amount_libyana').value.trim(); 
+            if (!phone) return alert('⚠️ أدخل رقم هاتفك'); 
+            if (!amount) return alert('⚠️ أدخل المبلغ'); 
+            try { 
+                await db.collection("deposits").add({ 
+                    userId: auth.currentUser.uid, 
+                    userName: userData?.name || '', 
+                    userPhone: phone, 
+                    provider: provider, 
+                    amount: parseFloat(amount), 
+                    status: "pending", 
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp() 
+                }); 
+                alert('✅ تم إرسال طلب الشحن بنجاح!'); 
+                document.getElementById('phone_libyana').value = ''; 
+                document.getElementById('amount_libyana').value = ''; 
+            } catch (e) { 
+                alert('❌ خطأ: ' + e.message); 
+            } 
+        }
+        
+        async function submitDeposit() { 
+            const provider = document.getElementById('depositProvider').value; 
+            const cardCode = document.getElementById('depositCardCode').value.trim(); 
+            const amount = document.getElementById('depositAmount').value.trim(); 
+            if (!cardCode) return alert('⚠️ أدخل رقم الكرت'); 
+            if (!amount) return alert('⚠️ أدخل قيمة الكرت'); 
+            try { 
+                await db.collection("deposits").add({ 
+                    userId: auth.currentUser.uid, 
+                    userName: userData?.name || '', 
+                    provider: provider, 
+                    card_code: cardCode, 
+                    amount: parseFloat(amount), 
+                    status: "pending", 
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp() 
+                }); 
+                alert('✅ تم إرسال الكرت بنجاح!'); 
+                document.getElementById('depositCardCode').value = ''; 
+                document.getElementById('depositAmount').value = ''; 
+            } catch (e) { 
+                alert('❌ خطأ: ' + e.message); 
+            } 
+        }
+        
+        async function submitCryptoTransfer() { 
+            const cryptoId = document.getElementById('crypto_id').value.trim(); 
+            const amount = document.getElementById('crypto_amount').value.trim(); 
+            if (!cryptoId) return alert('⚠️ أدخل المعرف'); 
+            if (!amount) return alert('⚠️ أدخل المبلغ بالدولار'); 
+            const amountLYD = parseFloat(amount) * 12; 
+            try { 
+                await db.collection("deposits").add({ 
+                    userId: auth.currentUser.uid, 
+                    userName: userData?.name || '', 
+                    provider: 'Crypto', 
+                    card_code: cryptoId, 
+                    amount: amountLYD, 
+                    crypto_amount: parseFloat(amount), 
+                    status: "pending", 
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp() 
+                }); 
+                alert('✅ تم إرسال طلب الشحن بنجاح!'); 
+                document.getElementById('crypto_id').value = ''; 
+                document.getElementById('crypto_amount').value = ''; 
             } catch (e) { 
                 alert('❌ خطأ: ' + e.message); 
             } 
