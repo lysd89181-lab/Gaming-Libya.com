@@ -346,18 +346,12 @@
                 </div>
             </div>
             
-            <!-- ✅ قسم التحويل - أرقام جديدة -->
+            <!-- قسم التحويل -->
             <div id="paymentLibyana" class="wallet-card">
                 <h3 style="color:var(--gold);margin-bottom:8px;">📞 تحويل ليبيانا ومدار</h3>
-                <div class="bank-row">
-                    <div><span style="color:var(--muted);">ليبيانا</span></div>
-                    <div class="num">0946730213</div>
-                </div>
+                <div class="bank-row"><div><span style="color:var(--muted);">ليبيانا</span></div><div class="num">0946730213</div></div>
                 <button class="copy-btn" onclick="copyText('0946730213')" style="width:100%;margin-bottom:4px;">📋 نسخ</button>
-                <div class="bank-row">
-                    <div><span style="color:var(--muted);">مدار</span></div>
-                    <div class="num">0915307725</div>
-                </div>
+                <div class="bank-row"><div><span style="color:var(--muted);">مدار</span></div><div class="num">0915307725</div></div>
                 <button class="copy-btn" onclick="copyText('0915307725')" style="width:100%;margin-bottom:10px;">📋 نسخ</button>
                 <p style="font-size:11px;color:var(--muted);margin-bottom:8px;">بعد التحويل، أدخل رقم هاتفك والمبلغ</p>
                 <input type="text" id="phone_libyana" class="notify-input" placeholder="رقم الهاتف" dir="ltr">
@@ -373,18 +367,12 @@
                 <button class="notify-btn" onclick="submitDeposit()">✅ إرسال</button>
             </div>
             
-            <!-- ✅ قسم العملات الرقمية - أرقام جديدة -->
+            <!-- قسم العملات الرقمية -->
             <div id="paymentCrypto" class="wallet-card hidden">
                 <h3 style="color:var(--gold);margin-bottom:8px;">₿ عملات رقمية</h3>
-                <div class="bank-row">
-                    <div><span style="color:var(--muted);">بايننس</span></div>
-                    <div class="num">1132499294</div>
-                </div>
+                <div class="bank-row"><div><span style="color:var(--muted);">بايننس</span></div><div class="num">1132499294</div></div>
                 <button class="copy-btn" onclick="copyText('1132499294')" style="width:100%;margin-bottom:4px;">📋 نسخ</button>
-                <div class="bank-row">
-                    <div><span style="color:var(--muted);">بايبت</span></div>
-                    <div class="num">450397558</div>
-                </div>
+                <div class="bank-row"><div><span style="color:var(--muted);">بايبت</span></div><div class="num">450397558</div></div>
                 <button class="copy-btn" onclick="copyText('450397558')" style="width:100%;margin-bottom:10px;">📋 نسخ</button>
                 <div class="note-box">💡 1 دولار = 12 دينار</div>
                 <input type="text" id="crypto_id" class="notify-input" placeholder="المعرف (ID)" dir="ltr">
@@ -428,7 +416,7 @@
         <div class="nav-item" data-tab="account" onclick="switchTab('account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>حسابي</div>
     </div>
 
-    <!-- مودال الشراء مع رقم التواصل -->
+    <!-- مودال الشراء مع جميع أنواع الإدخال -->
     <div id="detailModal" class="modal-overlay hidden" onclick="closeDetailModal()">
         <div class="modal" onclick="event.stopPropagation()">
             <button class="close" onclick="closeDetailModal()">✕</button>
@@ -437,6 +425,7 @@
             <div id="dDiscountBadge" style="text-align:center;"></div>
             <div class="old-price-big hidden" id="dOldPrice"></div>
             <div class="price" id="dPrice"></div>
+            <div id="dTypeInfo" style="text-align:center;font-size:11px;color:var(--muted);margin-bottom:6px;"></div>
             <div class="rules">
                 <h5>⚠️ الشروط</h5>
                 <ul>
@@ -445,7 +434,13 @@
                     <li>التعويض خلال <b style="color:#fff">24 ساعة</b></li>
                 </ul>
             </div>
-            <input type="text" id="targetInput" placeholder="معرف اللاعب (ID)" dir="ltr">
+            <!-- ✅ حقل ID اللاعب -->
+            <input type="text" id="targetInput" placeholder="🎮 معرف اللاعب (ID)" dir="ltr">
+            <!-- ✅ حقل رقم الهاتف -->
+            <input type="text" id="phoneInput" placeholder="📞 رقم الهاتف" dir="ltr">
+            <!-- ✅ حقل رابط الحساب (جديد) -->
+            <input type="text" id="accountLinkInput" placeholder="🔗 رابط الحساب (للشحن عن طريق الرابط)" dir="ltr">
+            <!-- ✅ حقل رقم التواصل -->
             <input type="text" id="contactPhone" placeholder="📞 رقم التواصل (للتواصل معك)" dir="ltr">
             <button class="buy-btn" onclick="confirmPurchase()">✅ تأكيد الشراء</button>
         </div>
@@ -588,7 +583,29 @@
                 oldPrice.classList.add('hidden'); 
                 document.getElementById('dPrice').innerText = finalPrice.toFixed(3) + ' د.ل'; 
             } 
-            document.getElementById('targetInput').value = ''; 
+            
+            // ✅ إظهار/إخفاء الحقول حسب نوع الخدمة
+            const type = prod.type || 'id';
+            document.getElementById('targetInput').classList.add('hidden');
+            document.getElementById('phoneInput').classList.add('hidden');
+            document.getElementById('accountLinkInput').classList.add('hidden');
+            
+            if (type === 'id') {
+                document.getElementById('targetInput').classList.remove('hidden');
+                document.getElementById('targetInput').placeholder = '🎮 معرف اللاعب (ID)';
+                document.getElementById('dTypeInfo').innerText = '📝 النوع: يتطلب ID اللاعب';
+            } else if (type === 'phone') {
+                document.getElementById('phoneInput').classList.remove('hidden');
+                document.getElementById('phoneInput').placeholder = '📞 رقم الهاتف';
+                document.getElementById('dTypeInfo').innerText = '📝 النوع: يتطلب رقم الهاتف';
+            } else if (type === 'account') {
+                document.getElementById('accountLinkInput').classList.remove('hidden');
+                document.getElementById('accountLinkInput').placeholder = '🔗 رابط الحساب (للشحن عن طريق الرابط)';
+                document.getElementById('dTypeInfo').innerText = '📝 النوع: يتطلب رابط الحساب';
+            } else if (type === 'none') {
+                document.getElementById('dTypeInfo').innerText = '📝 النوع: مباشر (بدون إدخال)';
+            }
+            
             document.getElementById('contactPhone').value = ''; 
             document.getElementById('detailModal').classList.remove('hidden'); 
         }
@@ -597,23 +614,40 @@
         
         async function confirmPurchase() { 
             if (!currentProduct) return; 
+            const type = currentProduct.type || 'id';
             const targetInput = document.getElementById('targetInput').value.trim(); 
+            const phoneInput = document.getElementById('phoneInput').value.trim(); 
+            const accountLink = document.getElementById('accountLinkInput').value.trim(); 
             const contactPhone = document.getElementById('contactPhone').value.trim(); 
             const user = auth.currentUser; 
             if (!user) return alert('⚠️ سجل دخول أولاً'); 
+            
+            // التحقق حسب النوع
+            if (type === 'id' && !targetInput) return alert('⚠️ أدخل معرف اللاعب (ID)');
+            if (type === 'phone' && !phoneInput) return alert('⚠️ أدخل رقم الهاتف');
+            if (type === 'account' && !accountLink) return alert('🔗 أدخل رابط الحساب');
+            if (!contactPhone) return alert('⚠️ أدخل رقم التواصل للتواصل معك'); 
+            
             const discount = currentProduct.discount || 0; 
             const finalPrice = discount > 0 ? (currentProduct.price||0) - ((currentProduct.price||0)*discount/100) : (currentProduct.price||0); 
-            if (currentProduct.type !== 'none' && !targetInput) return alert('⚠️ أدخل البيانات المطلوبة'); 
-            if (!contactPhone) return alert('⚠️ أدخل رقم التواصل للتواصل معك'); 
             if (userBalance < finalPrice) return alert('⚠️ رصيد غير كافٍ'); 
             const newBalance = userBalance - finalPrice; 
+            
+            // تحديد البيانات المرسلة
+            let orderData = '';
+            if (type === 'id') orderData = targetInput;
+            else if (type === 'phone') orderData = phoneInput;
+            else if (type === 'account') orderData = accountLink;
+            else orderData = 'مباشر';
+            
             try { 
                 await db.collection("users").doc(user.uid).update({ balance: newBalance }); 
                 await db.collection("orders").add({ 
                     userId: user.uid, 
                     userName: userData?.name || '', 
                     serviceTitle: currentProduct.title, 
-                    targetInput: targetInput || 'مباشر', 
+                    serviceType: type,
+                    targetInput: orderData, 
                     contactPhone: contactPhone, 
                     totalPrice: finalPrice, 
                     status: "pending", 
