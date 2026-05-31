@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>زاد للخدمات الإلكترونية</title>
+    <title>Gaming Libya</title>
     
-    <!-- ✅ Favicon / أيقونة الموقع -->
+    <!-- Favicon -->
     <link rel="icon" type="image/jpeg" href="zad.jpg">
     <link rel="shortcut icon" type="image/jpeg" href="zad.jpg">
     <link rel="apple-touch-icon" href="zad.jpg">
@@ -36,7 +36,6 @@
             -webkit-overflow-scrolling: touch;
         }
         
-        /* ✅ الشريط العلوي المعدل */
         .top-bar {
             background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(15px);
@@ -195,7 +194,6 @@
             border: none; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 13px;
         }
         
-        /* أزرار طرق الدفع */
         .payment-methods-grid {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
         }
@@ -298,7 +296,6 @@
 </head>
 <body>
 
-    <!-- ✅ الشريط العلوي المعدل بالكامل -->
     <div class="top-bar">
         <div class="top-bar-left">
             <img class="header-logo-img" src="zad.jpg" alt="زاد" onerror="this.style.display='none'">
@@ -340,72 +337,43 @@
                 <div style="font-size:12px;color:var(--muted);">رصيدك الحالي</div>
                 <div class="big-number"><span id="walletBalance">0.000</span> د.ل</div>
             </div>
-            
             <div class="wallet-card">
                 <h3 style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--gold);text-align:center;">💳 اختر طريقة الدفع</h3>
                 <div class="payment-methods-grid">
-                    <div class="payment-method-btn active" onclick="switchPaymentMethod('libyana', this)">
-                        <span class="icon">📞</span>
-                        تحويل
-                    </div>
-                    <div class="payment-method-btn" onclick="switchPaymentMethod('cards', this)">
-                        <span class="icon">💳</span>
-                        كروت تعبئة
-                    </div>
-                    <div class="payment-method-btn" onclick="switchPaymentMethod('crypto', this)">
-                        <span class="icon">₿</span>
-                        عملات رقمية
-                    </div>
+                    <div class="payment-method-btn active" onclick="switchPaymentMethod('libyana', this)"><span class="icon">📞</span>تحويل</div>
+                    <div class="payment-method-btn" onclick="switchPaymentMethod('cards', this)"><span class="icon">💳</span>كروت تعبئة</div>
+                    <div class="payment-method-btn" onclick="switchPaymentMethod('crypto', this)"><span class="icon">₿</span>عملات رقمية</div>
                 </div>
             </div>
-            
             <div id="paymentLibyana" class="wallet-card">
                 <h3 style="color:var(--gold);margin-bottom:8px;">📞 تحويل ليبيانا ومدار</h3>
-                <div class="bank-row">
-                    <div><span style="color:var(--muted);">ليبيانا</span></div>
-                    <div class="num">0942119641</div>
-                </div>
+                <div class="bank-row"><div><span style="color:var(--muted);">ليبيانا</span></div><div class="num">0942119641</div></div>
                 <button class="copy-btn" onclick="copyText('0942119641')" style="width:100%;margin-bottom:4px;">📋 نسخ</button>
-                <div class="bank-row">
-                    <div><span style="color:var(--muted);">مدار</span></div>
-                    <div class="num">0915634775</div>
-                </div>
+                <div class="bank-row"><div><span style="color:var(--muted);">مدار</span></div><div class="num">0915634775</div></div>
                 <button class="copy-btn" onclick="copyText('0915634775')" style="width:100%;margin-bottom:10px;">📋 نسخ</button>
                 <p style="font-size:11px;color:var(--muted);margin-bottom:8px;">بعد التحويل، أدخل رقم هاتفك والمبلغ</p>
                 <input type="text" id="phone_libyana" class="notify-input" placeholder="رقم الهاتف" dir="ltr">
                 <input type="number" id="amount_libyana" class="notify-input" placeholder="المبلغ (د.ل)" dir="ltr">
                 <button class="notify-btn" onclick="submitTransfer('Libyana/Madar')">✅ تأكيد</button>
             </div>
-            
             <div id="paymentCards" class="wallet-card hidden">
                 <h3 style="color:var(--gold);margin-bottom:8px;">💳 كروت التعبئة</h3>
-                <select id="depositProvider" class="notify-input" style="text-align:right;direction:rtl;">
-                    <option value="Libyana">ليبيانا</option>
-                    <option value="Madar">مدار</option>
-                </select>
+                <select id="depositProvider" class="notify-input" style="text-align:right;direction:rtl;"><option value="Libyana">ليبيانا</option><option value="Madar">مدار</option></select>
                 <input type="text" id="depositCardCode" class="notify-input" placeholder="رقم الكرت" dir="ltr">
                 <input type="number" id="depositAmount" class="notify-input" placeholder="قيمة الكرت" dir="ltr">
                 <button class="notify-btn" onclick="submitDeposit()">✅ إرسال</button>
             </div>
-            
             <div id="paymentCrypto" class="wallet-card hidden">
                 <h3 style="color:var(--gold);margin-bottom:8px;">₿ عملات رقمية</h3>
-                <div class="bank-row">
-                    <div><span style="color:var(--muted);">بايننس</span></div>
-                    <div class="num">1132499294</div>
-                </div>
+                <div class="bank-row"><div><span style="color:var(--muted);">بايننس</span></div><div class="num">1132499294</div></div>
                 <button class="copy-btn" onclick="copyText('1132499294')" style="width:100%;margin-bottom:4px;">📋 نسخ</button>
-                <div class="bank-row">
-                    <div><span style="color:var(--muted);">بايبت</span></div>
-                    <div class="num">563391734</div>
-                </div>
+                <div class="bank-row"><div><span style="color:var(--muted);">بايبت</span></div><div class="num">563391734</div></div>
                 <button class="copy-btn" onclick="copyText('563391734')" style="width:100%;margin-bottom:10px;">📋 نسخ</button>
                 <div class="note-box">💡 1 دولار = 12 دينار</div>
                 <input type="text" id="crypto_id" class="notify-input" placeholder="المعرف (ID)" dir="ltr">
                 <input type="number" id="crypto_amount" class="notify-input" placeholder="المبلغ ($)" dir="ltr">
                 <button class="notify-btn" onclick="submitCryptoTransfer()">✅ تأكيد</button>
             </div>
-            
             <div class="wallet-card">
                 <h3 style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--gold);">📋 طريقة الشحن</h3>
                 <ol style="font-size:11px;color:var(--muted);padding-right:16px;line-height:2.2;">
@@ -437,20 +405,12 @@
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item active" data-tab="home" onclick="switchTab('home')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-            الرئيسية
-        </div>
-        <div class="nav-item" data-tab="wallet" onclick="switchTab('wallet')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3"/></svg>
-            المحفظة
-        </div>
-        <div class="nav-item" data-tab="account" onclick="switchTab('account')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            حسابي
-        </div>
+        <div class="nav-item active" data-tab="home" onclick="switchTab('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>الرئيسية</div>
+        <div class="nav-item" data-tab="wallet" onclick="switchTab('wallet')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3"/></svg>المحفظة</div>
+        <div class="nav-item" data-tab="account" onclick="switchTab('account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>حسابي</div>
     </div>
 
+    <!-- ✅ المودال المعدل مع إضافة رقم التواصل -->
     <div id="detailModal" class="modal-overlay hidden" onclick="closeDetailModal()">
         <div class="modal" onclick="event.stopPropagation()">
             <button class="close" onclick="closeDetailModal()">✕</button>
@@ -468,6 +428,8 @@
                 </ul>
             </div>
             <input type="text" id="targetInput" placeholder="معرف اللاعب (ID)" dir="ltr">
+            <!-- ✅ حقل رقم التواصل الجديد -->
+            <input type="text" id="contactPhone" placeholder="📞 رقم التواصل (للتواصل معك)" dir="ltr">
             <button class="buy-btn" onclick="confirmPurchase()">✅ تأكيد الشراء</button>
         </div>
     </div>
@@ -477,7 +439,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // ==================== إعدادات مشروع زاد الرسمية ====================
         const firebaseConfig = {
             apiKey: "AIzaSyAJgwaMBo5wxM5BEK9nRrrNg04UGdHyAV0",
             authDomain: "zad1-85d66.firebaseapp.com",
@@ -573,9 +534,7 @@
                 const img = getImageUrl(cat.image || cat.cover); 
                 return `<div class="cat-card" onclick="openCategory('${cat.id}', '${cat.name}')">
                     ${img ? `<img src="${img}" loading="lazy" onerror="this.style.display='none'">` : `<div style="font-size:35px;">📂</div>`}
-                    <h3>${cat.name}</h3>
-                    <div class="desc">تصفح الخدمات</div>
-                    <span class="btn">تصفح القسم</span>
+                    <h3>${cat.name}</h3><div class="desc">تصفح الخدمات</div><span class="btn">تصفح القسم</span>
                 </div>`; 
             }).join(''); 
         }
@@ -627,6 +586,7 @@
                 document.getElementById('dPrice').innerText = finalPrice.toFixed(3) + ' د.ل'; 
             } 
             document.getElementById('targetInput').value = ''; 
+            document.getElementById('contactPhone').value = ''; 
             document.getElementById('detailModal').classList.remove('hidden'); 
         }
         
@@ -635,11 +595,13 @@
         async function confirmPurchase() { 
             if (!currentProduct) return; 
             const targetInput = document.getElementById('targetInput').value.trim(); 
+            const contactPhone = document.getElementById('contactPhone').value.trim(); 
             const user = auth.currentUser; 
             if (!user) return alert('⚠️ سجل دخول أولاً'); 
             const discount = currentProduct.discount || 0; 
             const finalPrice = discount > 0 ? (currentProduct.price||0) - ((currentProduct.price||0)*discount/100) : (currentProduct.price||0); 
             if (currentProduct.type !== 'none' && !targetInput) return alert('⚠️ أدخل البيانات المطلوبة'); 
+            if (!contactPhone) return alert('⚠️ أدخل رقم التواصل للتواصل معك'); 
             if (userBalance < finalPrice) return alert('⚠️ رصيد غير كافٍ'); 
             const newBalance = userBalance - finalPrice; 
             try { 
@@ -649,6 +611,7 @@
                     userName: userData?.name || '', 
                     serviceTitle: currentProduct.title, 
                     targetInput: targetInput || 'مباشر', 
+                    contactPhone: contactPhone, 
                     totalPrice: finalPrice, 
                     status: "pending", 
                     createdAt: firebase.firestore.FieldValue.serverTimestamp() 
