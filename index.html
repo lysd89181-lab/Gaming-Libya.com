@@ -6,9 +6,9 @@
     <title>زاد للخدمات الإلكترونية</title>
     
     <!-- ✅ Favicon / أيقونة الموقع -->
-    <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/lysd89181-lab/Media_Plus/main/zad.jpg">
-    <link rel="shortcut icon" type="image/jpeg" href="https://raw.githubusercontent.com/lysd89181-lab/Media_Plus/main/zad.jpg">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/lysd89181-lab/Media_Plus/main/zad.jpg">
+    <link rel="icon" type="image/jpeg" href="zad.jpg">
+    <link rel="shortcut icon" type="image/jpeg" href="zad.jpg">
+    <link rel="apple-touch-icon" href="zad.jpg">
     
     <meta name="theme-color" content="#0a0a0a">
     <style>
@@ -301,7 +301,7 @@
     <!-- ✅ الشريط العلوي المعدل بالكامل -->
     <div class="top-bar">
         <div class="top-bar-left">
-            <img class="header-logo-img" src="https://raw.githubusercontent.com/lysd89181-lab/Media_Plus/main/zad.jpg" alt="زاد" onerror="this.style.display='none'">
+            <img class="header-logo-img" src="zad.jpg" alt="زاد" onerror="this.style.display='none'">
             <div class="header-logo-text">
                 <span class="main-title">زاد</span>
                 <span class="sub-title">للخدمات الإلكترونية</span>
@@ -341,7 +341,6 @@
                 <div class="big-number"><span id="walletBalance">0.000</span> د.ل</div>
             </div>
             
-            <!-- أزرار طرق الدفع - جنب بعض -->
             <div class="wallet-card">
                 <h3 style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--gold);text-align:center;">💳 اختر طريقة الدفع</h3>
                 <div class="payment-methods-grid">
@@ -360,7 +359,6 @@
                 </div>
             </div>
             
-            <!-- قسم التحويل -->
             <div id="paymentLibyana" class="wallet-card">
                 <h3 style="color:var(--gold);margin-bottom:8px;">📞 تحويل ليبيانا ومدار</h3>
                 <div class="bank-row">
@@ -379,7 +377,6 @@
                 <button class="notify-btn" onclick="submitTransfer('Libyana/Madar')">✅ تأكيد</button>
             </div>
             
-            <!-- قسم كروت التعبئة -->
             <div id="paymentCards" class="wallet-card hidden">
                 <h3 style="color:var(--gold);margin-bottom:8px;">💳 كروت التعبئة</h3>
                 <select id="depositProvider" class="notify-input" style="text-align:right;direction:rtl;">
@@ -391,7 +388,6 @@
                 <button class="notify-btn" onclick="submitDeposit()">✅ إرسال</button>
             </div>
             
-            <!-- قسم العملات الرقمية -->
             <div id="paymentCrypto" class="wallet-card hidden">
                 <h3 style="color:var(--gold);margin-bottom:8px;">₿ عملات رقمية</h3>
                 <div class="bank-row">
@@ -500,7 +496,6 @@
         let userBalance = 0;
         let currentProduct = null;
 
-        // ==================== التنقل بين الصفحات ====================
         function switchTab(tab) { 
             document.querySelectorAll('.page').forEach(p => p.classList.add('hidden')); 
             document.getElementById(tab + 'Page').classList.remove('hidden'); 
@@ -513,20 +508,14 @@
             document.getElementById('paymentLibyana').classList.add('hidden');
             document.getElementById('paymentCards').classList.add('hidden');
             document.getElementById('paymentCrypto').classList.add('hidden');
-            
             const map = { libyana: 'paymentLibyana', cards: 'paymentCards', crypto: 'paymentCrypto' };
             if (map[type]) document.getElementById(map[type]).classList.remove('hidden');
-            
             document.querySelectorAll('.payment-method-btn').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
         }
 
-        // ==================== المصادقة والمستخدم ====================
         auth.onAuthStateChanged(user => { 
-            if (!user) { 
-                window.location.href = 'long.html'; 
-                return; 
-            } 
+            if (!user) { window.location.href = 'long.html'; return; } 
             db.collection("users").doc(user.uid).onSnapshot(doc => { 
                 if (doc.exists) { 
                     userData = doc.data(); 
@@ -550,23 +539,10 @@
             } 
         }
         
-        function logout() { 
-            auth.signOut().then(() => { 
-                window.location.href = 'long.html'; 
-            }); 
-        }
-        
-        function copyText(text) { 
-            navigator.clipboard.writeText(text).then(() => alert('✅ تم النسخ: ' + text)); 
-        }
-        
-        function getImageUrl(img) { 
-            if (!img) return ''; 
-            if (img.startsWith('http')) return img; 
-            return img; 
-        }
+        function logout() { auth.signOut().then(() => { window.location.href = 'long.html'; }); }
+        function copyText(text) { navigator.clipboard.writeText(text).then(() => alert('✅ تم النسخ: ' + text)); }
+        function getImageUrl(img) { if (!img) return ''; if (img.startsWith('http')) return img; return img; }
 
-        // ==================== تحميل البيانات ====================
         function loadAllData() { 
             db.collection("categories").get().then(catsSnap => {
                 allCategories = [];
@@ -575,7 +551,6 @@
                     c.id = doc.id;
                     allCategories.push(c);
                 });
-                
                 db.collection("services").get().then(servicesSnap => {
                     allProducts = [];
                     servicesSnap.forEach(doc => {
@@ -583,7 +558,6 @@
                         s.service_id = doc.id;
                         allProducts.push(s);
                     });
-                    
                     renderCategories();
                 });
             });
@@ -612,10 +586,7 @@
             document.getElementById('productsTitle').innerText = catName; 
             const prods = allProducts.filter(p => p.category === catId && p.status !== false); 
             const grid = document.getElementById('prodsGrid'); 
-            if (!prods.length) { 
-                grid.innerHTML = '<div class="loading">لا توجد خدمات في هذا القسم</div>'; 
-                return; 
-            } 
+            if (!prods.length) { grid.innerHTML = '<div class="loading">لا توجد خدمات في هذا القسم</div>'; return; } 
             grid.innerHTML = prods.map(p => { 
                 const img = getImageUrl(p.image); 
                 const discount = p.discount || 0; 
@@ -659,9 +630,7 @@
             document.getElementById('detailModal').classList.remove('hidden'); 
         }
         
-        function closeDetailModal() { 
-            document.getElementById('detailModal').classList.add('hidden'); 
-        }
+        function closeDetailModal() { document.getElementById('detailModal').classList.add('hidden'); }
         
         async function confirmPurchase() { 
             if (!currentProduct) return; 
@@ -674,9 +643,7 @@
             if (userBalance < finalPrice) return alert('⚠️ رصيد غير كافٍ'); 
             const newBalance = userBalance - finalPrice; 
             try { 
-                await db.collection("users").doc(user.uid).update({ 
-                    balance: newBalance 
-                }); 
+                await db.collection("users").doc(user.uid).update({ balance: newBalance }); 
                 await db.collection("orders").add({ 
                     userId: user.uid, 
                     userName: userData?.name || '', 
@@ -688,12 +655,9 @@
                 }); 
                 closeDetailModal(); 
                 alert(`🎉 تم الطلب بنجاح!\n${currentProduct.title}\n${finalPrice.toFixed(3)} د.ل`); 
-            } catch (e) { 
-                alert('❌ خطأ: ' + e.message); 
-            } 
+            } catch (e) { alert('❌ خطأ: ' + e.message); } 
         }
 
-        // ==================== الإيداع والشحن ====================
         async function submitTransfer(provider) { 
             const phone = document.getElementById('phone_libyana').value.trim(); 
             const amount = document.getElementById('amount_libyana').value.trim(); 
@@ -712,9 +676,7 @@
                 alert('✅ تم إرسال طلب الشحن بنجاح!'); 
                 document.getElementById('phone_libyana').value = ''; 
                 document.getElementById('amount_libyana').value = ''; 
-            } catch (e) { 
-                alert('❌ خطأ: ' + e.message); 
-            } 
+            } catch (e) { alert('❌ خطأ: ' + e.message); } 
         }
         
         async function submitDeposit() { 
@@ -736,9 +698,7 @@
                 alert('✅ تم إرسال الكرت بنجاح!'); 
                 document.getElementById('depositCardCode').value = ''; 
                 document.getElementById('depositAmount').value = ''; 
-            } catch (e) { 
-                alert('❌ خطأ: ' + e.message); 
-            } 
+            } catch (e) { alert('❌ خطأ: ' + e.message); } 
         }
         
         async function submitCryptoTransfer() { 
@@ -761,9 +721,7 @@
                 alert('✅ تم إرسال طلب الشحن بنجاح!'); 
                 document.getElementById('crypto_id').value = ''; 
                 document.getElementById('crypto_amount').value = ''; 
-            } catch (e) { 
-                alert('❌ خطأ: ' + e.message); 
-            } 
+            } catch (e) { alert('❌ خطأ: ' + e.message); } 
         }
     </script>
 </body>
