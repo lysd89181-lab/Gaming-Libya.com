@@ -2,482 +2,427 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حسابي | التغطية لتقنية المعلومات</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>زاد | تسجيل الدخول</title>
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
     <style>
         :root {
-            --primary: #a52a2a;      /* أحمر التغطية */
-            --dark-blue: #0a2647;    /* أزرق الهوية */
-            --accent: #205295;
-            --white: #ffffff;
-            --text-dark: #1a1a1a;
-            --error: #e74c3c;
-            /* تأثير الزجاج */
-            --glass-bg: rgba(255, 255, 255, 0.9);
-            --glass-border: rgba(255, 255, 255, 0.2);
+            --bg: #0a0a0a;
+            --card-bg: rgba(20, 20, 20, 0.9);
+            --gold: #f5a623;
+            --white: #fff;
+            --muted: #a1a1aa;
+            --neon-gold: 0 0 15px rgba(245, 166, 35, 0.3), 0 0 30px rgba(245, 166, 35, 0.08);
+            --border-gold: 1px solid rgba(245, 166, 35, 0.3);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
-        
+        * {
+            -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: var(--dark-blue);
-            height: 100vh;
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(circle at 30% 30%, rgba(245, 166, 35, 0.04) 0%, transparent 60%),
+                radial-gradient(circle at 70% 70%, rgba(245, 166, 35, 0.03) 0%, transparent 60%);
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            overflow: hidden;
+            justify-content: center;
+            overflow-x: hidden;
+            touch-action: manipulation;
+            padding: 15px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes neonPulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(245,166,35,0.3), 0 0 5px rgba(245,166,35,0.1); }
+            50% { box-shadow: 0 0 30px rgba(245,166,35,0.6), 0 0 15px rgba(245,166,35,0.3); }
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        @keyframes shake { 0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-6px)}20%,40%,60%,80%{transform:translateX(6px)} }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes glowText { 0%,100%{text-shadow:0 0 10px rgba(245,166,35,0.4),0 0 20px rgba(245,166,35,0.2)}50%{text-shadow:0 0 20px rgba(245,166,35,0.8),0 0 40px rgba(245,166,35,0.4),0 0 60px rgba(245,166,35,0.2)} }
+
+        .shake-error { animation: shake 0.6s ease-in-out; }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: var(--border-gold);
+            border-radius: 24px;
+            box-shadow: var(--neon-gold);
             position: relative;
-        }
-
-        /* --- تأثير الخلفية المتحركة --- */
-        .background-animation {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, var(--dark-blue) 0%, #06162d 100%);
-            z-index: -1;
-        }
-        
-        .background-animation::after {
-            content: '';
-            position: absolute; width: 200%; height: 200%;
-            top: -50%; left: -50%;
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTAgMGg0MHY0MEgwVjB6bTIwIDIwaDIwdjIwSDIWMjB6TTAgMjBoMjB2MjBIMFYyMHoyMCAwaDIwdjIwSDIwVjB6Ii8+PC9nPjwvZz48L3N2Zz4=');
-            animation: backgroundMove 60s linear infinite;
-            opacity: 0.3;
-        }
-
-        @keyframes backgroundMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(5%, 5%); }
-        }
-
-        /* --- حاوية النموذج (تأثير الزجاج) --- */
-        .auth-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            width: 90%;
-            max-width: 480px;
-            border-radius: 25px;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-            overflow: hidden;
-            animation: cardSlideIn 0.6s ease-out;
             z-index: 10;
+            animation: fadeInUp 0.8s ease forwards;
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 28px;
         }
 
-        @keyframes cardSlideIn {
-            from { opacity: 0; transform: translateY(50px) scale(0.9); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        .gold-text {
+            color: var(--gold);
+            animation: glowText 2s ease-in-out infinite;
         }
 
-        /* --- ترويسة النموذج والشعار المحدث --- */
-        .auth-header {
-            padding: 30px 20px 10px;
-            text-align: center;
-            position: relative;
+        .neon-input {
+            background-color: rgba(0,0,0,0.5);
+            border: 1px solid rgba(245, 166, 35, 0.3);
+            color: #ffffff;
+            transition: all 0.3s ease;
+            border-radius: 14px;
+            font-size: 16px;
+            padding: 14px 18px;
+            width: 100%;
+            outline: none;
+            font-family: 'Cairo', sans-serif;
+        }
+        .neon-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(245, 166, 35, 0.3);
         }
 
-        .logo-wrapper {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 15px;
+        .neon-btn {
+            background: linear-gradient(135deg, #b8860b, var(--gold));
+            color: #000;
+            font-weight: 900;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 16px;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(245,166,35,0.4);
+            font-family: 'Cairo', sans-serif;
         }
+        .neon-btn:active { transform: scale(0.95); box-shadow: 0 0 35px rgba(245,166,35,0.7); }
 
-        .logo-wrapper img {
+        .outline-btn {
+            background: transparent;
+            border: 2px solid rgba(245, 166, 35, 0.3);
+            color: var(--gold);
+            font-weight: 700;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 14px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Cairo', sans-serif;
+        }
+        .outline-btn:hover { border-color: var(--gold); background: rgba(245,166,35,0.05); }
+        .outline-btn:active { transform: scale(0.95); background: rgba(245,166,35,0.15); }
+
+        .logo-circle {
             width: 90px;
             height: 90px;
-            object-fit: contain;
             border-radius: 50%;
-            background: white;
-            padding: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            position: relative;
-            z-index: 2;
-        }
-
-        /* تأثير النبض خلف الشعار */
-        .logo-wrapper::after {
-            content: '';
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%; height: 100%;
-            background: rgba(165, 42, 42, 0.2);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-            z-index: 1;
-        }
-
-        @keyframes pulse {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
-        }
-
-        .auth-header h1 {
-            font-size: 1.6rem;
-            color: var(--dark-blue);
-            font-weight: 900;
-        }
-        
-        .auth-header p {
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        /* --- أزرار التبديل --- */
-        .auth-tabs {
-            display: flex;
-            background: rgba(0,0,0,0.03);
-            margin: 20px 30px;
-            border-radius: 15px;
-            padding: 5px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            background: none;
-            font-weight: 700;
-            color: var(--dark-blue);
-            cursor: pointer;
-            border-radius: 12px;
-            transition: 0.3s;
-            font-size: 0.95rem;
-        }
-
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 5px 10px rgba(165, 42, 42, 0.2);
-        }
-
-        /* --- تصميم الحقول والمدخلات --- */
-        .auth-forms-container {
-            padding: 0 30px 30px;
-            position: relative;
-        }
-
-        .auth-form {
-            display: none;
-            animation: formFade 0.4s ease;
-        }
-
-        @keyframes formFade {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .auth-form.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-            position: relative;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--dark-blue);
-            margin-bottom: 6px;
-            margin-right: 5px;
-        }
-
-        .input-wrapper {
-            position: relative;
-        }
-
-        .input-wrapper i {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #aaa;
-            transition: 0.3s;
-            font-size: 1rem;
-        }
-
-        .input-wrapper input, .input-wrapper select {
-            width: 100%;
-            padding: 13px 45px 13px 15px;
-            border: 2px solid #eee;
-            border-radius: 12px;
-            outline: none;
-            transition: 0.3s;
-            font-size: 0.95rem;
-            color: var(--text-dark);
-            background: white;
-        }
-
-        /* تأثير عند التركيز على الحقل */
-        .input-wrapper input:focus, .input-wrapper select:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 10px rgba(32, 82, 149, 0.1);
-        }
-
-        .input-wrapper input:focus + i, .input-wrapper select:focus + i {
-            color: var(--primary);
-        }
-
-        /* --- زر الإرسال المتحرك --- */
-        .submit-btn {
-            width: 100%;
-            padding: 16px;
-            background: var(--dark-blue);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 15px;
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            border: 3px solid var(--gold);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
+            animation: neonPulse 2s infinite, float 3s ease-in-out infinite;
+            box-shadow: 0 0 30px rgba(245,166,35,0.3);
+            margin: 0 auto;
+        }
+        .logo-text {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(245,166,35,0.6);
         }
 
-        .submit-btn:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(165, 42, 42, 0.3);
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gold);
+            display: inline-block;
+            animation: neonPulse 1.5s infinite;
         }
-        
-        /* تأثير اللمعان عند التمرير */
-        .submit-btn::after {
-            content: '';
-            position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: 0.5s;
-        }
-        
-        .submit-btn:hover::after {
-            left: 100%;
-        }
+        .dot:nth-child(2) { animation-delay: 0.3s; }
+        .dot:nth-child(3) { animation-delay: 0.6s; }
 
-        .forgot-link {
-            text-align: center;
-            display: block;
-            margin-top: 20px;
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        
-        .forgot-link:hover { color: var(--primary); }
-
-        /* رسائل الخطأ */
-        .error-text {
-            color: var(--error);
-            font-size: 0.8rem;
-            margin-top: 5px;
-            display: none;
-            font-weight: 600;
-        }
-
-        /* الجوال */
-        @media (max-width: 480px) {
-            .auth-card { border-radius: 20px; }
-            .auth-tabs { margin: 15px 20px; }
-            .auth-forms-container { padding: 0 20px 20px; }
-            .auth-header h1 { font-size: 1.4rem; }
+        .loader-spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(0,0,0,0.3);
+            border-top-color: #000;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: inline-block;
         }
     </style>
 </head>
 <body>
 
-    <div class="background-animation"></div>
-
-    <div class="auth-card">
-        <div class="auth-header">
-            <div class="logo-wrapper">
-                <img src="tg.jpg" alt="شعار التغطية">
+    <div class="glass-card space-y-6">
+        
+        <!-- الشعار -->
+        <div class="text-center space-y-3">
+            <div class="logo-circle">
+                <span class="logo-text">ز</span>
             </div>
-            <h1>بوابة المشتركين</h1>
-            <p>التغطية لتقنية المعلومات - جودة نثق بها</p>
+            <div>
+                <h1 class="text-3xl font-black text-white tracking-wider">
+                    زاد<span class="gold-text"> للخدمات</span>
+                </h1>
+                <p class="text-xs" style="color:var(--muted);">متجر الخدمات الإلكترونية الأول</p>
+            </div>
+            <div class="flex justify-center gap-1.5">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
         </div>
 
-        <div class="auth-tabs">
-            <button class="tab-btn active" onclick="switchTab('login')"><i class="fas fa-sign-in-alt"></i> دخول</button>
-            <button class="tab-btn" onclick="switchTab('register')"><i class="fas fa-user-plus"></i> تسجيل جديد</button>
+        <!-- فورم تسجيل الدخول -->
+        <div id="loginForm" class="space-y-4">
+            <div class="space-y-1.5">
+                <label class="text-xs text-gray-400 font-bold block">البريد الإلكتروني</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
+                    </span>
+                    <input type="email" id="loginEmail" placeholder="example@email.com" class="neon-input pr-10 text-left" dir="ltr" autocomplete="email">
+                </div>
+            </div>
+
+            <div class="space-y-1.5">
+                <label class="text-xs text-gray-400 font-bold block">كلمة المرور</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                    </span>
+                    <input type="password" id="loginPassword" placeholder="••••••••" class="neon-input pr-10 text-left" dir="ltr">
+                    <button onclick="togglePassword('loginPassword', this)" class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 hover:text-amber-400">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="loginError" class="hidden bg-red-500/10 border border-red-500/30 rounded-xl p-3 text-center">
+                <p id="loginErrorText" class="text-xs text-red-400 font-bold"></p>
+            </div>
+
+            <button id="loginBtn" onclick="handleLogin()" class="neon-btn flex items-center justify-center gap-2">
+                <span>تسجيل الدخول</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+
+            <div class="text-center">
+                <p class="text-xs text-gray-400">ليس لديك حساب؟ 
+                    <button onclick="showRegister()" class="text-amber-400 font-bold hover:underline">إنشاء حساب جديد</button>
+                </p>
+            </div>
         </div>
 
-        <div class="auth-forms-container">
-            <form id="loginForm" class="auth-form active">
-                <div class="form-group">
-                    <label>رقم الهاتف</label>
-                    <div class="input-wrapper">
-                        <input type="tel" id="loginPhone" placeholder="09XXXXXXXX" required>
-                        <i class="fas fa-phone"></i>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>كلمة السر</label>
-                    <div class="input-wrapper">
-                        <input type="password" id="loginPass" placeholder="••••••••" required>
-                        <i class="fas fa-lock"></i>
-                    </div>
-                </div>
-                <button type="submit" class="submit-btn">
-                    دخول آمن <i class="fas fa-shield-alt"></i>
-                </button>
-                <a href="#" class="forgot-link">هل نسيت كلمة السر؟</a>
-            </form>
+        <!-- فورم إنشاء الحساب -->
+        <div id="registerForm" class="hidden space-y-4">
+            <div class="space-y-1.5">
+                <label class="text-xs text-gray-400 font-bold block">اسم المستخدم</label>
+                <input type="text" id="regName" placeholder="أدخل اسمك" class="neon-input text-right">
+            </div>
 
-            <form id="registerForm" class="auth-form">
-                <div class="form-group">
-                    <label>الاسم بالكامل</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="regName" placeholder="الاسم ثلاثي كما في الهوية" required>
-                        <i class="fas fa-user"></i>
-                    </div>
-                </div>
+            <div class="space-y-1.5">
+                <label class="text-xs text-gray-400 font-bold block">رقم الهاتف</label>
+                <input type="tel" id="regPhone" placeholder="091xxxxxxx" class="neon-input text-left" dir="ltr">
+            </div>
 
-                <div style="display: flex; gap: 15px;">
-                    <div class="form-group" style="flex: 1;">
-                        <label>رقم الهاتف الأساسي</label>
-                        <div class="input-wrapper">
-                            <input type="tel" id="regPhone" placeholder="091XXXXXXX" required>
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                    </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label>رقم احتياطي</label>
-                        <div class="input-wrapper">
-                            <input type="tel" id="regPhoneAlt" placeholder="092XXXXXXX">
-                            <i class="fas fa-phone-flip"></i>
-                        </div>
-                    </div>
-                </div>
+            <div class="space-y-1.5">
+                <label class="text-xs text-gray-400 font-bold block">البريد الإلكتروني</label>
+                <input type="email" id="regEmail" placeholder="example@email.com" class="neon-input text-left" dir="ltr" autocomplete="email">
+            </div>
 
-                <div class="form-group">
-                    <label>المدينة / منطقة التوصيل</label>
-                    <div class="input-wrapper">
-                        <select id="regCity" required>
-                            <option value="" disabled selected>اختر مدينتك من القائمة...</option>
-                        </select>
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                </div>
+            <div class="space-y-1.5">
+                <label class="text-xs text-gray-400 font-bold block">كلمة المرور</label>
+                <input type="password" id="regPassword" placeholder="6 خانات على الأقل" class="neon-input text-left" dir="ltr">
+            </div>
 
-                <div class="form-group">
-                    <label>كلمة السر</label>
-                    <div class="input-wrapper">
-                        <input type="password" id="regPass" placeholder="••••••••" required>
-                        <i class="fas fa-key"></i>
-                    </div>
-                </div>
+            <div id="regError" class="hidden bg-red-500/10 border border-red-500/30 rounded-xl p-3 text-center">
+                <p id="regErrorText" class="text-xs text-red-400 font-bold"></p>
+            </div>
 
-                <div class="form-group">
-                    <label>تأكيد كلمة السر</label>
-                    <div class="input-wrapper">
-                        <input type="password" id="regPassConfirm" placeholder="••••••••" required>
-                        <i class="fas fa-shield-halved"></i>
-                    </div>
-                    <span id="passError" class="error-text">كلمات السر غير متطابقة، أعد المحاولة.</span>
-                </div>
+            <button id="regBtn" onclick="handleRegister()" class="neon-btn flex items-center justify-center gap-2">
+                <span>إنشاء الحساب</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            </button>
 
-                <button type="submit" class="submit-btn">
-                    إنشاء حسابي <i class="fas fa-arrow-right-to-bracket"></i>
-                </button>
-            </form>
+            <div class="text-center">
+                <p class="text-xs text-gray-400">لديك حساب بالفعل؟ 
+                    <button onclick="showLogin()" class="text-amber-400 font-bold hover:underline">تسجيل الدخول</button>
+                </p>
+            </div>
+        </div>
+
+        <!-- تذييل -->
+        <div class="text-center pt-2">
+            <p class="text-[9px] text-gray-600">زاد للخدمات الإلكترونية © 2025</p>
         </div>
     </div>
 
     <script>
-        // المدن الـ 81 المرتبة أبجدياً
-        const libyanCities = [
-            "الأبرق", "الأبيار", "الأصابعة", "البريقة", "البيضاء", "الجميل", "الجنوب", "الخمس", "الدرج", "الزاوية", "الزهراء", "الزنتان", "السواني", "العجيلات", "العقورية", "العلالقة", "العوينات", "الفايدية", "الفقهاء", "القبة", "القرضة", "القطرون", "القيقب", "الكفرة", "الماية", "المرج", "المرقب", "المخيلي", "المشاشية", "المليطانية", "النواحي الأربعة", "الهواري", "الواحات", "الوشكة", "بئر الأشهب", "بئر الغنم", "براك الشاطئ", "بني وليد", "بنغازي", "تاورغاء", "تاجوراء", "تازربو", "تراغن", "ترهونة", "تجرهي", "تمنهنت", "توكرة", "جات", "جالو", "جرمة", "جغبوب", "جنزور", "رأس الهلال", "رقدالين", "زلة", "زليتن", "زويلة", "زوارة", "سبها", "سلوق", "سوسة", "سوكنة", "سوق الخميس", "شحات", "شكشوك", "صبراتة", "صرمان", "طبرق", "طرابلس", "طوير", "غات", "غدامس", "غريان", "قمينس", "قصر الأخيار", "قصر بن غشير", "مرتوبة", "مرزق", "مسة", "مصراتة", "مزدة", "نسمة", "ودان", "وادي الكوف", "وادي عتبة", "هون"
-        ];
+        const firebaseConfig = {
+            apiKey: "AIzaSyAjgwaMBoGwxM5BEK9nRrzNg04U0dHyAV0",
+            authDomain: "zad1-85d66.firebaseapp.com",
+            projectId: "zad1-85d66",
+            storageBucket: "zad1-85d66.firebasestorage.app",
+            messagingSenderId: "130593925562",
+            appId: "1:130593925562:web:709293e6c0827103d31583"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-        // تعبئة القائمة
-        const cityDropdown = document.getElementById('regCity');
-        libyanCities.forEach(city => {
-            const opt = document.createElement('option');
-            opt.value = city;
-            opt.textContent = city;
-            cityDropdown.appendChild(opt);
-        });
-
-        // التبديل بين النماذج بحركة ناعمة
-        function switchTab(tabName) {
-            const btns = document.querySelectorAll('.tab-btn');
-            const forms = document.querySelectorAll('.auth-form');
-            
-            btns.forEach(b => b.classList.remove('active'));
-            forms.forEach(f => f.classList.remove('active'));
-
-            if (tabName === 'login') {
-                btns[0].classList.add('active');
-                document.getElementById('loginForm').classList.add('active');
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
             } else {
-                btns[1].classList.add('active');
-                document.getElementById('registerForm').classList.add('active');
+                input.type = 'password';
+                btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
             }
         }
 
-        // --- نظام حفظ البيانات والتحويل لصفحة المتجر ---
-        
-        // تسجيل دخول (تجريبي باستخدام localStorage)
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const phone = document.getElementById('loginPhone').value;
-            // هنا في العادة يتم التحقق من قاعدة البيانات، سنقوم بحفظ بيانات افتراضية للآن
-            const userData = {
-                name: "مستخدم مسجل",
-                phone: phone,
-                city: "بنغازي" // افتراضي
-            };
-            localStorage.setItem('userData', JSON.stringify(userData));
-            window.location.href = "index.html"; 
-        });
-
-        // إنشاء حساب جديد
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const pass = document.getElementById('regPass').value;
-            const confirm = document.getElementById('regPassConfirm').value;
-            const errorElement = document.getElementById('passError');
-            const confirmInput = document.getElementById('regPassConfirm');
-
-            if (pass !== confirm) {
-                errorElement.style.display = 'block';
-                confirmInput.style.borderColor = 'var(--error)';
-                confirmInput.focus();
-            } else {
-                errorElement.style.display = 'none';
-                confirmInput.style.borderColor = '#eee';
-                
-                // حفظ البيانات
-                const userData = {
-                    name: document.getElementById('regName').value,
-                    phone: document.getElementById('regPhone').value,
-                    city: document.getElementById('regCity').value
-                };
-                localStorage.setItem('userData', JSON.stringify(userData));
-                
-                alert("تم إنشاء حسابك بنجاح! جاري تحويلك للمتجر...");
-                window.location.href = "index.html"; 
-            }
-        });
-
-        // إذا كان المستخدم مسجل دخول بالفعل، حوله للمتجر طول
-        window.onload = function() {
-            if(localStorage.getItem('userData')) {
-                window.location.href = "index.html";
-            }
+        function shakeElement(element) {
+            element.classList.add('shake-error');
+            setTimeout(() => element.classList.remove('shake-error'), 600);
         }
+
+        function showRegister() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.remove('hidden');
+            document.getElementById('loginError').classList.add('hidden');
+        }
+
+        function showLogin() {
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('regError').classList.add('hidden');
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('loginBtn');
+            const errorDiv = document.getElementById('loginError');
+            const errorText = document.getElementById('loginErrorText');
+            const card = document.querySelector('.glass-card');
+
+            errorDiv.classList.add('hidden');
+
+            if (!email || !password) {
+                errorText.innerText = '⚠️ يرجى إدخال البريد الإلكتروني وكلمة المرور';
+                errorDiv.classList.remove('hidden');
+                shakeElement(card);
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loader-spinner"></span> جاري تسجيل الدخول...';
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    window.location.href = 'index.html';
+                })
+                .catch(err => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>تسجيل الدخول</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>';
+                    
+                    let msg = '❌ بيانات الدخول غير صحيحة';
+                    if (err.code === 'auth/user-not-found') msg = '❌ لا يوجد حساب بهذا البريد';
+                    if (err.code === 'auth/wrong-password') msg = '❌ كلمة المرور غير صحيحة';
+                    if (err.code === 'auth/invalid-email') msg = '❌ صيغة البريد غير صحيحة';
+                    
+                    errorText.innerText = msg;
+                    errorDiv.classList.remove('hidden');
+                    shakeElement(card);
+                });
+        }
+
+        function handleRegister() {
+            const name = document.getElementById('regName').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const btn = document.getElementById('regBtn');
+            const errorDiv = document.getElementById('regError');
+            const errorText = document.getElementById('regErrorText');
+            const card = document.querySelector('.glass-card');
+
+            errorDiv.classList.add('hidden');
+
+            if (!name || !email || !password) {
+                errorText.innerText = '⚠️ يرجى إدخال الاسم والبريد وكلمة المرور';
+                errorDiv.classList.remove('hidden');
+                shakeElement(card);
+                return;
+            }
+
+            if (password.length < 6) {
+                errorText.innerText = '⚠️ كلمة المرور يجب أن تكون 6 خانات على الأقل';
+                errorDiv.classList.remove('hidden');
+                shakeElement(card);
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loader-spinner"></span> جاري إنشاء الحساب...';
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((cred) => {
+                    return db.collection("users").doc(cred.user.uid).set({
+                        name: name,
+                        phone: phone || '',
+                        email: email,
+                        wallet_balance: 0,
+                        role: "customer",
+                        created_at: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .then(() => {
+                    window.location.href = 'index.html';
+                })
+                .catch(err => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>إنشاء الحساب</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>';
+                    
+                    let msg = '❌ حدث خطأ في إنشاء الحساب';
+                    if (err.code === 'auth/email-already-in-use') msg = '❌ البريد مستخدم بالفعل';
+                    if (err.code === 'auth/invalid-email') msg = '❌ صيغة البريد غير صحيحة';
+                    if (err.code === 'auth/weak-password') msg = '❌ كلمة المرور ضعيفة جداً';
+                    
+                    errorText.innerText = msg;
+                    errorDiv.classList.remove('hidden');
+                    shakeElement(card);
+                });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                if (!document.getElementById('registerForm').classList.contains('hidden')) {
+                    handleRegister();
+                } else {
+                    handleLogin();
+                }
+            }
+        });
     </script>
 </body>
 </html>
