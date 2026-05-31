@@ -19,7 +19,6 @@
             --card-bg: #1a1a1a;
             --sidebar-bg: #111111;
             --gold: #f5a623;
-            --gold-light: #ffd700;
             --white: #fff;
             --muted: #a1a1aa;
             --border: rgba(245,166,35,0.2);
@@ -43,7 +42,6 @@
             box-shadow: var(--neon-gold);
         }
         .cat-card-admin:hover { border-color: var(--gold); background: rgba(245,166,35,0.05); }
-        .cat-card-admin.active { border-color: var(--gold); background: rgba(245,166,35,0.08); }
         .cat-card-admin img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; }
         .discount-badge-admin { background: #ef4444; color: #fff; font-size: 10px; font-weight: 900; padding: 2px 6px; border-radius: 6px; }
         input, select, textarea {
@@ -85,10 +83,7 @@
     <aside class="sidebar-bg w-full md:w-64 border-b md:border-b-0 md:border-l flex flex-col justify-between shrink-0" style="border-color:var(--border);">
         <div>
             <div class="p-5 border-b flex items-center justify-between" style="border-color:var(--border);">
-                <div class="flex items-center gap-2">
-                    <span class="gold-bg text-black px-2 py-0.5 rounded text-sm font-black">زاد</span>
-                    <span class="text-md font-bold">الإدارة</span>
-                </div>
+                <div class="flex items-center gap-2"><span class="gold-bg text-black px-2 py-0.5 rounded text-sm font-black">زاد</span><span class="text-md font-bold">الإدارة</span></div>
                 <span class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded">v1.0</span>
             </div>
             <nav class="p-3 space-y-1">
@@ -100,6 +95,9 @@
                 </button>
                 <button onclick="switchTab('depositsTab',this)" class="tab-btn w-full text-right text-gray-400 hover:text-white hover:bg-[#1a1a1a] px-4 py-3 rounded-xl text-xs flex items-center gap-3">
                     <i class="fa-solid fa-money-bill-wave"></i> الإيداعات
+                </button>
+                <button onclick="switchTab('categoriesTab',this)" class="tab-btn w-full text-right text-gray-400 hover:text-white hover:bg-[#1a1a1a] px-4 py-3 rounded-xl text-xs flex items-center gap-3">
+                    <i class="fa-solid fa-folder-tree"></i> الأقسام
                 </button>
                 <button onclick="switchTab('servicesTab',this)" class="tab-btn w-full text-right text-gray-400 hover:text-white hover:bg-[#1a1a1a] px-4 py-3 rounded-xl text-xs flex items-center gap-3">
                     <i class="fa-solid fa-cubes"></i> الخدمات
@@ -134,99 +132,63 @@
 
         <!-- الطلبات -->
         <section id="ordersTab" class="admin-tab hidden space-y-4">
-            <div class="flex justify-between">
-                <h1 class="text-xl font-black gold-text">📦 الطلبات</h1>
-                <button onclick="deleteSelectedOrders()" class="bg-red-600/20 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white px-4 py-2 rounded-xl text-xs font-bold">
-                    <i class="fa-solid fa-trash-can"></i> حذف المحدد
-                </button>
-            </div>
-            <div class="card-bg rounded-2xl overflow-hidden">
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-right text-xs">
-                        <thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);">
-                            <tr>
-                                <th class="p-4"><input type="checkbox" id="selectAllOrders" onclick="toggleSelectAll('orderCheckbox',this)" class="accent-[#f5a623]"></th>
-                                <th class="p-4">العميل</th><th class="p-4">الخدمة</th><th class="p-4">البيانات</th>
-                                <th class="p-4">المبلغ</th><th class="p-4">الحالة</th><th class="p-4">إجراء</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ordersTableBody"><tr><td colspan="7" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody>
-                    </table>
-                </div>
-            </div>
+            <div class="flex justify-between"><h1 class="text-xl font-black gold-text">📦 الطلبات</h1><button onclick="deleteSelectedOrders()" class="bg-red-600/20 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white px-4 py-2 rounded-xl text-xs font-bold"><i class="fa-solid fa-trash-can"></i> حذف المحدد</button></div>
+            <div class="card-bg rounded-2xl overflow-hidden"><div class="overflow-x-auto custom-scrollbar"><table class="w-full text-right text-xs"><thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);"><tr><th class="p-4"><input type="checkbox" id="selectAllOrders" onclick="toggleSelectAll('orderCheckbox',this)" class="accent-[#f5a623]"></th><th class="p-4">العميل</th><th class="p-4">الخدمة</th><th class="p-4">البيانات</th><th class="p-4">المبلغ</th><th class="p-4">الحالة</th><th class="p-4">إجراء</th></tr></thead><tbody id="ordersTableBody"><tr><td colspan="7" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody></table></div></div>
         </section>
 
         <!-- الإيداعات -->
         <section id="depositsTab" class="admin-tab hidden space-y-4">
             <h1 class="text-xl font-black gold-text">💰 الإيداعات</h1>
-            <div class="card-bg rounded-2xl overflow-hidden">
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-right text-xs">
-                        <thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);">
-                            <tr>
-                                <th class="p-4">المستخدم</th><th class="p-4">المزود</th><th class="p-4">كود البطاقة</th>
-                                <th class="p-4">المبلغ</th><th class="p-4">الحالة</th><th class="p-4">إجراء</th>
-                            </tr>
-                        </thead>
-                        <tbody id="depositsTableBody"><tr><td colspan="6" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody>
-                    </table>
-                </div>
+            <div class="card-bg rounded-2xl overflow-hidden"><div class="overflow-x-auto custom-scrollbar"><table class="w-full text-right text-xs"><thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);"><tr><th class="p-4">المستخدم</th><th class="p-4">المزود</th><th class="p-4">كود/رقم</th><th class="p-4">المبلغ</th><th class="p-4">الحالة</th><th class="p-4">إجراء</th></tr></thead><tbody id="depositsTableBody"><tr><td colspan="6" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody></table></div></div>
+        </section>
+
+        <!-- الأقسام -->
+        <section id="categoriesTab" class="admin-tab hidden space-y-6">
+            <div class="flex justify-between"><h1 class="text-xl font-black gold-text">📂 الأقسام</h1><button onclick="openCategoryModal()" class="gold-bg text-black text-xs font-bold px-4 py-2.5 rounded-xl"><i class="fa-solid fa-plus"></i> إضافة قسم</button></div>
+            
+            <!-- مودال القسم -->
+            <div id="categoryModal" class="hidden card-bg p-5 rounded-2xl max-w-lg mx-auto space-y-4" style="border-color:var(--gold);">
+                <div class="flex justify-between"><h3 id="catModalTitle" class="text-sm font-bold gold-text">إضافة قسم جديد</h3><button onclick="closeCategoryModal()" class="text-gray-500"><i class="fa-solid fa-xmark"></i></button></div>
+                <form onsubmit="saveCategory(event)" class="space-y-3 text-xs">
+                    <input type="hidden" id="catId">
+                    <div><label class="text-gray-400">اسم القسم *</label><input type="text" id="catName" required class="w-full rounded-xl p-3"></div>
+                    <div><label class="text-gray-400">اسم الصورة (مرفوعة في GitHub)</label><input type="text" id="catImage" placeholder="pubg.jpg" class="w-full rounded-xl p-3 font-mono text-[11px]"></div>
+                    <button type="submit" class="gold-bg text-black font-bold py-3 rounded-xl w-full">حفظ القسم</button>
+                </form>
             </div>
+
+            <div class="card-bg rounded-2xl overflow-hidden"><table class="w-full text-right text-xs"><thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);"><tr><th class="p-4">صورة</th><th class="p-4">اسم</th><th class="p-4">تحكم</th></tr></thead><tbody id="categoriesTableBody"><tr><td colspan="3" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody></table></div>
         </section>
 
         <!-- الخدمات -->
         <section id="servicesTab" class="admin-tab hidden space-y-6">
-            <div class="flex justify-between items-center">
-                <h1 class="text-xl font-black gold-text">🎮 الخدمات</h1>
-                <button onclick="openServiceModal()" class="gold-bg text-black text-xs font-bold px-4 py-2.5 rounded-xl">
-                    <i class="fa-solid fa-plus"></i> إضافة خدمة
-                </button>
+            <div class="flex justify-between items-center"><h1 class="text-xl font-black gold-text">🎮 الخدمات</h1><button onclick="openServiceModal()" class="gold-bg text-black text-xs font-bold px-4 py-2.5 rounded-xl"><i class="fa-solid fa-plus"></i> إضافة خدمة</button></div>
+
+            <!-- عرض الأقسام -->
+            <div id="adminCatsView"><h3 class="text-sm font-bold mb-3">📂 اختر قسم لعرض خدماته</h3><div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="adminCatsGrid"><div class="text-center p-6" style="color:var(--muted);">⏳ جاري جلب الأقسام...</div></div></div>
+
+            <!-- عرض الخدمات -->
+            <div id="adminServicesView" class="hidden">
+                <button onclick="backToCats()" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-xl text-xs font-bold mb-3">⬅ رجوع للأقسام</button>
+                <div class="flex justify-between items-center mb-3"><h3 class="text-sm font-bold gold-text" id="adminServicesTitle"></h3><button onclick="deleteSelectedServices()" class="bg-red-600/20 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white px-3 py-1.5 rounded-xl text-[10px] font-bold"><i class="fa-solid fa-trash-can"></i> حذف المحدد</button></div>
+                <div class="card-bg rounded-2xl overflow-hidden"><div class="overflow-x-auto custom-scrollbar"><table class="w-full text-right text-xs"><thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);"><tr><th class="p-4"><input type="checkbox" id="selectAllServices" onclick="toggleSelectAll('serviceCheckbox',this)" class="accent-[#f5a623]"></th><th class="p-4">صورة</th><th class="p-4">اسم</th><th class="p-4">سعر</th><th class="p-4">خصم</th><th class="p-4">نوع</th><th class="p-4">حالة</th><th class="p-4">تحكم</th></tr></thead><tbody id="servicesTableBody"><tr><td colspan="8" class="text-center p-6" style="color:var(--muted);">اختر قسم أولاً</td></tr></tbody></table></div></div>
             </div>
 
             <!-- مودال الخدمة -->
             <div id="serviceModal" class="hidden card-bg p-5 rounded-2xl max-w-2xl mx-auto space-y-4" style="border-color:var(--gold);">
-                <div class="flex justify-between">
-                    <h3 id="serviceModalTitle" class="text-sm font-bold gold-text">إضافة خدمة جديدة</h3>
-                    <button onclick="closeServiceModal()" class="text-gray-500"><i class="fa-solid fa-xmark"></i></button>
-                </div>
+                <div class="flex justify-between"><h3 id="serviceModalTitle" class="text-sm font-bold gold-text">إضافة خدمة جديدة</h3><button onclick="closeServiceModal()" class="text-gray-500"><i class="fa-solid fa-xmark"></i></button></div>
                 <form onsubmit="saveService(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                     <input type="hidden" id="serviceId">
                     <div class="md:col-span-2"><label class="text-gray-400">اسم الخدمة *</label><input type="text" id="serviceTitle" required class="w-full rounded-xl p-3"></div>
-                    <div><label class="text-gray-400">القسم</label><input type="text" id="serviceCategory" placeholder="binance, gaming, social_media..." class="w-full rounded-xl p-3"></div>
+                    <div><label class="text-gray-400">القسم</label><select id="serviceCategory" class="w-full rounded-xl p-3"></select></div>
                     <div><label class="text-gray-400">السعر (د.ل) *</label><input type="number" step="0.001" id="servicePrice" required class="w-full rounded-xl p-3"></div>
-                    <div><label class="text-gray-400">النوع</label>
-                        <select id="serviceType" class="w-full rounded-xl p-3">
-                            <option value="id">ID لاعب</option>
-                            <option value="phone">رقم هاتف</option>
-                            <option value="none">بدون إدخال</option>
-                        </select>
-                    </div>
+                    <div><label class="text-gray-400">النوع</label><select id="serviceType" class="w-full rounded-xl p-3"><option value="id">ID لاعب</option><option value="phone">رقم هاتف</option><option value="none">بدون إدخال</option></select></div>
                     <div><label class="text-gray-400">الخصم %</label><input type="number" id="serviceDiscount" value="0" min="0" max="99" class="w-full rounded-xl p-3"></div>
+                    <div class="md:col-span-2"><label class="text-gray-400">اسم الصورة (مرفوعة في GitHub)</label><input type="text" id="serviceImage" placeholder="pubg60uc.jpg" class="w-full rounded-xl p-3 font-mono text-[11px]"></div>
                     <div class="md:col-span-2"><label class="text-gray-400">الوصف</label><textarea id="serviceDescription" rows="2" class="w-full rounded-xl p-3"></textarea></div>
-                    <div><label class="text-gray-400">الحالة</label>
-                        <select id="serviceStatus" class="w-full rounded-xl p-3">
-                            <option value="true">✅ نشط</option>
-                            <option value="false">❌ مخفي</option>
-                        </select>
-                    </div>
+                    <div class="md:col-span-2"><label class="text-gray-400">الحالة</label><select id="serviceStatus" class="w-full rounded-xl p-3"><option value="true">✅ نشط</option><option value="false">❌ مخفي</option></select></div>
                     <div class="md:col-span-2"><button type="submit" class="gold-bg text-black font-bold py-3 rounded-xl w-full">حفظ الخدمة</button></div>
                 </form>
-            </div>
-
-            <!-- جدول الخدمات -->
-            <div class="card-bg rounded-2xl overflow-hidden">
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-right text-xs">
-                        <thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);">
-                            <tr>
-                                <th class="p-4"><input type="checkbox" id="selectAllServices" onclick="toggleSelectAll('serviceCheckbox',this)" class="accent-[#f5a623]"></th>
-                                <th class="p-4">اسم</th><th class="p-4">قسم</th><th class="p-4">سعر</th>
-                                <th class="p-4">خصم</th><th class="p-4">نوع</th><th class="p-4">حالة</th><th class="p-4">تحكم</th>
-                            </tr>
-                        </thead>
-                        <tbody id="servicesTableBody"><tr><td colspan="8" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody>
-                    </table>
-                </div>
             </div>
         </section>
 
@@ -234,14 +196,7 @@
         <section id="usersTab" class="admin-tab hidden space-y-4">
             <h1 class="text-xl font-black gold-text">👥 المستخدمين</h1>
             <input type="text" oninput="searchUsers(this.value)" placeholder="🔍 بحث..." class="w-full max-w-xs rounded-xl py-2.5 px-4 text-xs">
-            <div class="card-bg rounded-2xl overflow-hidden">
-                <table class="w-full text-right text-xs">
-                    <thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);">
-                        <tr><th class="p-4">اسم</th><th class="p-4">هاتف</th><th class="p-4">إيميل</th><th class="p-4">رصيد</th><th class="p-4">رتبة</th><th class="p-4">شحن/خصم</th></tr>
-                    </thead>
-                    <tbody id="usersTableBody"><tr><td colspan="6" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody>
-                </table>
-            </div>
+            <div class="card-bg rounded-2xl overflow-hidden"><table class="w-full text-right text-xs"><thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);"><tr><th class="p-4">اسم</th><th class="p-4">هاتف</th><th class="p-4">إيميل</th><th class="p-4">رصيد</th><th class="p-4">رتبة</th><th class="p-4">شحن/خصم</th></tr></thead><tbody id="usersTableBody"><tr><td colspan="6" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody></table></div>
         </section>
 
     </main>
@@ -253,15 +208,17 @@
             projectId: "zad1-85d66",
             storageBucket: "zad1-85d66.firebasestorage.app",
             messagingSenderId: "130593925562",
-            appId: "1:130593925562:web:709293e6c0827103d31583",
-            measurementId: "G-8JSD5S7P05"
+            appId: "1:130593925562:web:709293e6c0827103d31583"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         const ACCESS_CODE = "zad123";
+        const BASE_IMAGE_URL = "https://raw.githubusercontent.com/mediaplusly/assets/main/";
         let allUsers = [];
+        let allCategories = [];
         let allServices = [];
+        let currentCategoryId = null;
 
         function checkAccessCode() {
             if (document.getElementById("accessCode").value.trim() === ACCESS_CODE) {
@@ -274,7 +231,13 @@
             }
         }
 
-        function initDashboard() { loadStats(); loadOrders(); loadDeposits(); loadServices(); loadUsers(); }
+        function getImageUrl(img) {
+            if (!img) return '';
+            if (img.startsWith('http')) return img;
+            return BASE_IMAGE_URL + img;
+        }
+
+        function initDashboard() { loadStats(); loadOrders(); loadDeposits(); loadCategories(); loadServicesForAdmin(); loadUsers(); }
 
         function switchTab(tabId, btn) {
             document.querySelectorAll('.admin-tab').forEach(t => t.classList.add('hidden'));
@@ -298,21 +261,11 @@
 
         function loadOrders() {
             db.collection("orders").orderBy("ordered_at", "desc").limit(100).onSnapshot(snap => {
-                const tbody = document.getElementById("ordersTableBody");
-                tbody.innerHTML = "";
+                const tbody = document.getElementById("ordersTableBody"); tbody.innerHTML = "";
                 if (snap.empty) { tbody.innerHTML = '<tr><td colspan="7" class="text-center p-6" style="color:var(--muted);">لا توجد طلبات</td></tr>'; return; }
                 snap.forEach(doc => {
                     const o = doc.data();
-                    const badge = o.status === 'completed' ? '✅' : o.status === 'processing' ? '⏳' : '🕒';
-                    tbody.innerHTML += `<tr class="border-b" style="border-color:var(--border);">
-                        <td class="p-4"><input type="checkbox" value="${doc.id}" class="orderCheckbox accent-[#f5a623]"></td>
-                        <td class="p-4">${o.user_id||'---'}</td>
-                        <td class="p-4 gold-text">${o.service_title||'---'}</td>
-                        <td class="p-4">${o.target_input||'---'}</td>
-                        <td class="p-4">${(o.total_price||0).toFixed(2)} د.ل</td>
-                        <td class="p-4">${badge} ${o.status||'pending'}</td>
-                        <td class="p-4">${o.status==='pending'?`<button onclick="updateOrderStatus('${doc.id}')" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px]">قبول</button>`:'<span class="text-gray-500">تم</span>'}</td>
-                    </tr>`;
+                    tbody.innerHTML += `<tr class="border-b" style="border-color:var(--border);"><td class="p-4"><input type="checkbox" value="${doc.id}" class="orderCheckbox accent-[#f5a623]"></td><td class="p-4">${o.user_id||'---'}</td><td class="p-4 gold-text">${o.service_title||'---'}</td><td class="p-4">${o.target_input||'---'}</td><td class="p-4">${(o.total_price||0).toFixed(2)} د.ل</td><td class="p-4">${o.status==='completed'?'✅':o.status==='processing'?'⏳':'🕒'}</td><td class="p-4">${o.status==='pending'?`<button onclick="updateOrderStatus('${doc.id}')" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px]">قبول</button>`:'<span class="text-gray-500">تم</span>'}</td></tr>`;
                 });
             });
         }
@@ -328,20 +281,11 @@
 
         function loadDeposits() {
             db.collection("deposits").orderBy("submitted_at", "desc").limit(100).onSnapshot(snap => {
-                const tbody = document.getElementById("depositsTableBody");
-                tbody.innerHTML = "";
+                const tbody = document.getElementById("depositsTableBody"); tbody.innerHTML = "";
                 if (snap.empty) { tbody.innerHTML = '<tr><td colspan="6" class="text-center p-6" style="color:var(--muted);">لا توجد إيداعات</td></tr>'; return; }
                 snap.forEach(doc => {
                     const d = doc.data();
-                    const badge = d.status === 'approved' ? '✅' : d.status === 'rejected' ? '❌' : '🕒';
-                    tbody.innerHTML += `<tr class="border-b" style="border-color:var(--border);">
-                        <td class="p-4">${d.user_id||'---'}</td>
-                        <td class="p-4">${d.provider||'---'}</td>
-                        <td class="p-4 font-mono">${d.card_code||'---'}</td>
-                        <td class="p-4 gold-text">${(d.amount||0).toFixed(2)} د.ل</td>
-                        <td class="p-4">${badge} ${d.status||'pending'}</td>
-                        <td class="p-4">${d.status==='pending'?`<button onclick="approveDeposit('${doc.id}','${d.user_id}',${d.amount||0})" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px]">قبول</button> <button onclick="rejectDeposit('${doc.id}')" class="bg-red-600 text-white px-2 py-1 rounded text-[10px]">رفض</button>`:'<span class="text-gray-500">تم</span>'}</td>
-                    </tr>`;
+                    tbody.innerHTML += `<tr class="border-b" style="border-color:var(--border);"><td class="p-4">${d.user_id||'---'}</td><td class="p-4">${d.provider||'---'}</td><td class="p-4 font-mono">${d.card_code||'---'}</td><td class="p-4 gold-text">${(d.amount||0).toFixed(2)} د.ل</td><td class="p-4">${d.status==='approved'?'✅':d.status==='rejected'?'❌':'🕒'}</td><td class="p-4">${d.status==='pending'?`<button onclick="approveDeposit('${doc.id}','${d.user_id}',${d.amount||0})" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px]">قبول</button> <button onclick="rejectDeposit('${doc.id}')" class="bg-red-600 text-white px-2 py-1 rounded text-[10px]">رفض</button>`:'<span class="text-gray-500">تم</span>'}</td></tr>`;
                 });
             });
         }
@@ -355,42 +299,101 @@
             } catch (e) { alert("❌ " + e.message); }
         }
 
-        async function rejectDeposit(id) {
-            try { await db.collection("deposits").doc(id).update({ status: "rejected" }); } catch (e) { alert("❌ " + e.message); }
+        async function rejectDeposit(id) { try { await db.collection("deposits").doc(id).update({ status: "rejected" }); } catch (e) { alert("❌ " + e.message); } }
+
+        // ==================== الأقسام ====================
+        function loadCategories() {
+            db.collection("categories").get().then(snap => {
+                allCategories = [];
+                const tbody = document.getElementById("categoriesTableBody");
+                tbody.innerHTML = "";
+                if (snap.empty) { tbody.innerHTML = '<tr><td colspan="3" class="text-center p-6" style="color:var(--muted);">لا توجد أقسام</td></tr>'; return; }
+                snap.forEach(doc => {
+                    const c = doc.data(); c.id = doc.id; allCategories.push(c);
+                    const img = getImageUrl(c.image);
+                    tbody.innerHTML += `<tr class="border-b" style="border-color:var(--border);"><td class="p-4">${img?`<img src="${img}" class="w-10 h-10 rounded-lg object-cover">`:''}</td><td class="p-4 font-bold">${c.name}</td><td class="p-4"><button onclick="editCategory('${doc.id}')" class="text-blue-400 text-[10px]"><i class="fa-solid fa-pen"></i></button> <button onclick="deleteCategory('${doc.id}')" class="text-red-400 text-[10px]"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+                });
+                updateCategorySelect();
+                loadAdminCats();
+            });
         }
 
-        function loadServices() {
-            db.collection("services").orderBy("price").onSnapshot(snap => {
+        function updateCategorySelect() {
+            const select = document.getElementById("serviceCategory");
+            if (select) { select.innerHTML = '<option value="">اختر القسم...</option>'; allCategories.forEach(c => select.innerHTML += `<option value="${c.id}">${c.name}</option>`); }
+        }
+
+        function openCategoryModal() { document.getElementById("catId").value=""; document.getElementById("catName").value=""; document.getElementById("catImage").value=""; document.getElementById("catModalTitle").innerText="إضافة قسم"; document.getElementById("categoryModal").classList.remove("hidden"); }
+
+        function editCategory(id) {
+            const c = allCategories.find(x => x.id === id);
+            if (!c) return;
+            document.getElementById("catId").value = id;
+            document.getElementById("catName").value = c.name || "";
+            document.getElementById("catImage").value = c.image || "";
+            document.getElementById("catModalTitle").innerText = "تعديل قسم";
+            document.getElementById("categoryModal").classList.remove("hidden");
+        }
+
+        function closeCategoryModal() { document.getElementById("categoryModal").classList.add("hidden"); }
+
+        function saveCategory(e) {
+            e.preventDefault();
+            const id = document.getElementById("catId").value;
+            const data = { name: document.getElementById("catName").value, image: document.getElementById("catImage").value };
+            if (id) db.collection("categories").doc(id).update(data);
+            else db.collection("categories").add(data);
+            closeCategoryModal();
+            loadCategories();
+        }
+
+        function deleteCategory(id) { if (confirm("حذف القسم؟")) db.collection("categories").doc(id).delete(); }
+
+        // ==================== الخدمات ====================
+        function loadAdminCats() {
+            const grid = document.getElementById("adminCatsGrid");
+            if (!allCategories.length) { grid.innerHTML = '<div class="col-span-full text-center p-6" style="color:var(--muted);">لا توجد أقسام</div>'; return; }
+            grid.innerHTML = allCategories.map(c => {
+                const img = getImageUrl(c.image);
+                return `<div class="cat-card-admin" onclick="openCategoryServices('${c.id}', '${c.name}')">${img?`<img src="${img}">`:''}<div><p class="text-xs font-bold">${c.name}</p></div></div>`;
+            }).join('');
+        }
+
+        function loadServicesForAdmin() { loadAdminCats(); }
+
+        function openCategoryServices(catId, catName) {
+            currentCategoryId = catId;
+            document.getElementById("adminCatsView").classList.add("hidden");
+            document.getElementById("adminServicesView").classList.remove("hidden");
+            document.getElementById("adminServicesTitle").innerText = catName;
+            const tbody = document.getElementById("servicesTableBody");
+            tbody.innerHTML = '<tr><td colspan="8" class="text-center p-6" style="color:var(--muted);">⏳ جاري الجلب...</td></tr>';
+            db.collection("services").where("category", "==", catId).get().then(snap => {
                 allServices = [];
-                const tbody = document.getElementById("servicesTableBody");
                 tbody.innerHTML = "";
                 if (snap.empty) { tbody.innerHTML = '<tr><td colspan="8" class="text-center p-6" style="color:var(--muted);">لا توجد خدمات</td></tr>'; return; }
-                snap.forEach(doc => {
-                    const s = doc.data(); s.service_id = doc.id; allServices.push(s);
+                snap.forEach(doc => { const s = doc.data(); s.service_id = doc.id; allServices.push(s); });
+                allServices.sort((a, b) => (a.order || 0) - (b.order || 0));
+                allServices.forEach(s => {
                     const discount = s.discount || 0;
-                    tbody.innerHTML += `<tr class="border-b" style="border-color:var(--border);">
-                        <td class="p-4"><input type="checkbox" value="${doc.id}" class="serviceCheckbox accent-[#f5a623]"></td>
-                        <td class="p-4 font-bold">${s.title||'---'}</td>
-                        <td class="p-4">${s.category||'---'}</td>
-                        <td class="p-4 gold-text">${(s.price||0).toFixed(3)}</td>
-                        <td class="p-4">${discount>0?`<span class="discount-badge-admin">-${discount}%</span>`:'--'}</td>
-                        <td class="p-4">${s.type==='phone'?'📞':s.type==='none'?'📦':'🎮'}</td>
-                        <td class="p-4">${s.status!==false?'✅':'❌'}</td>
-                        <td class="p-4"><button onclick="editService('${doc.id}')" class="text-blue-400 text-[10px]"><i class="fa-solid fa-pen"></i></button> <button onclick="deleteService('${doc.id}')" class="text-red-400 text-[10px] mr-1"><i class="fa-solid fa-trash"></i></button></td>
-                    </tr>`;
+                    const img = getImageUrl(s.image);
+                    tbody.innerHTML += `<tr class="border-b" style="border-color:var(--border);"><td class="p-4"><input type="checkbox" value="${s.service_id}" class="serviceCheckbox accent-[#f5a623]"></td><td class="p-4">${img?`<img src="${img}" class="w-10 h-10 rounded-lg object-cover">`:''}</td><td class="p-4 font-bold">${s.title||'---'}</td><td class="p-4 gold-text">${(s.price||0).toFixed(3)}</td><td class="p-4">${discount>0?`<span class="discount-badge-admin">-${discount}%</span>`:'--'}</td><td class="p-4">${s.type==='phone'?'📞':s.type==='none'?'📦':'🎮'}</td><td class="p-4">${s.status!==false?'✅':'❌'}</td><td class="p-4"><button onclick="editService('${s.service_id}')" class="text-blue-400 text-[10px]"><i class="fa-solid fa-pen"></i></button> <button onclick="deleteService('${s.service_id}')" class="text-red-400 text-[10px]"><i class="fa-solid fa-trash"></i></button></td></tr>`;
                 });
             });
         }
 
+        function backToCats() { document.getElementById("adminServicesView").classList.add("hidden"); document.getElementById("adminCatsView").classList.remove("hidden"); currentCategoryId = null; }
+
         function openServiceModal() {
             document.getElementById("serviceId").value = "";
             document.getElementById("serviceTitle").value = "";
-            document.getElementById("serviceCategory").value = "";
             document.getElementById("servicePrice").value = "";
             document.getElementById("serviceDiscount").value = "0";
+            document.getElementById("serviceImage").value = "";
             document.getElementById("serviceDescription").value = "";
             document.getElementById("serviceStatus").value = "true";
             document.getElementById("serviceType").value = "id";
+            if (currentCategoryId) document.getElementById("serviceCategory").value = currentCategoryId;
             document.getElementById("serviceModalTitle").innerText = "إضافة خدمة جديدة";
             document.getElementById("serviceModal").classList.remove("hidden");
         }
@@ -400,12 +403,13 @@
             if (!s) return;
             document.getElementById("serviceId").value = id;
             document.getElementById("serviceTitle").value = s.title || "";
-            document.getElementById("serviceCategory").value = s.category || "";
             document.getElementById("servicePrice").value = s.price || 0;
             document.getElementById("serviceDiscount").value = s.discount || 0;
+            document.getElementById("serviceImage").value = s.image || "";
             document.getElementById("serviceDescription").value = s.description || "";
             document.getElementById("serviceStatus").value = String(s.status !== false);
             document.getElementById("serviceType").value = s.type || "id";
+            document.getElementById("serviceCategory").value = s.category || "";
             document.getElementById("serviceModalTitle").innerText = "تعديل خدمة";
             document.getElementById("serviceModal").classList.remove("hidden");
         }
@@ -420,51 +424,40 @@
                 category: document.getElementById("serviceCategory").value,
                 price: parseFloat(document.getElementById("servicePrice").value) || 0,
                 discount: parseInt(document.getElementById("serviceDiscount").value) || 0,
+                image: document.getElementById("serviceImage").value,
                 description: document.getElementById("serviceDescription").value,
                 status: document.getElementById("serviceStatus").value === "true",
-                type: document.getElementById("serviceType").value
+                type: document.getElementById("serviceType").value,
+                order: Date.now()
             };
             if (id) db.collection("services").doc(id).update(data);
             else db.collection("services").add(data);
             closeServiceModal();
             loadStats();
+            if (currentCategoryId) openCategoryServices(currentCategoryId, '');
         }
 
-        function deleteService(id) {
-            if (confirm("حذف هذه الخدمة؟")) db.collection("services").doc(id).delete();
-        }
+        function deleteService(id) { if (confirm("حذف الخدمة؟")) { db.collection("services").doc(id).delete().then(() => { if (currentCategoryId) openCategoryServices(currentCategoryId, ''); }); } }
 
         function deleteSelectedServices() {
             const cbs = document.querySelectorAll('.serviceCheckbox:checked');
             if (!cbs.length) return alert("حدد خدمات");
             if (!confirm(`حذف ${cbs.length} خدمة؟`)) return;
             const batch = db.batch(); cbs.forEach(cb => batch.delete(db.collection("services").doc(cb.value)));
-            batch.commit().then(() => { document.getElementById("selectAllServices").checked = false; loadStats(); });
+            batch.commit().then(() => { document.getElementById("selectAllServices").checked = false; if (currentCategoryId) openCategoryServices(currentCategoryId, ''); });
         }
 
         function loadUsers() {
             db.collection("users").limit(100).onSnapshot(snap => {
-                allUsers = [];
-                snap.forEach(doc => { const u = doc.data(); u.uid = doc.id; allUsers.push(u); });
-                renderUsersTable(allUsers);
+                allUsers = []; snap.forEach(doc => { const u = doc.data(); u.uid = doc.id; allUsers.push(u); }); renderUsersTable(allUsers);
             });
         }
 
         function renderUsersTable(arr) {
-            const t = document.getElementById("usersTableBody");
-            t.innerHTML = "";
+            const t = document.getElementById("usersTableBody"); t.innerHTML = "";
             if (!arr.length) { t.innerHTML = '<tr><td colspan="6" class="text-center p-6" style="color:var(--muted);">لا يوجد</td></tr>'; return; }
             arr.forEach(u => {
-                t.innerHTML += `<tr class="border-b" style="border-color:var(--border);">
-                    <td class="p-4">${u.name||'---'}</td>
-                    <td class="p-4 font-mono">${u.phone||'---'}</td>
-                    <td class="p-4 text-[11px]">${u.email||'---'}</td>
-                    <td class="p-4 gold-text">${(u.wallet_balance||0).toFixed(4)}</td>
-                    <td class="p-4">${u.role==='admin'?'👑':'👤'}</td>
-                    <td class="p-4"><input type="number" step="0.01" id="wallet_${u.uid}" class="w-16 rounded p-1 text-center text-xs" placeholder="مبلغ" style="background:#0a0a0a;border:1px solid var(--border);color:#fff;">
-                    <button onclick="updateWallet('${u.uid}','add')" class="bg-emerald-600 text-white px-2 py-0.5 rounded text-[10px]">+</button>
-                    <button onclick="updateWallet('${u.uid}','sub')" class="bg-red-600 text-white px-2 py-0.5 rounded text-[10px]">-</button></td>
-                </tr>`;
+                t.innerHTML += `<tr class="border-b" style="border-color:var(--border);"><td class="p-4">${u.name||'---'}</td><td class="p-4 font-mono">${u.phone||'---'}</td><td class="p-4 text-[11px]">${u.email||'---'}</td><td class="p-4 gold-text">${(u.wallet_balance||0).toFixed(4)}</td><td class="p-4">${u.role==='admin'?'👑':'👤'}</td><td class="p-4"><input type="number" step="0.01" id="wallet_${u.uid}" class="w-16 rounded p-1 text-center text-xs" placeholder="مبلغ" style="background:#0a0a0a;border:1px solid var(--border);color:#fff;"><button onclick="updateWallet('${u.uid}','add')" class="bg-emerald-600 text-white px-2 py-0.5 rounded text-[10px]">+</button> <button onclick="updateWallet('${u.uid}','sub')" class="bg-red-600 text-white px-2 py-0.5 rounded text-[10px]">-</button></td></tr>`;
             });
         }
 
@@ -474,10 +467,7 @@
             const u = allUsers.find(x => x.uid === uid);
             if (!u) return;
             const nb = type === 'add' ? (u.wallet_balance||0)+v : Math.max(0,(u.wallet_balance||0)-v);
-            db.collection("users").doc(uid).update({ wallet_balance: nb }).then(() => {
-                document.getElementById(`wallet_${uid}`).value = "";
-                loadStats();
-            });
+            db.collection("users").doc(uid).update({ wallet_balance: nb }).then(() => { document.getElementById(`wallet_${uid}`).value = ""; loadStats(); });
         }
 
         function searchUsers(term) {
