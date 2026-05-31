@@ -63,32 +63,53 @@
     </div>
 
     <script>
+        // ========== إعدادات مشروع زاد الرسمية ==========
         const firebaseConfig = {
-            apiKey: "AIzaSyARNJOPAycWU3YJdZSBN1d9uoLrvso3i4Y",
-            authDomain: "cd-card-87365.firebaseapp.com",
-            projectId: "cd-card-87365",
-            storageBucket: "cd-card-87365.firebasestorage.app"
+            apiKey: "AIzaSyAJgwaMBo5wxM5BEK9nRrrNg04UGdHyAV0",
+            authDomain: "zad1-85d66.firebaseapp.com",
+            projectId: "zad1-85d66",
+            storageBucket: "zad1-85d66.firebasestorage.app",
+            messagingSenderId: "130593925562",
+            appId: "1:130593925562:web:709293e6c0827103d31583"
         };
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        console.log("✅ Firebase Loaded");
-        window.onerror = function(msg, src, line, col, err) { console.log("❌ ERROR:", msg, "LINE:", line); };
-
-        function showRegister() { document.getElementById('loginForm').classList.add('hidden'); document.getElementById('registerForm').classList.remove('hidden'); }
-        function showLogin() { document.getElementById('registerForm').classList.add('hidden'); document.getElementById('loginForm').classList.remove('hidden'); }
+        function showRegister() { 
+            document.getElementById('loginForm').classList.add('hidden'); 
+            document.getElementById('registerForm').classList.remove('hidden'); 
+        }
+        function showLogin() { 
+            document.getElementById('registerForm').classList.add('hidden'); 
+            document.getElementById('loginForm').classList.remove('hidden'); 
+        }
 
         function handleLogin() {
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
             const errorDiv = document.getElementById('loginError');
             const errorText = document.getElementById('loginErrorText');
-            const card = document.querySelector('.glass-card');
             errorDiv.classList.add('hidden');
-            if (!email || !password) { errorText.innerText = '⚠️ أدخل البريد وكلمة المرور'; errorDiv.classList.remove('hidden'); card.classList.add('shake-error'); setTimeout(() => card.classList.remove('shake-error'), 600); return; }
-            const btn = document.getElementById('loginBtn'); btn.disabled = true; btn.innerHTML = '<span class="loader-spinner"></span> جاري الدخول...';
-            auth.signInWithEmailAndPassword(email, password).then(() => window.location.href = 'index.html').catch(err => { btn.disabled = false; btn.innerHTML = '🚀 تسجيل الدخول'; errorText.innerText = '❌ ' + (err.message || 'خطأ'); errorDiv.classList.remove('hidden'); });
+            
+            if (!email || !password) {
+                errorText.innerText = '⚠️ أدخل البريد وكلمة المرور';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+            
+            const btn = document.getElementById('loginBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loader-spinner"></span> جاري الدخول...';
+            
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => window.location.href = 'index.html')
+                .catch(err => {
+                    btn.disabled = false;
+                    btn.innerHTML = '🚀 تسجيل الدخول';
+                    errorText.innerText = '❌ ' + (err.message || 'خطأ في تسجيل الدخول');
+                    errorDiv.classList.remove('hidden');
+                });
         }
 
         function handleRegister() {
@@ -98,15 +119,56 @@
             const password = document.getElementById('regPassword').value;
             const errorDiv = document.getElementById('regError');
             const errorText = document.getElementById('regErrorText');
-            const card = document.querySelector('.glass-card');
             errorDiv.classList.add('hidden');
-            if (!name || !email || !password) { errorText.innerText = '⚠️ أدخل الاسم والبريد وكلمة المرور'; errorDiv.classList.remove('hidden'); card.classList.add('shake-error'); setTimeout(() => card.classList.remove('shake-error'), 600); return; }
-            if (password.length < 6) { errorText.innerText = '⚠️ كلمة المرور 6 خانات على الأقل'; errorDiv.classList.remove('hidden'); card.classList.add('shake-error'); setTimeout(() => card.classList.remove('shake-error'), 600); return; }
-            const btn = document.getElementById('regBtn'); btn.disabled = true; btn.innerHTML = '<span class="loader-spinner"></span> جاري الإنشاء...';
-            auth.createUserWithEmailAndPassword(email, password).then((cred) => { return db.collection("users").doc(cred.user.uid).set({ username: name, name: name, phone: phone || '', email: email, balance: 0, role: "user", createdAt: firebase.firestore.FieldValue.serverTimestamp() }); }).then(() => { window.location.href = 'index.html'; }).catch(err => { btn.disabled = false; btn.innerHTML = '📝 إنشاء الحساب'; errorText.innerText = '❌ ' + (err.message || 'خطأ'); errorDiv.classList.remove('hidden'); });
+            
+            if (!name || !email || !password) {
+                errorText.innerText = '⚠️ أدخل الاسم والبريد وكلمة المرور';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+            if (password.length < 6) {
+                errorText.innerText = '⚠️ كلمة المرور 6 خانات على الأقل';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+            
+            const btn = document.getElementById('regBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loader-spinner"></span> جاري الإنشاء...';
+            
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((cred) => {
+                    return db.collection("users").doc(cred.user.uid).set({
+                        name: name,
+                        username: name,
+                        phone: phone || '',
+                        email: email,
+                        balance: 0,
+                        wallet_balance: 0,
+                        role: "user",
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .then(() => {
+                    window.location.href = 'index.html';
+                })
+                .catch(err => {
+                    btn.disabled = false;
+                    btn.innerHTML = '📝 إنشاء الحساب';
+                    errorText.innerText = '❌ ' + (err.message || 'خطأ في إنشاء الحساب');
+                    errorDiv.classList.remove('hidden');
+                });
         }
 
-        document.addEventListener('keydown', (e) => { if (e.key === 'Enter') { if (!document.getElementById('registerForm').classList.contains('hidden')) handleRegister(); else handleLogin(); } });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                if (!document.getElementById('registerForm').classList.contains('hidden')) {
+                    handleRegister();
+                } else {
+                    handleLogin();
+                }
+            }
+        });
     </script>
 </body>
 </html>
