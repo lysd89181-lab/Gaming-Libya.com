@@ -98,7 +98,7 @@
 
     <div class="bottom-nav"><div class="nav-item active" data-tab="home" onclick="switchTab('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>الرئيسية</div><div class="nav-item" data-tab="wallet" onclick="switchTab('wallet')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3"/></svg>المحفظة</div><div class="nav-item" data-tab="account" onclick="switchTab('account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>حسابي</div></div>
 
-    <!-- مودال الخطوتين -->
+    <!-- ✅ مودال الخطوتين - تم إصلاح ظهور الحقول -->
     <div id="detailModal" class="modal-overlay hidden" onclick="closeDetailModal()">
         <div class="modal" onclick="event.stopPropagation()">
             <button class="close" onclick="closeDetailModal()">✕</button>
@@ -106,20 +106,36 @@
             <div id="dDiscountBadge" style="text-align:center;"></div>
             <div class="old-price-big hidden" id="dOldPrice"></div>
             <p class="modal-desc" id="dDesc"></p>
+            
+            <!-- ✅ الخطوة 1: العداد والسعر فقط -->
             <div id="stepQuantityNew" class="modal-step">
                 <div id="quantitySectionNew" class="quantity-section-new hidden"><label>🔢 الكمية المطلوبة</label><input type="number" id="coinAmountNew" class="quantity-input-new" min="30" max="10000" value="30"><input type="range" id="coinSliderNew" class="quantity-slider-new" min="30" max="10000" value="30" step="1"></div>
                 <div id="fixedPriceSection" class="price-display-new hidden">السعر: <span id="fixedPriceDisplay">0.000</span> د.ل</div>
                 <div id="dynamicPriceSection" class="price-display-new hidden">السعر الإجمالي: <span id="totalPriceNew">0.000</span> د.ل</div>
                 <button class="next-btn-new" id="nextBtnNew" onclick="goToStep2()">✅ تم، الانتقال لتعبئة البيانات</button>
             </div>
+            
+            <!-- ✅ الخطوة 2: حقول البيانات + رقم التواصل -->
             <div id="stepDataNew" class="modal-step hidden">
                 <div class="step-divider"></div>
                 <h4 style="margin-bottom:12px;color:var(--gold);font-size:14px;">📋 بيانات الطلب</h4>
                 <div class="rules"><h5>⚠️ تنبيه</h5><ul><li>المنتج <b style="color:#f87171">غير قابل للاسترداد</b></li><li>تأكد من <b style="color:#fff">صحة البيانات</b></li><li>التعويض خلال <b style="color:#fff">24 ساعة</b></li></ul></div>
-                <input type="text" id="targetInput" placeholder="🎮 معرف اللاعب (ID)" dir="ltr">
-                <input type="text" id="phoneInput" placeholder="📞 رقم الهاتف" dir="ltr">
-                <input type="text" id="accountLinkInput" placeholder="🔗 رابط الحساب" dir="ltr">
+                
+                <!-- ✅ حقل ID اللاعب (يظهر حسب النوع) -->
+                <div id="fieldId" class="hidden">
+                    <input type="text" id="targetInput" placeholder="🎮 معرف اللاعب (ID)" dir="ltr">
+                </div>
+                <!-- ✅ حقل رقم الهاتف (يظهر حسب النوع) -->
+                <div id="fieldPhone" class="hidden">
+                    <input type="text" id="phoneInput" placeholder="📞 رقم الهاتف المطلوب شحنه" dir="ltr">
+                </div>
+                <!-- ✅ حقل رابط الحساب (يظهر حسب النوع) -->
+                <div id="fieldAccount" class="hidden">
+                    <input type="text" id="accountLinkInput" placeholder="🔗 رابط الحساب أو اليوزر" dir="ltr">
+                </div>
+                <!-- ✅ حقل رقم التواصل (دايماً يظهر) -->
                 <input type="text" id="contactPhone" placeholder="📞 رقم التواصل (للاتصال بك)" dir="ltr">
+                
                 <button class="submit-btn-new" onclick="confirmPurchase()">✅ تأكيد الطلب النهائي</button>
             </div>
         </div>
@@ -132,7 +148,6 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
         
-        // ✅ إعدادات بوت تيليجرام للإشعارات من جانب العميل
         const BOT_TOKEN = "8997771047:AAGaA40B6up-_mvYi0CFKZiqW5Jqnm1HPP8";
         const CHAT_ID = "8997771047";
         
@@ -146,7 +161,7 @@
             } catch (e) { console.log('Telegram notify error:', e.message); }
         }
         
-        let allCategories=[], allProducts=[], userData=null, userBalance=0, currentProduct=null, unitPrice=0, currentQtyMin=30, isQuantityMode=false;
+        let allCategories=[], allProducts=[], userData=null, userBalance=0, currentProduct=null, unitPrice=0, currentQtyMin=30, isQuantityMode=false, currentServiceType='id';
 
         function switchTab(tab){document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));document.getElementById(tab+'Page').classList.remove('hidden');document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const navItem=document.querySelector(`[data-tab="${tab}"]`);if(navItem)navItem.classList.add('active');}
         function switchPaymentMethod(type,btn){document.getElementById('paymentLibyana').classList.add('hidden');document.getElementById('paymentBinance').classList.add('hidden');document.getElementById('paymentBank').classList.add('hidden');document.getElementById('paymentCards').classList.add('hidden');const map={libyana:'paymentLibyana',binance:'paymentBinance',bank:'paymentBank',cards:'paymentCards'};if(map[type])document.getElementById(map[type]).classList.remove('hidden');document.querySelectorAll('.payment-method-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');}
@@ -158,6 +173,21 @@
         function goToStep2(){
             if(!currentProduct)return;
             if(isQuantityMode){const qty=parseInt(document.getElementById('coinAmountNew').value);if(qty<currentQtyMin)return alert(`⚠️ الحد الأدنى ${currentQtyMin} قطعة`);}
+            
+            // ✅ إظهار الحقل المناسب حسب نوع الخدمة
+            document.getElementById('fieldId').classList.add('hidden');
+            document.getElementById('fieldPhone').classList.add('hidden');
+            document.getElementById('fieldAccount').classList.add('hidden');
+            
+            if(currentServiceType==='id'){
+                document.getElementById('fieldId').classList.remove('hidden');
+            }else if(currentServiceType==='phone'){
+                document.getElementById('fieldPhone').classList.remove('hidden');
+            }else if(currentServiceType==='account'){
+                document.getElementById('fieldAccount').classList.remove('hidden');
+            }
+            // لو none = لا يظهر أي حقل بيانات (فقط رقم التواصل)
+            
             document.getElementById('stepDataNew').classList.remove('hidden');
             document.getElementById('stepDataNew').scrollIntoView({behavior:'smooth'});
         }
@@ -178,17 +208,29 @@
             if(!prod)return;
             currentProduct=prod;
             const discount=prod.discount||0;
-            const type=prod.type||'id';
+            currentServiceType=prod.type||'id';
+            isQuantityMode=false;
+            
+            // إعادة ضبط المودال
             document.getElementById('stepDataNew').classList.add('hidden');
             document.getElementById('stepQuantityNew').classList.remove('hidden');
-            document.getElementById('targetInput').classList.add('hidden');
-            document.getElementById('phoneInput').classList.add('hidden');
-            document.getElementById('accountLinkInput').classList.add('hidden');
+            
+            // إخفاء كل أقسام الحقول
+            document.getElementById('fieldId').classList.add('hidden');
+            document.getElementById('fieldPhone').classList.add('hidden');
+            document.getElementById('fieldAccount').classList.add('hidden');
             document.getElementById('quantitySectionNew').classList.add('hidden');
             document.getElementById('fixedPriceSection').classList.add('hidden');
             document.getElementById('dynamicPriceSection').classList.add('hidden');
+            
+            // مسح القيم القديمة
+            document.getElementById('targetInput').value='';
+            document.getElementById('phoneInput').value='';
+            document.getElementById('accountLinkInput').value='';
+            document.getElementById('contactPhone').value='';
+            
             const finalPrice=discount>0?(prod.price||0)-((prod.price||0)*discount/100):(prod.price||0);
-            isQuantityMode=false;
+            
             if(prod.enableQuantity){
                 isQuantityMode=true;
                 currentQtyMin=prod.qtyMin||30;
@@ -207,11 +249,12 @@
             }else{
                 document.getElementById('fixedPriceSection').classList.remove('hidden');
                 document.getElementById('fixedPriceDisplay').innerText=finalPrice.toFixed(3);
-                if(type==='id'){document.getElementById('targetInput').classList.remove('hidden');document.getElementById('dDesc').innerText='النوع: ID لاعب';}
-                else if(type==='phone'){document.getElementById('phoneInput').classList.remove('hidden');document.getElementById('dDesc').innerText='النوع: رقم هاتف';}
-                else if(type==='account'){document.getElementById('accountLinkInput').classList.remove('hidden');document.getElementById('dDesc').innerText='النوع: رابط حساب';}
+                if(currentServiceType==='id'){document.getElementById('dDesc').innerText='النوع: ID لاعب';}
+                else if(currentServiceType==='phone'){document.getElementById('dDesc').innerText='النوع: رقم هاتف';}
+                else if(currentServiceType==='account'){document.getElementById('dDesc').innerText='النوع: رابط حساب';}
                 else{document.getElementById('dDesc').innerText='النوع: مباشر';}
             }
+            
             document.getElementById('dImg').src=getImageUrl(prod.image);
             document.getElementById('dName').innerText=prod.title;
             document.getElementById('dDiscountBadge').innerHTML='';
@@ -221,7 +264,7 @@
                 document.getElementById('dOldPrice').classList.remove('hidden');
                 document.getElementById('dOldPrice').innerText=`${(prod.price||0).toFixed(3)} د.ل`;
             }
-            document.getElementById('contactPhone').value='';
+            
             document.getElementById('coinAmountNew').oninput=function(){updateAmountNew(this.value);};
             document.getElementById('coinSliderNew').oninput=function(){updateQuantityNew(this.value);};
             document.getElementById('detailModal').classList.remove('hidden');
@@ -231,12 +274,13 @@
         
         async function confirmPurchase(){
             if(!currentProduct)return;
-            const type=currentProduct.type||'id';
             const user=auth.currentUser;
             if(!user)return alert('⚠️ سجل دخول أولاً');
             const contactPhone=document.getElementById('contactPhone').value.trim();
             if(!contactPhone)return alert('⚠️ أدخل رقم التواصل');
+            
             let finalPrice,quantity=1,orderData='';
+            
             if(isQuantityMode){
                 quantity=parseInt(document.getElementById('coinAmountNew').value);
                 if(quantity<currentQtyMin)return alert(`⚠️ الحد الأدنى ${currentQtyMin}`);
@@ -245,18 +289,18 @@
             }else{
                 const discount=currentProduct.discount||0;
                 finalPrice=discount>0?(currentProduct.price||0)-((currentProduct.price||0)*discount/100):(currentProduct.price||0);
-                if(type==='id'){orderData=document.getElementById('targetInput').value.trim();if(!orderData)return alert('⚠️ أدخل ID اللاعب');}
-                else if(type==='phone'){orderData=document.getElementById('phoneInput').value.trim();if(!orderData)return alert('⚠️ أدخل رقم الهاتف');}
-                else if(type==='account'){orderData=document.getElementById('accountLinkInput').value.trim();if(!orderData)return alert('🔗 أدخل رابط الحساب');}
+                if(currentServiceType==='id'){orderData=document.getElementById('targetInput').value.trim();if(!orderData)return alert('⚠️ أدخل ID اللاعب');}
+                else if(currentServiceType==='phone'){orderData=document.getElementById('phoneInput').value.trim();if(!orderData)return alert('⚠️ أدخل رقم الهاتف المطلوب شحنه');}
+                else if(currentServiceType==='account'){orderData=document.getElementById('accountLinkInput').value.trim();if(!orderData)return alert('🔗 أدخل رابط الحساب أو اليوزر');}
                 else{orderData='مباشر';}
             }
+            
             if(userBalance<finalPrice)return alert('⚠️ رصيد غير كافٍ');
             const newBalance=userBalance-finalPrice;
             try{
                 await db.collection("users").doc(user.uid).update({balance:newBalance});
-                await db.collection("orders").add({userId:user.uid,userName:userData?.name||'',serviceTitle:currentProduct.title,serviceType:type,targetInput:orderData,quantity:quantity,contactPhone:contactPhone,totalPrice:finalPrice,status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-                // ✅ إرسال إشعار تيليجرام فوري من جهاز الزبون
-                const typeIcon=type==='id'?'🎮':type==='phone'?'📞':type==='account'?'🔗':'📦';
+                await db.collection("orders").add({userId:user.uid,userName:userData?.name||'',serviceTitle:currentProduct.title,serviceType:currentServiceType,targetInput:orderData,quantity:quantity,contactPhone:contactPhone,totalPrice:finalPrice,status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+                const typeIcon=currentServiceType==='id'?'🎮':currentServiceType==='phone'?'📞':currentServiceType==='account'?'🔗':'📦';
                 await sendTelegramFromClient(`📦 *طلب جديد!*\n\n👤 ${userData?.name||'---'}\n🎮 ${currentProduct.title}\n${typeIcon} ${orderData}\n📞 ${contactPhone}\n🔢 الكمية: ${quantity}\n💰 ${finalPrice.toFixed(2)} د.ل\n\n🕒 بحاجة للمراجعة`);
                 closeDetailModal();
                 alert(`🎉 تم الطلب بنجاح!\n${currentProduct.title}\n${finalPrice.toFixed(3)} د.ل`);
