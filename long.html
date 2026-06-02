@@ -374,7 +374,7 @@
             btn.disabled = true;
             btn.innerHTML = '<span class="loader-spinner"></span> جاري الدخول...';
             
-            auth.signInWithEmailAndPassword(email, password)
+            firebase.auth().signInWithEmailAndPassword(email, password)
                 .then(() => window.location.href = 'index.html')
                 .catch(err => {
                     btn.disabled = false;
@@ -421,7 +421,7 @@
             btn.disabled = true;
             btn.innerHTML = '<span class="loader-spinner"></span> جاري الإنشاء...';
             
-            auth.createUserWithEmailAndPassword(email, password)
+            firebase.auth().createUserWithEmailAndPassword(email, password)
                 .then((cred) => {
                     return db.collection("users").doc(cred.user.uid).set({
                         name: name,
@@ -455,7 +455,7 @@
                 });
         }
 
-        // ========== استعادة كلمة المرور ==========
+        // ========== ✅ استعادة كلمة المرور - النسخة المصححة ==========
         function handleResetPassword() {
             const email = document.getElementById('resetEmail').value.trim();
             const errorDiv = document.getElementById('resetError');
@@ -476,7 +476,8 @@
             btn.disabled = true;
             btn.innerHTML = '<span class="loader-spinner"></span> جاري الإرسال...';
             
-            auth.sendPasswordResetEmail(email)
+            // ✅ استدعاء Firebase v8 بالطريقة المباشرة الكاملة
+            firebase.auth().sendPasswordResetEmail(email)
                 .then(() => {
                     btn.disabled = false;
                     btn.innerHTML = '📧 إرسال رابط الاستعادة';
@@ -493,6 +494,8 @@
                         errorMessage = '❌ لا يوجد حساب بهذا البريد الإلكتروني';
                     } else if (err.code === 'auth/invalid-email') {
                         errorMessage = '❌ صيغة البريد الإلكتروني غير صحيحة';
+                    } else {
+                        errorMessage = '❌ خطأ: ' + err.message;
                     }
                     
                     errorText.innerText = errorMessage;
