@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0a0a0a">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap');
-        :root { --bg: #0a0a0a; --card-bg: rgba(20,20,20,0.85); --gold: #f5a623; --white: #fff; --muted: #a1a1aa; --neon-gold: 0 0 15px rgba(245,166,35,0.3),0 0 30px rgba(245,166,35,0.08); --border-gold: 1px solid rgba(245,166,35,0.3); --red: #ef4444; --green: #10b981; --cyan: #00fff0; }
+        :root { --bg: #0a0a0a; --card-bg: rgba(20,20,20,0.85); --gold: #f5a623; --white: #fff; --muted: #a1a1aa; --neon-gold: 0 0 15px rgba(245,166,35,0.3),0 0 30px rgba(245,166,35,0.08); --border-gold: 1px solid rgba(245,166,35,0.3); --red: #ef4444; --green: #10b981; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
         body { background: var(--bg); background-image: radial-gradient(circle at 30% 30%, rgba(245,166,35,0.04) 0%, transparent 60%), radial-gradient(circle at 70% 70%, rgba(245,166,35,0.03) 0%, transparent 60%); color: var(--white); min-height: 100vh; padding-bottom: 80px; -webkit-overflow-scrolling: touch; }
         .top-bar { background: rgba(10,10,10,0.95); backdrop-filter: blur(15px); padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(245,166,35,0.2); box-shadow: var(--neon-gold); gap: 10px; }
@@ -51,9 +51,6 @@
         .payment-method-btn { background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.3); border-radius: 12px; padding: 10px 6px; text-align: center; cursor: pointer; transition: all 0.3s; font-size: 10px; font-weight: 700; color: var(--white); }
         .payment-method-btn.active { background: linear-gradient(135deg, #b8860b, var(--gold)); color: #000; border-color: var(--gold); box-shadow: var(--neon-gold); }
         .payment-method-btn .icon { font-size: 20px; display: block; margin-bottom: 4px; }
-        
-        /* ✅ العداد المطور */
-        .modal-step { transition: all 0.3s; }
         .quantity-section-new { background: #1a1a1a; padding: 16px; border-radius: 12px; margin-bottom: 12px; border: 1px solid rgba(245,166,35,0.2); }
         .quantity-section-new label { font-weight: 700; display: block; margin-bottom: 10px; color: var(--gold); font-size: 13px; }
         .quantity-input-new { width: 100%; padding: 12px; font-size: 18px; background: #0a0a0a; color: #fff; border: 2px solid rgba(245,166,35,0.4); border-radius: 8px; text-align: center; margin-bottom: 12px; font-family: 'Cairo', sans-serif; }
@@ -65,7 +62,6 @@
         .next-btn-new:active { transform: scale(0.95); }
         .step-divider { border-top: 2px dashed rgba(245,166,35,0.3); padding-top: 16px; margin-top: 16px; }
         .submit-btn-new { width: 100%; background: var(--gold); color: #000; border: none; padding: 14px; font-size: 16px; font-weight: 900; border-radius: 8px; cursor: pointer; margin-top: 16px; font-family: 'Cairo', sans-serif; box-shadow: var(--neon-gold); }
-        
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 12px; }
         .modal { background: rgba(20,20,20,0.98); backdrop-filter: blur(15px); border: 1px solid rgba(245,166,35,0.4); border-radius: 24px; padding: 18px; max-width: 450px; width: 100%; max-height: 90vh; overflow-y: auto; color: #fff; position: relative; box-shadow: var(--neon-gold); }
         .modal .close { position: absolute; top: 12px; left: 12px; background: rgba(255,255,255,0.1); border: none; color: #fff; width: 30px; height: 30px; border-radius: 50%; font-size: 15px; cursor: pointer; z-index: 10; }
@@ -74,9 +70,8 @@
         .modal .modal-desc { text-align: center; font-size: 11px; color: var(--muted); margin-bottom: 10px; }
         .modal .rules { background: rgba(0,0,0,0.4); border-radius: 12px; padding: 10px; margin: 8px 0; font-size: 10px; text-align: right; border: 1px solid rgba(245,166,35,0.1); }
         .modal .rules h5 { color: var(--gold); margin-bottom: 4px; font-size: 11px; } .modal .rules li { color: #ccc; margin: 3px 0; padding-right: 10px; }
-        .modal input, .modal select { width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid rgba(245,166,35,0.3); border-radius: 12px; color: #fff; font-size: 14px; text-align: left; direction: ltr; margin: 8px 0; outline: none; font-family: 'Cairo', sans-serif; }
-        .modal input:focus, .modal select:focus { border-color: var(--gold); }
-        .modal select { text-align: right; direction: rtl; }
+        .modal input { width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid rgba(245,166,35,0.3); border-radius: 12px; color: #fff; font-size: 14px; text-align: left; direction: ltr; margin: 8px 0; outline: none; font-family: 'Cairo', sans-serif; }
+        .modal input:focus { border-color: var(--gold); }
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(20,20,20,0.98); border-top: var(--border-gold); display: flex; justify-content: space-around; align-items: center; padding: 8px 0 12px; z-index: 200; box-shadow: var(--neon-gold); }
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 10px; color: var(--muted); cursor: pointer; padding: 4px 12px; border-radius: 12px; transition: all 0.2s; }
         .nav-item.active { color: var(--gold); font-weight: 700; } .nav-item.active::before { content: ''; width: 20px; height: 3px; background: var(--gold); border-radius: 3px; margin-bottom: 2px; box-shadow: var(--neon-gold); }
@@ -103,7 +98,7 @@
 
     <div class="bottom-nav"><div class="nav-item active" data-tab="home" onclick="switchTab('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>الرئيسية</div><div class="nav-item" data-tab="wallet" onclick="switchTab('wallet')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3"/></svg>المحفظة</div><div class="nav-item" data-tab="account" onclick="switchTab('account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>حسابي</div></div>
 
-    <!-- ✅ المودال المطور بنظام الخطوتين -->
+    <!-- مودال الخطوتين -->
     <div id="detailModal" class="modal-overlay hidden" onclick="closeDetailModal()">
         <div class="modal" onclick="event.stopPropagation()">
             <button class="close" onclick="closeDetailModal()">✕</button>
@@ -111,38 +106,20 @@
             <div id="dDiscountBadge" style="text-align:center;"></div>
             <div class="old-price-big hidden" id="dOldPrice"></div>
             <p class="modal-desc" id="dDesc"></p>
-            
-            <!-- ✅ الخطوة 1: اختيار الكمية (للمنتجات اللي فيها عداد) -->
             <div id="stepQuantityNew" class="modal-step">
-                <div id="quantitySectionNew" class="quantity-section-new hidden">
-                    <label>🔢 الكمية المطلوبة</label>
-                    <input type="number" id="coinAmountNew" class="quantity-input-new" min="30" max="10000" value="30">
-                    <input type="range" id="coinSliderNew" class="quantity-slider-new" min="30" max="10000" value="30" step="1">
-                </div>
-                <!-- للسعر الثابت -->
-                <div id="fixedPriceSection" class="price-display-new hidden">
-                    السعر: <span id="fixedPriceDisplay">0.000</span> د.ل
-                </div>
-                <!-- للسعر المتغير -->
-                <div id="dynamicPriceSection" class="price-display-new hidden">
-                    السعر الإجمالي: <span id="totalPriceNew">0.000</span> د.ل
-                </div>
-                
-                <div id="step1Fields" class="space-y-2">
-                    <input type="text" id="targetInput" placeholder="🎮 معرف اللاعب (ID)" dir="ltr">
-                    <input type="text" id="phoneInput" placeholder="📞 رقم الهاتف" dir="ltr">
-                    <input type="text" id="accountLinkInput" placeholder="🔗 رابط الحساب" dir="ltr">
-                </div>
-                
+                <div id="quantitySectionNew" class="quantity-section-new hidden"><label>🔢 الكمية المطلوبة</label><input type="number" id="coinAmountNew" class="quantity-input-new" min="30" max="10000" value="30"><input type="range" id="coinSliderNew" class="quantity-slider-new" min="30" max="10000" value="30" step="1"></div>
+                <div id="fixedPriceSection" class="price-display-new hidden">السعر: <span id="fixedPriceDisplay">0.000</span> د.ل</div>
+                <div id="dynamicPriceSection" class="price-display-new hidden">السعر الإجمالي: <span id="totalPriceNew">0.000</span> د.ل</div>
                 <button class="next-btn-new" id="nextBtnNew" onclick="goToStep2()">✅ تم، الانتقال لتعبئة البيانات</button>
             </div>
-            
-            <!-- ✅ الخطوة 2: تعبئة البيانات والتأكيد -->
             <div id="stepDataNew" class="modal-step hidden">
                 <div class="step-divider"></div>
                 <h4 style="margin-bottom:12px;color:var(--gold);font-size:14px;">📋 بيانات الطلب</h4>
                 <div class="rules"><h5>⚠️ تنبيه</h5><ul><li>المنتج <b style="color:#f87171">غير قابل للاسترداد</b></li><li>تأكد من <b style="color:#fff">صحة البيانات</b></li><li>التعويض خلال <b style="color:#fff">24 ساعة</b></li></ul></div>
-                <input type="text" id="contactPhone" placeholder="📞 رقم التواصل (للتواصل معك)" dir="ltr">
+                <input type="text" id="targetInput" placeholder="🎮 معرف اللاعب (ID)" dir="ltr">
+                <input type="text" id="phoneInput" placeholder="📞 رقم الهاتف" dir="ltr">
+                <input type="text" id="accountLinkInput" placeholder="🔗 رابط الحساب" dir="ltr">
+                <input type="text" id="contactPhone" placeholder="📞 رقم التواصل (للاتصال بك)" dir="ltr">
                 <button class="submit-btn-new" onclick="confirmPurchase()">✅ تأكيد الطلب النهائي</button>
             </div>
         </div>
@@ -154,28 +131,33 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
+        
+        // ✅ إعدادات بوت تيليجرام للإشعارات من جانب العميل
+        const BOT_TOKEN = "8997771047:AAGaA40B6up-_mvYi0CFKZiqW5Jqnm1HPP8";
+        const CHAT_ID = "8997771047";
+        
+        async function sendTelegramFromClient(message) {
+            try {
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'Markdown' })
+                });
+            } catch (e) { console.log('Telegram notify error:', e.message); }
+        }
+        
         let allCategories=[], allProducts=[], userData=null, userBalance=0, currentProduct=null, unitPrice=0, currentQtyMin=30, isQuantityMode=false;
 
         function switchTab(tab){document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));document.getElementById(tab+'Page').classList.remove('hidden');document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const navItem=document.querySelector(`[data-tab="${tab}"]`);if(navItem)navItem.classList.add('active');}
         function switchPaymentMethod(type,btn){document.getElementById('paymentLibyana').classList.add('hidden');document.getElementById('paymentBinance').classList.add('hidden');document.getElementById('paymentBank').classList.add('hidden');document.getElementById('paymentCards').classList.add('hidden');const map={libyana:'paymentLibyana',binance:'paymentBinance',bank:'paymentBank',cards:'paymentCards'};if(map[type])document.getElementById(map[type]).classList.remove('hidden');document.querySelectorAll('.payment-method-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');}
         
-        // ✅ دوال العداد الجديد
         function updateQuantityNew(val){val=parseInt(val);document.getElementById('coinAmountNew').value=val;updateDynamicPriceNew(val);}
         function updateAmountNew(val){val=parseInt(val)||currentQtyMin;if(val<currentQtyMin)val=currentQtyMin;if(val>(currentProduct?.qtyMax||10000))val=currentProduct?.qtyMax||10000;document.getElementById('coinSliderNew').value=val;document.getElementById('coinAmountNew').value=val;updateDynamicPriceNew(val);}
         function updateDynamicPriceNew(quantity){const total=unitPrice*quantity;document.getElementById('totalPriceNew').innerText=total.toFixed(3);}
         
         function goToStep2(){
             if(!currentProduct)return;
-            if(isQuantityMode){
-                const qty=parseInt(document.getElementById('coinAmountNew').value);
-                if(qty<currentQtyMin)return alert(`⚠️ الحد الأدنى ${currentQtyMin} قطعة`);
-            }
-            const type=currentProduct.type||'id';
-            if(!isQuantityMode){
-                if(type==='id'&&!document.getElementById('targetInput').value.trim())return alert('⚠️ أدخل ID اللاعب');
-                if(type==='phone'&&!document.getElementById('phoneInput').value.trim())return alert('⚠️ أدخل رقم الهاتف');
-                if(type==='account'&&!document.getElementById('accountLinkInput').value.trim())return alert('🔗 أدخل رابط الحساب');
-            }
+            if(isQuantityMode){const qty=parseInt(document.getElementById('coinAmountNew').value);if(qty<currentQtyMin)return alert(`⚠️ الحد الأدنى ${currentQtyMin} قطعة`);}
             document.getElementById('stepDataNew').classList.remove('hidden');
             document.getElementById('stepDataNew').scrollIntoView({behavior:'smooth'});
         }
@@ -197,29 +179,21 @@
             currentProduct=prod;
             const discount=prod.discount||0;
             const type=prod.type||'id';
-            
-            // إعادة ضبط المودال
             document.getElementById('stepDataNew').classList.add('hidden');
             document.getElementById('stepQuantityNew').classList.remove('hidden');
-            
-            // إخفاء كل الحقول
             document.getElementById('targetInput').classList.add('hidden');
             document.getElementById('phoneInput').classList.add('hidden');
             document.getElementById('accountLinkInput').classList.add('hidden');
             document.getElementById('quantitySectionNew').classList.add('hidden');
             document.getElementById('fixedPriceSection').classList.add('hidden');
             document.getElementById('dynamicPriceSection').classList.add('hidden');
-            
             const finalPrice=discount>0?(prod.price||0)-((prod.price||0)*discount/100):(prod.price||0);
             isQuantityMode=false;
-            
             if(prod.enableQuantity){
-                // وضع العداد
                 isQuantityMode=true;
                 currentQtyMin=prod.qtyMin||30;
                 const qtyMax=prod.qtyMax||10000;
                 unitPrice=(prod.price||0)/currentQtyMin;
-                
                 document.getElementById('coinSliderNew').min=currentQtyMin;
                 document.getElementById('coinSliderNew').max=qtyMax;
                 document.getElementById('coinSliderNew').value=currentQtyMin;
@@ -231,7 +205,6 @@
                 updateDynamicPriceNew(currentQtyMin);
                 document.getElementById('dDesc').innerText=`عداد متحرك (${currentQtyMin}-${qtyMax}) - الوحدة: ${unitPrice.toFixed(4)} د.ل`;
             }else{
-                // وضع السعر الثابت
                 document.getElementById('fixedPriceSection').classList.remove('hidden');
                 document.getElementById('fixedPriceDisplay').innerText=finalPrice.toFixed(3);
                 if(type==='id'){document.getElementById('targetInput').classList.remove('hidden');document.getElementById('dDesc').innerText='النوع: ID لاعب';}
@@ -239,7 +212,6 @@
                 else if(type==='account'){document.getElementById('accountLinkInput').classList.remove('hidden');document.getElementById('dDesc').innerText='النوع: رابط حساب';}
                 else{document.getElementById('dDesc').innerText='النوع: مباشر';}
             }
-            
             document.getElementById('dImg').src=getImageUrl(prod.image);
             document.getElementById('dName').innerText=prod.title;
             document.getElementById('dDiscountBadge').innerHTML='';
@@ -250,11 +222,9 @@
                 document.getElementById('dOldPrice').innerText=`${(prod.price||0).toFixed(3)} د.ل`;
             }
             document.getElementById('contactPhone').value='';
-            document.getElementById('detailModal').classList.remove('hidden');
-            
-            // إضافة مستمعي الأحداث للعداد
             document.getElementById('coinAmountNew').oninput=function(){updateAmountNew(this.value);};
             document.getElementById('coinSliderNew').oninput=function(){updateQuantityNew(this.value);};
+            document.getElementById('detailModal').classList.remove('hidden');
         }
         
         function closeDetailModal(){document.getElementById('detailModal').classList.add('hidden');}
@@ -266,9 +236,7 @@
             if(!user)return alert('⚠️ سجل دخول أولاً');
             const contactPhone=document.getElementById('contactPhone').value.trim();
             if(!contactPhone)return alert('⚠️ أدخل رقم التواصل');
-            
             let finalPrice,quantity=1,orderData='';
-            
             if(isQuantityMode){
                 quantity=parseInt(document.getElementById('coinAmountNew').value);
                 if(quantity<currentQtyMin)return alert(`⚠️ الحد الأدنى ${currentQtyMin}`);
@@ -282,21 +250,23 @@
                 else if(type==='account'){orderData=document.getElementById('accountLinkInput').value.trim();if(!orderData)return alert('🔗 أدخل رابط الحساب');}
                 else{orderData='مباشر';}
             }
-            
             if(userBalance<finalPrice)return alert('⚠️ رصيد غير كافٍ');
             const newBalance=userBalance-finalPrice;
             try{
                 await db.collection("users").doc(user.uid).update({balance:newBalance});
                 await db.collection("orders").add({userId:user.uid,userName:userData?.name||'',serviceTitle:currentProduct.title,serviceType:type,targetInput:orderData,quantity:quantity,contactPhone:contactPhone,totalPrice:finalPrice,status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+                // ✅ إرسال إشعار تيليجرام فوري من جهاز الزبون
+                const typeIcon=type==='id'?'🎮':type==='phone'?'📞':type==='account'?'🔗':'📦';
+                await sendTelegramFromClient(`📦 *طلب جديد!*\n\n👤 ${userData?.name||'---'}\n🎮 ${currentProduct.title}\n${typeIcon} ${orderData}\n📞 ${contactPhone}\n🔢 الكمية: ${quantity}\n💰 ${finalPrice.toFixed(2)} د.ل\n\n🕒 بحاجة للمراجعة`);
                 closeDetailModal();
                 alert(`🎉 تم الطلب بنجاح!\n${currentProduct.title}\n${finalPrice.toFixed(3)} د.ل`);
             }catch(e){alert('❌ خطأ: '+e.message);}
         }
 
-        async function submitTransfer(provider){const phone=document.getElementById('phone_libyana').value.trim();const amount=document.getElementById('amount_libyana').value.trim();if(!phone)return alert('⚠️ أدخل رقم هاتفك');if(!amount)return alert('⚠️ أدخل المبلغ');try{await db.collection("deposits").add({userId:auth.currentUser.uid,userName:userData?.name||'',userPhone:phone,provider:provider,amount:parseFloat(amount),status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()});alert('✅ تم الإرسال!');document.getElementById('phone_libyana').value='';document.getElementById('amount_libyana').value='';}catch(e){alert('❌ خطأ: '+e.message);}}
-        async function submitDeposit(){const provider=document.getElementById('depositProvider').value;const cardCode=document.getElementById('depositCardCode').value.trim();const amount=document.getElementById('depositAmount').value.trim();if(!cardCode)return alert('⚠️ أدخل رقم الكرت');if(!amount)return alert('⚠️ أدخل قيمة الكرت');try{await db.collection("deposits").add({userId:auth.currentUser.uid,userName:userData?.name||'',provider:provider,card_code:cardCode,amount:parseFloat(amount),status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()});alert('✅ تم الإرسال!');document.getElementById('depositCardCode').value='';document.getElementById('depositAmount').value='';}catch(e){alert('❌ خطأ: '+e.message);}}
-        async function submitCryptoTransfer(){const cryptoId=document.getElementById('crypto_id').value.trim();const amount=document.getElementById('crypto_amount').value.trim();if(!cryptoId)return alert('⚠️ أدخل المعرف');if(!amount)return alert('⚠️ أدخل المبلغ بالدولار');const amountLYD=parseFloat(amount)*12;try{await db.collection("deposits").add({userId:auth.currentUser.uid,userName:userData?.name||'',provider:'Binance/Bybit',card_code:cryptoId,amount:amountLYD,crypto_amount:parseFloat(amount),status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()});alert('✅ تم الإرسال!');document.getElementById('crypto_id').value='';document.getElementById('crypto_amount').value='';}catch(e){alert('❌ خطأ: '+e.message);}}
-        async function submitBankTransfer(){const senderName=document.getElementById('bank_sender_name').value.trim();const amount=document.getElementById('bank_amount').value.trim();if(!senderName)return alert('⚠️ أدخل اسم المحول');if(!amount)return alert('⚠️ أدخل المبلغ');try{await db.collection("deposits").add({userId:auth.currentUser.uid,userName:userData?.name||'',provider:'مصرف الجمهورية',card_code:'011201000244993',senderName:senderName,amount:parseFloat(amount),status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()});alert('✅ تم الإرسال!');document.getElementById('bank_sender_name').value='';document.getElementById('bank_amount').value='';}catch(e){alert('❌ خطأ: '+e.message);}}
+        async function submitTransfer(provider){const phone=document.getElementById('phone_libyana').value.trim();const amount=document.getElementById('amount_libyana').value.trim();if(!phone)return alert('⚠️ أدخل رقم هاتفك');if(!amount)return alert('⚠️ أدخل المبلغ');try{await db.collection("deposits").add({userId:auth.currentUser.uid,userName:userData?.name||'',userPhone:phone,provider:provider,amount:parseFloat(amount),status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()});await sendTelegramFromClient(`💰 *إيداع جديد!*\n\n👤 ${userData?.name||'---'}\n📱 ${provider}\n📞 ${phone}\n💵 ${parseFloat(amount).toFixed(2)} د.ل\n\n🕒 بحاجة للمراجعة`);alert('✅ تم الإرسال!');document.getElementById('phone_libyana').value='';document.getElementById('amount_libyana').value='';}catch(e){alert('❌ خطأ: '+e.message);}}
+        async function submitDeposit(){const provider=document.getElementById('depositProvider').value;const cardCode=document.getElementById('depositCardCode').value.trim();const amount=document.getElementById('depositAmount').value.trim();if(!cardCode)return alert('⚠️ أدخل رقم الكرت');if(!amount)return alert('⚠️ أدخل قيمة الكرت');try{await db.collection("deposits").add({userId:auth.currentUser.uid,userName:userData?.name||'',provider:provider,card_code:cardCode,amount:parseFloat(amount),status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()});await sendTelegramFromClient(`💰 *إيداع جديد!*\n\n👤 ${userData?.name||'---'}\n💳 ${provider}\n🎫 ${cardCode}\n💵 ${parseFloat(amount).toFixed(2)} د.ل\n\n🕒 بحاجة للمراجعة`);alert('✅ تم الإرسال!');document.getElementById('depositCardCode').value='';document.getElementById('depositAmount').value='';}catch(e){alert('❌ خطأ: '+e.message);}}
+        async function submitCryptoTransfer(){const cryptoId=document.getElementById('crypto_id').value.trim();const amount=document.getElementById('crypto_amount').value.trim();if(!cryptoId)return alert('⚠️ أدخل المعرف');if(!amount)return alert('⚠️ أدخل المبلغ بالدولار');const amountLYD=parseFloat(amount)*12;try{await db.collection("deposits").add({userId:auth.currentUser.uid,userName:userData?.name||'',provider:'Binance/Bybit',card_code:cryptoId,amount:amountLYD,crypto_amount:parseFloat(amount),status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()});await sendTelegramFromClient(`💰 *إيداع كريبتو!*\n\n👤 ${userData?.name||'---'}\n₿ Binance/Bybit\n🆔 ${cryptoId}\n💵 $${parseFloat(amount).toFixed(2)} (${amountLYD.toFixed(2)} د.ل)\n\n🕒 بحاجة للمراجعة`);alert('✅ تم الإرسال!');document.getElementById('crypto_id').value='';document.getElementById('crypto_amount').value='';}catch(e){alert('❌ خطأ: '+e.message);}}
+        async function submitBankTransfer(){const senderName=document.getElementById('bank_sender_name').value.trim();const amount=document.getElementById('bank_amount').value.trim();if(!senderName)return alert('⚠️ أدخل اسم المحول');if(!amount)return alert('⚠️ أدخل المبلغ');try{await db.collection("deposits").add({userId:auth.currentUser.uid,userName:userData?.name||'',provider:'مصرف الجمهورية',card_code:'011201000244993',senderName:senderName,amount:parseFloat(amount),status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()});await sendTelegramFromClient(`💰 *إيداع مصرفي!*\n\n👤 ${senderName}\n🏦 مصرف الجمهورية\n💵 ${parseFloat(amount).toFixed(2)} د.ل\n\n🕒 بحاجة للمراجعة`);alert('✅ تم الإرسال!');document.getElementById('bank_sender_name').value='';document.getElementById('bank_amount').value='';}catch(e){alert('❌ خطأ: '+e.message);}}
     </script>
 </body>
 </html>
