@@ -51,6 +51,8 @@
         .payment-method-btn { background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.3); border-radius: 12px; padding: 10px 6px; text-align: center; cursor: pointer; transition: all 0.3s; font-size: 10px; font-weight: 700; color: var(--white); }
         .payment-method-btn.active { background: linear-gradient(135deg, #b8860b, var(--gold)); color: #000; border-color: var(--gold); box-shadow: var(--neon-gold); }
         .payment-method-btn .icon { font-size: 20px; display: block; margin-bottom: 4px; }
+        
+        /* ✅ العداد المطور */
         .quantity-section-new { background: #1a1a1a; padding: 16px; border-radius: 12px; margin-bottom: 12px; border: 1px solid rgba(245,166,35,0.2); }
         .quantity-section-new label { font-weight: 700; display: block; margin-bottom: 10px; color: var(--gold); font-size: 13px; }
         .quantity-input-new { width: 100%; padding: 12px; font-size: 18px; background: #0a0a0a; color: #fff; border: 2px solid rgba(245,166,35,0.4); border-radius: 8px; text-align: center; margin-bottom: 12px; font-family: 'Cairo', sans-serif; }
@@ -62,6 +64,13 @@
         .next-btn-new:active { transform: scale(0.95); }
         .step-divider { border-top: 2px dashed rgba(245,166,35,0.3); padding-top: 16px; margin-top: 16px; }
         .submit-btn-new { width: 100%; background: var(--gold); color: #000; border: none; padding: 14px; font-size: 16px; font-weight: 900; border-radius: 8px; cursor: pointer; margin-top: 16px; font-family: 'Cairo', sans-serif; box-shadow: var(--neon-gold); }
+        
+        /* ✅ ملخص الكمية والسعر */
+        .order-summary { background: #1a1a1a; border: 1px solid rgba(245,166,35,0.3); border-radius: 12px; padding: 12px; margin-bottom: 12px; text-align: center; }
+        .order-summary .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: 13px; }
+        .order-summary .summary-label { color: var(--muted); }
+        .order-summary .summary-value { color: var(--gold); font-weight: 900; }
+        
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 12px; }
         .modal { background: rgba(20,20,20,0.98); backdrop-filter: blur(15px); border: 1px solid rgba(245,166,35,0.4); border-radius: 24px; padding: 18px; max-width: 450px; width: 100%; max-height: 90vh; overflow-y: auto; color: #fff; position: relative; box-shadow: var(--neon-gold); }
         .modal .close { position: absolute; top: 12px; left: 12px; background: rgba(255,255,255,0.1); border: none; color: #fff; width: 30px; height: 30px; border-radius: 50%; font-size: 15px; cursor: pointer; z-index: 10; }
@@ -96,9 +105,13 @@
 
     <div id="accountPage" class="page hidden"><div class="container" style="margin-top:10px;"><div class="section-title">👤 حسابي</div><div class="wallet-card" style="text-align:center;"><div style="width:55px;height:55px;background:rgba(245,166,35,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:28px;border:var(--border-gold);">👤</div><div style="font-size:16px;font-weight:700;" id="accName">---</div><div style="font-size:11px;color:var(--muted);" id="accEmail">---</div></div><div class="wallet-card"><div class="info-row"><span>الاسم</span><span id="accName2" style="font-weight:700;">---</span></div><div class="info-row"><span>الإيميل</span><span id="accEmail2" style="font-weight:700;font-size:11px;">---</span></div><div class="info-row"><span>الهاتف</span><span id="accPhone" style="font-weight:700;">---</span></div><div class="info-row"><span>الرصيد</span><span id="accBalance" style="font-weight:700;color:var(--gold);">0.000 د.ل</span></div></div><button class="btn-red" onclick="logout()">🚪 تسجيل الخروج</button></div></div>
 
-    <div class="bottom-nav"><div class="nav-item active" data-tab="home" onclick="switchTab('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>الرئيسية</div><div class="nav-item" data-tab="wallet" onclick="switchTab('wallet')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3"/></svg>المحفظة</div><div class="nav-item" data-tab="account" onclick="switchTab('account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>حسابي</div></div>
+    <div class="bottom-nav">
+        <div class="nav-item active" data-tab="home" onclick="switchTab('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>الرئيسية</div>
+        <div class="nav-item" data-tab="wallet" onclick="switchTab('wallet')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3"/></svg>المحفظة</div>
+        <div class="nav-item" data-tab="account" onclick="switchTab('account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>حسابي</div>
+    </div>
 
-    <!-- ✅ مودال الخطوتين - تم إصلاح ظهور الحقول -->
+    <!-- ✅ المودال المطور النهائي -->
     <div id="detailModal" class="modal-overlay hidden" onclick="closeDetailModal()">
         <div class="modal" onclick="event.stopPropagation()">
             <button class="close" onclick="closeDetailModal()">✕</button>
@@ -107,35 +120,35 @@
             <div class="old-price-big hidden" id="dOldPrice"></div>
             <p class="modal-desc" id="dDesc"></p>
             
-            <!-- ✅ الخطوة 1: العداد والسعر فقط -->
+            <!-- ✅ الخطوة 1: العداد فقط -->
             <div id="stepQuantityNew" class="modal-step">
-                <div id="quantitySectionNew" class="quantity-section-new hidden"><label>🔢 الكمية المطلوبة</label><input type="number" id="coinAmountNew" class="quantity-input-new" min="30" max="10000" value="30"><input type="range" id="coinSliderNew" class="quantity-slider-new" min="30" max="10000" value="30" step="1"></div>
+                <div id="quantitySectionNew" class="quantity-section-new hidden">
+                    <label>🔢 الكمية المطلوبة</label>
+                    <input type="number" id="coinAmountNew" class="quantity-input-new" min="30" max="10000" value="30">
+                    <input type="range" id="coinSliderNew" class="quantity-slider-new" min="30" max="10000" value="30" step="1">
+                </div>
                 <div id="fixedPriceSection" class="price-display-new hidden">السعر: <span id="fixedPriceDisplay">0.000</span> د.ل</div>
                 <div id="dynamicPriceSection" class="price-display-new hidden">السعر الإجمالي: <span id="totalPriceNew">0.000</span> د.ل</div>
-                <button class="next-btn-new" id="nextBtnNew" onclick="goToStep2()">✅ تم، الانتقال لتعبئة البيانات</button>
+                <button class="next-btn-new" id="nextBtnNew" onclick="goToStep2()">✅ متابعة</button>
             </div>
             
-            <!-- ✅ الخطوة 2: حقول البيانات + رقم التواصل -->
+            <!-- ✅ الخطوة 2: ملخص + حقول البيانات -->
             <div id="stepDataNew" class="modal-step hidden">
                 <div class="step-divider"></div>
+                
+                <!-- ✅ ملخص الكمية والسعر -->
+                <div id="orderSummary" class="order-summary hidden">
+                    <div class="summary-row"><span class="summary-label">🔢 الكمية:</span><span class="summary-value" id="summaryQty">30</span></div>
+                    <div class="summary-row"><span class="summary-label">💰 السعر الإجمالي:</span><span class="summary-value" id="summaryPrice">0.000</span> د.ل</div>
+                </div>
+                
                 <h4 style="margin-bottom:12px;color:var(--gold);font-size:14px;">📋 بيانات الطلب</h4>
                 <div class="rules"><h5>⚠️ تنبيه</h5><ul><li>المنتج <b style="color:#f87171">غير قابل للاسترداد</b></li><li>تأكد من <b style="color:#fff">صحة البيانات</b></li><li>التعويض خلال <b style="color:#fff">24 ساعة</b></li></ul></div>
                 
-                <!-- ✅ حقل ID اللاعب (يظهر حسب النوع) -->
-                <div id="fieldId" class="hidden">
-                    <input type="text" id="targetInput" placeholder="🎮 معرف اللاعب (ID)" dir="ltr">
-                </div>
-                <!-- ✅ حقل رقم الهاتف (يظهر حسب النوع) -->
-                <div id="fieldPhone" class="hidden">
-                    <input type="text" id="phoneInput" placeholder="📞 رقم الهاتف المطلوب شحنه" dir="ltr">
-                </div>
-                <!-- ✅ حقل رابط الحساب (يظهر حسب النوع) -->
-                <div id="fieldAccount" class="hidden">
-                    <input type="text" id="accountLinkInput" placeholder="🔗 رابط الحساب أو اليوزر" dir="ltr">
-                </div>
-                <!-- ✅ حقل رقم التواصل (دايماً يظهر) -->
+                <div id="fieldId" class="hidden"><input type="text" id="targetInput" placeholder="🎮 معرف اللاعب (ID)" dir="ltr"></div>
+                <div id="fieldPhone" class="hidden"><input type="text" id="phoneInput" placeholder="📞 رقم الهاتف المطلوب شحنه" dir="ltr"></div>
+                <div id="fieldAccount" class="hidden"><input type="text" id="accountLinkInput" placeholder="🔗 رابط الحساب أو اليوزر" dir="ltr"></div>
                 <input type="text" id="contactPhone" placeholder="📞 رقم التواصل (للاتصال بك)" dir="ltr">
-                
                 <button class="submit-btn-new" onclick="confirmPurchase()">✅ تأكيد الطلب النهائي</button>
             </div>
         </div>
@@ -154,11 +167,10 @@
         async function sendTelegramFromClient(message) {
             try {
                 await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'Markdown' })
                 });
-            } catch (e) { console.log('Telegram notify error:', e.message); }
+            } catch (e) {}
         }
         
         let allCategories=[], allProducts=[], userData=null, userBalance=0, currentProduct=null, unitPrice=0, currentQtyMin=30, isQuantityMode=false, currentServiceType='id';
@@ -172,23 +184,31 @@
         
         function goToStep2(){
             if(!currentProduct)return;
-            if(isQuantityMode){const qty=parseInt(document.getElementById('coinAmountNew').value);if(qty<currentQtyMin)return alert(`⚠️ الحد الأدنى ${currentQtyMin} قطعة`);}
             
-            // ✅ إظهار الحقل المناسب حسب نوع الخدمة
+            // ✅ إخفاء قسم العداد وإظهار قسم البيانات
+            document.getElementById('stepQuantityNew').classList.add('hidden');
+            document.getElementById('stepDataNew').classList.remove('hidden');
+            
+            // ✅ تحديث ملخص الكمية والسعر
+            if(isQuantityMode){
+                const qty=parseInt(document.getElementById('coinAmountNew').value);
+                if(qty<currentQtyMin)return alert(`⚠️ الحد الأدنى ${currentQtyMin} قطعة`);
+                const total=unitPrice*qty;
+                document.getElementById('orderSummary').classList.remove('hidden');
+                document.getElementById('summaryQty').innerText=qty;
+                document.getElementById('summaryPrice').innerText=total.toFixed(3)+' د.ل';
+            }else{
+                document.getElementById('orderSummary').classList.add('hidden');
+            }
+            
+            // ✅ إظهار الحقل المناسب
             document.getElementById('fieldId').classList.add('hidden');
             document.getElementById('fieldPhone').classList.add('hidden');
             document.getElementById('fieldAccount').classList.add('hidden');
+            if(currentServiceType==='id')document.getElementById('fieldId').classList.remove('hidden');
+            else if(currentServiceType==='phone')document.getElementById('fieldPhone').classList.remove('hidden');
+            else if(currentServiceType==='account')document.getElementById('fieldAccount').classList.remove('hidden');
             
-            if(currentServiceType==='id'){
-                document.getElementById('fieldId').classList.remove('hidden');
-            }else if(currentServiceType==='phone'){
-                document.getElementById('fieldPhone').classList.remove('hidden');
-            }else if(currentServiceType==='account'){
-                document.getElementById('fieldAccount').classList.remove('hidden');
-            }
-            // لو none = لا يظهر أي حقل بيانات (فقط رقم التواصل)
-            
-            document.getElementById('stepDataNew').classList.remove('hidden');
             document.getElementById('stepDataNew').scrollIntoView({behavior:'smooth'});
         }
 
@@ -210,38 +230,27 @@
             const discount=prod.discount||0;
             currentServiceType=prod.type||'id';
             isQuantityMode=false;
-            
-            // إعادة ضبط المودال
             document.getElementById('stepDataNew').classList.add('hidden');
             document.getElementById('stepQuantityNew').classList.remove('hidden');
-            
-            // إخفاء كل أقسام الحقول
             document.getElementById('fieldId').classList.add('hidden');
             document.getElementById('fieldPhone').classList.add('hidden');
             document.getElementById('fieldAccount').classList.add('hidden');
             document.getElementById('quantitySectionNew').classList.add('hidden');
             document.getElementById('fixedPriceSection').classList.add('hidden');
             document.getElementById('dynamicPriceSection').classList.add('hidden');
-            
-            // مسح القيم القديمة
+            document.getElementById('orderSummary').classList.add('hidden');
             document.getElementById('targetInput').value='';
             document.getElementById('phoneInput').value='';
             document.getElementById('accountLinkInput').value='';
             document.getElementById('contactPhone').value='';
-            
             const finalPrice=discount>0?(prod.price||0)-((prod.price||0)*discount/100):(prod.price||0);
-            
             if(prod.enableQuantity){
                 isQuantityMode=true;
                 currentQtyMin=prod.qtyMin||30;
                 const qtyMax=prod.qtyMax||10000;
                 unitPrice=(prod.price||0)/currentQtyMin;
-                document.getElementById('coinSliderNew').min=currentQtyMin;
-                document.getElementById('coinSliderNew').max=qtyMax;
-                document.getElementById('coinSliderNew').value=currentQtyMin;
-                document.getElementById('coinAmountNew').min=currentQtyMin;
-                document.getElementById('coinAmountNew').max=qtyMax;
-                document.getElementById('coinAmountNew').value=currentQtyMin;
+                document.getElementById('coinSliderNew').min=currentQtyMin;document.getElementById('coinSliderNew').max=qtyMax;document.getElementById('coinSliderNew').value=currentQtyMin;
+                document.getElementById('coinAmountNew').min=currentQtyMin;document.getElementById('coinAmountNew').max=qtyMax;document.getElementById('coinAmountNew').value=currentQtyMin;
                 document.getElementById('quantitySectionNew').classList.remove('hidden');
                 document.getElementById('dynamicPriceSection').classList.remove('hidden');
                 updateDynamicPriceNew(currentQtyMin);
@@ -249,22 +258,15 @@
             }else{
                 document.getElementById('fixedPriceSection').classList.remove('hidden');
                 document.getElementById('fixedPriceDisplay').innerText=finalPrice.toFixed(3);
-                if(currentServiceType==='id'){document.getElementById('dDesc').innerText='النوع: ID لاعب';}
-                else if(currentServiceType==='phone'){document.getElementById('dDesc').innerText='النوع: رقم هاتف';}
-                else if(currentServiceType==='account'){document.getElementById('dDesc').innerText='النوع: رابط حساب';}
-                else{document.getElementById('dDesc').innerText='النوع: مباشر';}
+                if(currentServiceType==='id')document.getElementById('dDesc').innerText='النوع: ID لاعب';
+                else if(currentServiceType==='phone')document.getElementById('dDesc').innerText='النوع: رقم هاتف';
+                else if(currentServiceType==='account')document.getElementById('dDesc').innerText='النوع: رابط حساب';
+                else document.getElementById('dDesc').innerText='النوع: مباشر';
             }
-            
             document.getElementById('dImg').src=getImageUrl(prod.image);
             document.getElementById('dName').innerText=prod.title;
-            document.getElementById('dDiscountBadge').innerHTML='';
-            document.getElementById('dOldPrice').classList.add('hidden');
-            if(discount>0&&!prod.enableQuantity){
-                document.getElementById('dDiscountBadge').innerHTML=`<span class="discount-badge-big">🔥 خصم ${discount}%</span>`;
-                document.getElementById('dOldPrice').classList.remove('hidden');
-                document.getElementById('dOldPrice').innerText=`${(prod.price||0).toFixed(3)} د.ل`;
-            }
-            
+            document.getElementById('dDiscountBadge').innerHTML='';document.getElementById('dOldPrice').classList.add('hidden');
+            if(discount>0&&!prod.enableQuantity){document.getElementById('dDiscountBadge').innerHTML=`<span class="discount-badge-big">🔥 خصم ${discount}%</span>`;document.getElementById('dOldPrice').classList.remove('hidden');document.getElementById('dOldPrice').innerText=`${(prod.price||0).toFixed(3)} د.ل`;}
             document.getElementById('coinAmountNew').oninput=function(){updateAmountNew(this.value);};
             document.getElementById('coinSliderNew').oninput=function(){updateQuantityNew(this.value);};
             document.getElementById('detailModal').classList.remove('hidden');
@@ -278,9 +280,7 @@
             if(!user)return alert('⚠️ سجل دخول أولاً');
             const contactPhone=document.getElementById('contactPhone').value.trim();
             if(!contactPhone)return alert('⚠️ أدخل رقم التواصل');
-            
             let finalPrice,quantity=1,orderData='';
-            
             if(isQuantityMode){
                 quantity=parseInt(document.getElementById('coinAmountNew').value);
                 if(quantity<currentQtyMin)return alert(`⚠️ الحد الأدنى ${currentQtyMin}`);
@@ -290,11 +290,10 @@
                 const discount=currentProduct.discount||0;
                 finalPrice=discount>0?(currentProduct.price||0)-((currentProduct.price||0)*discount/100):(currentProduct.price||0);
                 if(currentServiceType==='id'){orderData=document.getElementById('targetInput').value.trim();if(!orderData)return alert('⚠️ أدخل ID اللاعب');}
-                else if(currentServiceType==='phone'){orderData=document.getElementById('phoneInput').value.trim();if(!orderData)return alert('⚠️ أدخل رقم الهاتف المطلوب شحنه');}
-                else if(currentServiceType==='account'){orderData=document.getElementById('accountLinkInput').value.trim();if(!orderData)return alert('🔗 أدخل رابط الحساب أو اليوزر');}
+                else if(currentServiceType==='phone'){orderData=document.getElementById('phoneInput').value.trim();if(!orderData)return alert('⚠️ أدخل رقم الهاتف');}
+                else if(currentServiceType==='account'){orderData=document.getElementById('accountLinkInput').value.trim();if(!orderData)return alert('🔗 أدخل رابط الحساب');}
                 else{orderData='مباشر';}
             }
-            
             if(userBalance<finalPrice)return alert('⚠️ رصيد غير كافٍ');
             const newBalance=userBalance-finalPrice;
             try{
