@@ -35,85 +35,36 @@
         .notification.error { background: #dc2626; color: #fff; }
         .notification.info { background: #3b82f6; color: #fff; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* ✅ زر إعدادات البوت */
-        .telegram-settings-btn {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 1000;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #0088cc, #00a8e8);
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            font-size: 22px;
-            box-shadow: 0 0 20px rgba(0,136,204,0.4);
-            transition: all 0.3s;
-        }
-        .telegram-settings-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px rgba(0,136,204,0.6);
-        }
-        
-        /* مودال إعدادات البوت */
-        .telegram-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.9);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
-        }
-        .telegram-modal-content {
-            background: var(--card-bg);
-            border: 1px solid rgba(0,136,204,0.4);
-            border-radius: 20px;
-            padding: 24px;
-            max-width: 450px;
-            width: 100%;
-            box-shadow: 0 0 30px rgba(0,136,204,0.3);
-        }
+        .toggle-switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; border: 1px solid rgba(245,166,35,0.3); }
+        .toggle-slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 2px; background-color: #888; transition: .4s; border-radius: 50%; }
+        input:checked + .toggle-slider { background-color: var(--gold); }
+        input:checked + .toggle-slider:before { transform: translateX(22px); background-color: #000; }
+        .telegram-settings-btn { position: fixed; bottom: 20px; left: 20px; z-index: 1000; width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #0088cc, #00a8e8); color: #fff; border: none; cursor: pointer; font-size: 22px; box-shadow: 0 0 20px rgba(0,136,204,0.4); transition: all 0.3s; }
+        .telegram-settings-btn:hover { transform: scale(1.1); }
+        .telegram-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 12px; }
+        .telegram-modal-content { background: var(--card-bg); border: 1px solid rgba(0,136,204,0.4); border-radius: 20px; padding: 24px; max-width: 450px; width: 100%; box-shadow: 0 0 30px rgba(0,136,204,0.3); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col md:flex-row">
 
-    <!-- شاشة الحماية -->
     <div id="adminGuardScreen" class="fixed inset-0 bg-[#0a0a0a] z-[999] flex flex-col items-center justify-center text-center p-4">
         <div class="card-bg p-8 rounded-2xl border shadow-2xl max-w-sm w-full space-y-5" id="guardCard">
-            <div class="w-16 h-16 bg-[#1a1a1a] rounded-full flex items-center justify-center text-2xl gold-text mx-auto border" style="border-color:var(--border);box-shadow:var(--neon-gold);">
-                <i class="fa-solid fa-lock"></i>
-            </div>
+            <div class="w-16 h-16 bg-[#1a1a1a] rounded-full flex items-center justify-center text-2xl gold-text mx-auto border" style="border-color:var(--border);box-shadow:var(--neon-gold);"><i class="fa-solid fa-lock"></i></div>
             <h2 class="text-lg font-bold">لوحة تحكم Gaming Libya</h2>
             <p class="text-xs" style="color:var(--muted);">أدخل رمز الوصول للمتابعة</p>
-            <div class="space-y-3">
-                <div class="relative">
-                    <span class="absolute inset-y-0 right-0 flex items-center pr-3" style="color:var(--muted);"><i class="fa-solid fa-key"></i></span>
-                    <input type="password" id="accessCode" placeholder="أدخل رمز الوصول" class="w-full rounded-xl py-3 pr-9 pl-3 text-sm text-center" autocomplete="off" onkeydown="if(event.key==='Enter')checkAccessCode()">
-                </div>
-                <button onclick="checkAccessCode()" class="w-full gold-bg text-black font-bold py-3 rounded-xl text-sm transition-all shadow-md">
-                    <i class="fa-solid fa-arrow-left"></i> دخول
-                </button>
+            <div class="space-y-3"><div class="relative"><span class="absolute inset-y-0 right-0 flex items-center pr-3" style="color:var(--muted);"><i class="fa-solid fa-key"></i></span><input type="password" id="accessCode" placeholder="أدخل رمز الوصول" class="w-full rounded-xl py-3 pr-9 pl-3 text-sm text-center" autocomplete="off" onkeydown="if(event.key==='Enter')checkAccessCode()"></div>
+                <button onclick="checkAccessCode()" class="w-full gold-bg text-black font-bold py-3 rounded-xl text-sm transition-all shadow-md"><i class="fa-solid fa-arrow-left"></i> دخول</button>
                 <p id="accessError" class="text-red-400 text-xs hidden">❌ رمز الوصول غير صحيح</p>
             </div>
             <a href="index.html" class="block text-gray-500 hover:text-white text-xs">العودة للمتجر</a>
         </div>
     </div>
 
-    <!-- القائمة الجانبية -->
     <aside class="sidebar-bg w-full md:w-64 border-b md:border-b-0 md:border-l flex flex-col justify-between shrink-0" style="border-color:var(--border);">
         <div>
-            <div class="p-5 border-b flex items-center justify-between" style="border-color:var(--border);">
-                <div class="flex items-center gap-2">
-                    <span class="gold-bg text-black px-2 py-0.5 rounded text-sm font-black">GL</span>
-                    <span class="text-md font-bold">الإدارة</span>
-                </div>
-                <span class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded">v3.0</span>
-            </div>
+            <div class="p-5 border-b flex items-center justify-between" style="border-color:var(--border);"><div class="flex items-center gap-2"><span class="gold-bg text-black px-2 py-0.5 rounded text-sm font-black">GL</span><span class="text-md font-bold">الإدارة</span></div><span class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded">v3.0</span></div>
             <nav class="p-3 space-y-1">
                 <button onclick="switchTab('dashboardTab',this)" class="tab-btn w-full text-right gold-bg text-black font-bold px-4 py-3 rounded-xl text-xs flex items-center gap-3"><i class="fa-solid fa-chart-pie"></i> الإحصائيات</button>
                 <button onclick="switchTab('ordersTab',this)" class="tab-btn w-full text-right text-gray-400 hover:text-white hover:bg-[#1a1a1a] px-4 py-3 rounded-xl text-xs flex items-center gap-3"><i class="fa-solid fa-cart-shopping"></i> الطلبات</button>
@@ -123,297 +74,129 @@
                 <button onclick="switchTab('usersTab',this)" class="tab-btn w-full text-right text-gray-400 hover:text-white hover:bg-[#1a1a1a] px-4 py-3 rounded-xl text-xs flex items-center gap-3"><i class="fa-solid fa-users"></i> المستخدمين</button>
             </nav>
         </div>
-        <div class="p-4 border-t flex items-center justify-between" style="background:#0a0a0a;border-color:var(--border);">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-lg gold-bg text-black flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-user-gear"></i></div>
-                <div><p class="text-xs font-bold">المدير</p><p class="text-[9px]" style="color:var(--muted);">تحكم كامل</p></div>
-            </div>
-            <button onclick="logout()" class="text-gray-500 hover:text-red-400 text-sm"><i class="fa-solid fa-right-from-bracket"></i></button>
-        </div>
+        <div class="p-4 border-t flex items-center justify-between" style="background:#0a0a0a;border-color:var(--border);"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-lg gold-bg text-black flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-user-gear"></i></div><div><p class="text-xs font-bold">المدير</p><p class="text-[9px]" style="color:var(--muted);">تحكم كامل</p></div></div><button onclick="logout()" class="text-gray-500 hover:text-red-400 text-sm"><i class="fa-solid fa-right-from-bracket"></i></button></div>
     </aside>
 
-    <!-- المحتوى الرئيسي -->
     <main class="flex-grow p-4 md:p-8 max-w-7xl w-full mx-auto space-y-6 overflow-x-hidden">
         
-        <section id="dashboardTab" class="admin-tab space-y-6">
-            <h1 class="text-xl font-black gold-text">📊 نظرة عامة</h1>
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="card-bg p-4 rounded-2xl"><p class="text-[10px]" style="color:var(--muted);">إجمالي المبيعات</p><p class="text-xl font-black gold-text" id="statRevenue">0.00 د.ل</p></div>
-                <div class="card-bg p-4 rounded-2xl"><p class="text-[10px]" style="color:var(--muted);">طلبات معلقة</p><p class="text-xl font-black text-red-400" id="statPendingOrders">0</p></div>
-                <div class="card-bg p-4 rounded-2xl"><p class="text-[10px]" style="color:var(--muted);">المستخدمين</p><p class="text-xl font-black text-blue-400" id="statTotalUsers">0</p></div>
-                <div class="card-bg p-4 rounded-2xl"><p class="text-[10px]" style="color:var(--muted);">خدمات نشطة</p><p class="text-xl font-black text-emerald-400" id="statActiveServices">0</p></div>
-            </div>
-        </section>
+        <section id="dashboardTab" class="admin-tab space-y-6"><h1 class="text-xl font-black gold-text">📊 نظرة عامة</h1><div class="grid grid-cols-2 lg:grid-cols-4 gap-4"><div class="card-bg p-4 rounded-2xl"><p class="text-[10px]" style="color:var(--muted);">إجمالي المبيعات</p><p class="text-xl font-black gold-text" id="statRevenue">0.00 د.ل</p></div><div class="card-bg p-4 rounded-2xl"><p class="text-[10px]" style="color:var(--muted);">طلبات معلقة</p><p class="text-xl font-black text-red-400" id="statPendingOrders">0</p></div><div class="card-bg p-4 rounded-2xl"><p class="text-[10px]" style="color:var(--muted);">إيداعات معلقة</p><p class="text-xl font-black text-amber-400" id="statPendingDeposits">0</p></div><div class="card-bg p-4 rounded-2xl"><p class="text-[10px]" style="color:var(--muted);">خدمات نشطة</p><p class="text-xl font-black text-emerald-400" id="statActiveServices">0</p></div></div></section>
 
-        <section id="ordersTab" class="admin-tab hidden space-y-4">
-            <div class="flex justify-between">
-                <h1 class="text-xl font-black gold-text">📦 الطلبات</h1>
-                <button onclick="deleteSelectedOrders()" class="bg-red-600/20 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white px-4 py-2 rounded-xl text-xs font-bold"><i class="fa-solid fa-trash-can"></i> حذف المحدد</button>
-            </div>
-            <div class="card-bg rounded-2xl overflow-hidden">
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-right text-xs">
-                        <thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);">
-                            <tr><th class="p-4"><input type="checkbox" id="selectAllOrders" onclick="toggleSelectAll('orderCheckbox',this)" class="accent-[#f5a623]"></th><th class="p-4">العميل</th><th class="p-4">الخدمة</th><th class="p-4">النوع</th><th class="p-4">البيانات</th><th class="p-4">📞 التواصل</th><th class="p-4">المبلغ</th><th class="p-4">التاريخ</th><th class="p-4">الحالة</th><th class="p-4">إجراء</th></tr>
-                        </thead>
-                        <tbody id="ordersTableBody"><tr><td colspan="10" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody>
-                    </table>
+        <section id="ordersTab" class="admin-tab hidden space-y-4"><div class="flex justify-between"><h1 class="text-xl font-black gold-text">📦 إدارة الطلبات</h1><button onclick="deleteSelectedOrders()" class="bg-red-600/20 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white px-4 py-2 rounded-xl text-xs font-bold"><i class="fa-solid fa-trash-can"></i> حذف المحدد</button></div><div class="card-bg rounded-2xl overflow-hidden"><div class="overflow-x-auto custom-scrollbar"><table class="w-full text-right text-xs"><thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);"><tr><th class="p-4"><input type="checkbox" id="selectAllOrders" onclick="toggleSelectAll('orderCheckbox',this)" class="accent-[#f5a623]"></th><th class="p-4">العميل</th><th class="p-4">الخدمة</th><th class="p-4">النوع</th><th class="p-4">البيانات</th><th class="p-4">📞 التواصل</th><th class="p-4">الكمية</th><th class="p-4">المبلغ</th><th class="p-4">التاريخ</th><th class="p-4">الحالة</th><th class="p-4">إجراء</th></tr></thead><tbody id="ordersTableBody"><tr><td colspan="11" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody></table></div></div></section>
+
+        <section id="depositsTab" class="admin-tab hidden space-y-4"><h1 class="text-xl font-black gold-text">💰 إدارة الإيداعات</h1><div class="card-bg rounded-2xl overflow-hidden"><div class="overflow-x-auto custom-scrollbar"><table class="w-full text-right text-xs"><thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);"><tr><th class="p-4">المستخدم</th><th class="p-4">المزود</th><th class="p-4">كود/رقم</th><th class="p-4">المبلغ</th><th class="p-4">التاريخ</th><th class="p-4">الحالة</th><th class="p-4">إجراء</th></tr></thead><tbody id="depositsTableBody"><tr><td colspan="7" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody></table></div></div></section>
+
+        <section id="categoriesTab" class="admin-tab hidden space-y-6"><div class="flex justify-between"><h1 class="text-xl font-black gold-text">📂 الأقسام</h1><button onclick="openCategoryModal()" class="gold-bg text-black text-xs font-bold px-4 py-2.5 rounded-xl"><i class="fa-solid fa-plus"></i> إضافة قسم</button></div><div id="categoryModal" class="hidden card-bg p-5 rounded-2xl max-w-lg mx-auto space-y-4" style="border-color:var(--gold);"><div class="flex justify-between"><h3 id="catModalTitle" class="text-sm font-bold gold-text">قسم جديد</h3><button onclick="closeCategoryModal()" class="text-gray-500"><i class="fa-solid fa-xmark"></i></button></div><form onsubmit="saveCategory(event)" class="space-y-3 text-xs"><input type="hidden" id="catId"><div><label class="text-gray-400">اسم القسم *</label><input type="text" id="catName" required class="w-full rounded-xl p-3"></div><div><label class="text-gray-400">رابط الصورة</label><input type="text" id="catImage" placeholder="https://example.com/image.jpg" class="w-full rounded-xl p-3 font-mono text-[11px]"></div><button type="submit" class="gold-bg text-black font-bold py-3 rounded-xl w-full">حفظ</button></form></div><div class="card-bg rounded-2xl overflow-hidden"><table class="w-full text-right text-xs"><thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);"><tr><th class="p-4">صورة</th><th class="p-4">اسم القسم</th><th class="p-4">تحكم</th></tr></thead><tbody id="categoriesTableBody"><tr><td colspan="3" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody></table></div></section>
+
+        <section id="servicesTab" class="admin-tab hidden space-y-6"><div class="flex justify-between items-center"><h1 class="text-xl font-black gold-text">🎮 الخدمات</h1><button onclick="openServiceModal()" class="gold-bg text-black text-xs font-bold px-4 py-2.5 rounded-xl"><i class="fa-solid fa-plus"></i> إضافة خدمة</button></div><div id="adminCatsView"><h3 class="text-sm font-bold mb-3">📂 اختر قسم لعرض خدماته</h3><div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="adminCatsGrid"><div class="text-center p-6" style="color:var(--muted);">⏳ جاري جلب الأقسام...</div></div></div><div id="adminServicesView" class="hidden"><button onclick="backToCats()" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-xl text-xs font-bold mb-3">⬅ رجوع للأقسام</button><div class="flex justify-between items-center mb-3"><h3 class="text-sm font-bold gold-text" id="adminServicesTitle"></h3><button onclick="deleteSelectedServices()" class="bg-red-600/20 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white px-3 py-1.5 rounded-xl text-[10px] font-bold"><i class="fa-solid fa-trash-can"></i> حذف المحدد</button></div><div class="card-bg rounded-2xl overflow-hidden"><div class="overflow-x-auto custom-scrollbar"><table class="w-full text-right text-xs"><thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);"><tr><th class="p-4"><input type="checkbox" id="selectAllServices" onclick="toggleSelectAll('serviceCheckbox',this)" class="accent-[#f5a623]"></th><th class="p-4">صورة</th><th class="p-4">اسم</th><th class="p-4">سعر</th><th class="p-4">خصم</th><th class="p-4">نوع</th><th class="p-4">عداد</th><th class="p-4">حالة</th><th class="p-4">تحكم</th></tr></thead><tbody id="servicesTableBody"><tr><td colspan="9" class="text-center p-6" style="color:var(--muted);">اختر قسم أولاً</td></tr></tbody></table></div></div></div>
+            <div id="serviceModal" class="hidden card-bg p-5 rounded-2xl max-w-2xl mx-auto space-y-4" style="border-color:var(--gold);"><div class="flex justify-between"><h3 id="serviceModalTitle" class="text-sm font-bold gold-text">خدمة جديدة</h3><button onclick="closeServiceModal()" class="text-gray-500"><i class="fa-solid fa-xmark"></i></button></div><form onsubmit="saveService(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs"><input type="hidden" id="serviceId"><div class="md:col-span-2"><label class="text-gray-400">اسم الخدمة *</label><input type="text" id="serviceTitle" required class="w-full rounded-xl p-3"></div><div><label class="text-gray-400">القسم</label><select id="serviceCategory" class="w-full rounded-xl p-3"></select></div><div><label class="text-gray-400">السعر (د.ل) *</label><input type="number" step="0.001" id="servicePrice" required class="w-full rounded-xl p-3"></div><div><label class="text-gray-400">النوع</label><select id="serviceType" class="w-full rounded-xl p-3"><option value="id">🎮 ID لاعب</option><option value="phone">📞 رقم هاتف</option><option value="account">🔗 رابط الحساب</option><option value="none">📦 بدون إدخال</option></select></div><div><label class="text-gray-400">الخصم %</label><input type="number" id="serviceDiscount" value="0" min="0" max="99" class="w-full rounded-xl p-3"></div>
+            <!-- ✅ تبديل العداد المتحرك (Toggle) -->
+            <div class="md:col-span-2 border border-amber-500/20 rounded-xl p-3 space-y-2">
+                <div class="flex items-center justify-between">
+                    <span class="text-amber-400 text-[10px] font-bold">🔢 تفعيل العداد المتحرك (Slider)</span>
+                    <label class="toggle-switch"><input type="checkbox" id="enableQuantity" onchange="toggleQuantitySettings()"><span class="toggle-slider"></span></label>
+                </div>
+                <p class="text-[9px] text-gray-500">عند التفعيل، يظهر للزبون عداد لاختيار الكمية والسعر يتحدث تلقائياً</p>
+                <div id="quantitySettings" class="hidden space-y-3 mt-2">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div><label class="text-gray-400">الحد الأدنى</label><input type="number" id="qtyMin" value="30" min="1" class="w-full rounded-xl p-3"></div>
+                        <div><label class="text-gray-400">الحد الأقصى</label><input type="number" id="qtyMax" value="10000" min="1" class="w-full rounded-xl p-3"></div>
+                    </div>
+                    <p class="text-[9px] text-gray-500">السعر المدخل أعلاه = سعر {{الحد الأدنى}} قطعة. سيتم احتساب سعر القطعة الواحدة تلقائياً.</p>
                 </div>
             </div>
-        </section>
-
-        <section id="depositsTab" class="admin-tab hidden space-y-4">
-            <h1 class="text-xl font-black gold-text">💰 الإيداعات</h1>
-            <div class="card-bg rounded-2xl overflow-hidden">
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-right text-xs">
-                        <thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);"><tr><th class="p-4">المستخدم</th><th class="p-4">المزود</th><th class="p-4">كود/رقم</th><th class="p-4">المبلغ</th><th class="p-4">التاريخ</th><th class="p-4">الحالة</th><th class="p-4">إجراء</th></tr></thead>
-                        <tbody id="depositsTableBody"><tr><td colspan="7" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <section id="categoriesTab" class="admin-tab hidden space-y-6">
-            <div class="flex justify-between"><h1 class="text-xl font-black gold-text">📂 الأقسام</h1><button onclick="openCategoryModal()" class="gold-bg text-black text-xs font-bold px-4 py-2.5 rounded-xl"><i class="fa-solid fa-plus"></i> إضافة قسم</button></div>
-            <div id="categoryModal" class="hidden card-bg p-5 rounded-2xl max-w-lg mx-auto space-y-4" style="border-color:var(--gold);"><div class="flex justify-between"><h3 id="catModalTitle" class="text-sm font-bold gold-text">قسم جديد</h3><button onclick="closeCategoryModal()" class="text-gray-500"><i class="fa-solid fa-xmark"></i></button></div><form onsubmit="saveCategory(event)" class="space-y-3 text-xs"><input type="hidden" id="catId"><div><label class="text-gray-400">اسم القسم *</label><input type="text" id="catName" required class="w-full rounded-xl p-3"></div><div><label class="text-gray-400">رابط الصورة (اختياري)</label><input type="text" id="catImage" placeholder="https://example.com/image.jpg" class="w-full rounded-xl p-3 font-mono text-[11px]"></div><button type="submit" class="gold-bg text-black font-bold py-3 rounded-xl w-full">حفظ</button></form></div>
-            <div class="card-bg rounded-2xl overflow-hidden"><table class="w-full text-right text-xs"><thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);"><tr><th class="p-4">صورة</th><th class="p-4">اسم القسم</th><th class="p-4">تحكم</th></tr></thead><tbody id="categoriesTableBody"><tr><td colspan="3" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody></table></div>
-        </section>
-
-        <section id="servicesTab" class="admin-tab hidden space-y-6">
-            <div class="flex justify-between items-center"><h1 class="text-xl font-black gold-text">🎮 الخدمات</h1><button onclick="openServiceModal()" class="gold-bg text-black text-xs font-bold px-4 py-2.5 rounded-xl"><i class="fa-solid fa-plus"></i> إضافة خدمة</button></div>
-            <div id="adminCatsView"><h3 class="text-sm font-bold mb-3">📂 اختر قسم لعرض خدماته</h3><div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="adminCatsGrid"><div class="text-center p-6" style="color:var(--muted);">⏳ جاري جلب الأقسام...</div></div></div>
-            <div id="adminServicesView" class="hidden"><button onclick="backToCats()" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-xl text-xs font-bold mb-3">⬅ رجوع للأقسام</button><div class="flex justify-between items-center mb-3"><h3 class="text-sm font-bold gold-text" id="adminServicesTitle"></h3><button onclick="deleteSelectedServices()" class="bg-red-600/20 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white px-3 py-1.5 rounded-xl text-[10px] font-bold"><i class="fa-solid fa-trash-can"></i> حذف المحدد</button></div><div class="card-bg rounded-2xl overflow-hidden"><div class="overflow-x-auto custom-scrollbar"><table class="w-full text-right text-xs"><thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);"><tr><th class="p-4"><input type="checkbox" id="selectAllServices" onclick="toggleSelectAll('serviceCheckbox',this)" class="accent-[#f5a623]"></th><th class="p-4">صورة</th><th class="p-4">اسم</th><th class="p-4">سعر</th><th class="p-4">خصم</th><th class="p-4">نوع</th><th class="p-4">حالة</th><th class="p-4">تحكم</th></tr></thead><tbody id="servicesTableBody"><tr><td colspan="8" class="text-center p-6" style="color:var(--muted);">اختر قسم أولاً</td></tr></tbody></table></div></div></div>
-            <div id="serviceModal" class="hidden card-bg p-5 rounded-2xl max-w-2xl mx-auto space-y-4" style="border-color:var(--gold);"><div class="flex justify-between"><h3 id="serviceModalTitle" class="text-sm font-bold gold-text">خدمة جديدة</h3><button onclick="closeServiceModal()" class="text-gray-500"><i class="fa-solid fa-xmark"></i></button></div><form onsubmit="saveService(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs"><input type="hidden" id="serviceId"><div class="md:col-span-2"><label class="text-gray-400">اسم الخدمة *</label><input type="text" id="serviceTitle" required class="w-full rounded-xl p-3"></div><div><label class="text-gray-400">القسم</label><select id="serviceCategory" class="w-full rounded-xl p-3"></select></div><div><label class="text-gray-400">السعر (د.ل) *</label><input type="number" step="0.001" id="servicePrice" required class="w-full rounded-xl p-3"></div><div><label class="text-gray-400">النوع</label><select id="serviceType" class="w-full rounded-xl p-3"><option value="id">🎮 ID لاعب</option><option value="phone">📞 رقم هاتف</option><option value="account">🔗 رابط الحساب</option><option value="none">📦 بدون إدخال</option></select></div><div><label class="text-gray-400">الخصم %</label><input type="number" id="serviceDiscount" value="0" min="0" max="99" class="w-full rounded-xl p-3"></div><div class="md:col-span-2"><label class="text-gray-400">رابط الصورة</label><input type="text" id="serviceImage" placeholder="https://example.com/image.jpg" class="w-full rounded-xl p-3 font-mono text-[11px]"></div><div class="md:col-span-2"><label class="text-gray-400">الوصف</label><textarea id="serviceDescription" rows="2" class="w-full rounded-xl p-3"></textarea></div><div class="md:col-span-2"><label class="text-gray-400">الحالة</label><select id="serviceStatus" class="w-full rounded-xl p-3"><option value="true">✅ نشط</option><option value="false">❌ مخفي</option></select></div><div class="md:col-span-2"><button type="submit" class="gold-bg text-black font-bold py-3 rounded-xl w-full">حفظ</button></div></form></div>
+            <div class="md:col-span-2"><label class="text-gray-400">رابط الصورة</label><input type="text" id="serviceImage" placeholder="https://example.com/image.jpg" class="w-full rounded-xl p-3 font-mono text-[11px]"></div><div class="md:col-span-2"><label class="text-gray-400">الوصف</label><textarea id="serviceDescription" rows="2" class="w-full rounded-xl p-3"></textarea></div><div class="md:col-span-2"><label class="text-gray-400">الحالة</label><select id="serviceStatus" class="w-full rounded-xl p-3"><option value="true">✅ نشط</option><option value="false">❌ مخفي</option></select></div><div class="md:col-span-2"><button type="submit" class="gold-bg text-black font-bold py-3 rounded-xl w-full">حفظ</button></div></form></div>
         </section>
 
         <section id="usersTab" class="admin-tab hidden space-y-4"><h1 class="text-xl font-black gold-text">👥 المستخدمين</h1><input type="text" oninput="searchUsers(this.value)" placeholder="🔍 بحث..." class="w-full max-w-xs rounded-xl py-2.5 px-4 text-xs"><div class="card-bg rounded-2xl overflow-hidden"><table class="w-full text-right text-xs"><thead class="text-gray-400 text-[10px] uppercase" style="background:#0a0a0a;border-bottom:1px solid var(--border);"><tr><th class="p-4">اسم</th><th class="p-4">هاتف</th><th class="p-4">إيميل</th><th class="p-4">رصيد</th><th class="p-4">رتبة</th><th class="p-4">شحن/خصم</th></tr></thead><tbody id="usersTableBody"><tr><td colspan="6" class="text-center p-8" style="color:var(--muted);">جاري التحميل...</td></tr></tbody></table></div></section>
     </main>
 
-    <!-- ✅ زر إعدادات البوت -->
-    <button class="telegram-settings-btn" onclick="openTelegramSettings()" title="إعدادات بوت تيليجرام">
-        <i class="fa-brands fa-telegram"></i>
-    </button>
-
-    <!-- ✅ مودال إعدادات البوت -->
-    <div id="telegramModal" class="telegram-modal hidden">
-        <div class="telegram-modal-content space-y-4">
-            <div class="flex justify-between items-center">
-                <h3 class="text-sm font-bold" style="color:#0088cc;"><i class="fa-brands fa-telegram"></i> إعدادات بوت الإشعارات</h3>
-                <button onclick="closeTelegramSettings()" class="text-gray-500 hover:text-white text-lg">&times;</button>
-            </div>
-            
-            <div class="space-y-3 text-xs">
-                <div>
-                    <label class="text-gray-400">توكن البوت</label>
-                    <input type="text" id="botToken" value="8997771047:AAGaA40B6up-_mvYi0CFKZiqW5Jqnm1HPP8" class="w-full rounded-xl p-3 font-mono text-[10px]">
-                </div>
-                <div>
-                    <label class="text-gray-400">معرف الشات (Chat ID)</label>
-                    <input type="text" id="botChatId" placeholder="أدخل Chat ID الخاص بك" class="w-full rounded-xl p-3">
-                    <p class="text-[9px] text-gray-500 mt-1">للحصول على Chat ID: ابحث عن <b>@userinfobot</b> في تيليجرام وأرسل له /start</p>
-                </div>
-                <div class="flex gap-2">
-                    <button onclick="testTelegramBot()" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold flex-1"><i class="fa-solid fa-paper-plane"></i> اختبار</button>
-                    <button onclick="saveTelegramSettings()" class="gold-bg text-black px-4 py-2 rounded-xl text-xs font-bold flex-1"><i class="fa-solid fa-floppy-disk"></i> حفظ</button>
-                </div>
-                <div id="telegramStatus" class="text-center text-xs hidden"></div>
-            </div>
-            
-            <div class="bg-[#0a0a0a] rounded-xl p-3 text-[10px] space-y-2">
-                <p class="text-gray-400"><b>📋 الإشعارات المبرمجة:</b></p>
-                <p class="text-green-400">✅ طلب جديد من زبون</p>
-                <p class="text-green-400">✅ إيداع جديد يحتاج مراجعة</p>
-                <p class="text-green-400">✅ تسجيل مستخدم جديد</p>
-            </div>
-        </div>
-    </div>
+    <button class="telegram-settings-btn" onclick="openTelegramSettings()" title="إعدادات بوت تيليجرام"><i class="fa-brands fa-telegram"></i></button>
+    <div id="telegramModal" class="telegram-modal hidden"><div class="telegram-modal-content space-y-4"><div class="flex justify-between items-center"><h3 class="text-sm font-bold" style="color:#0088cc;"><i class="fa-brands fa-telegram"></i> إعدادات بوت الإشعارات</h3><button onclick="closeTelegramSettings()" class="text-gray-500 hover:text-white text-lg">&times;</button></div><div class="space-y-3 text-xs"><div><label class="text-gray-400">توكن البوت</label><input type="text" id="botToken" value="8997771047:AAGaA40B6up-_mvYi0CFKZiqW5Jqnm1HPP8" class="w-full rounded-xl p-3 font-mono text-[10px]"></div><div><label class="text-gray-400">معرف الشات (Chat ID)</label><input type="text" id="botChatId" placeholder="أدخل Chat ID الخاص بك" class="w-full rounded-xl p-3"><p class="text-[9px] text-gray-500 mt-1">ابحث عن @userinfobot في تيليجرام وأرسل /start</p></div><div class="flex gap-2"><button onclick="testTelegramBot()" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold flex-1"><i class="fa-solid fa-paper-plane"></i> اختبار</button><button onclick="saveTelegramSettings()" class="gold-bg text-black px-4 py-2 rounded-xl text-xs font-bold flex-1"><i class="fa-solid fa-floppy-disk"></i> حفظ</button></div><div id="telegramStatus" class="text-center text-xs hidden"></div></div></div></div>
 
     <script>
-        // ==================== Firebase Config ====================
-        const firebaseConfig = {
-            apiKey: "AIzaSyAJgwaMBo5wxM5BEK9nRrrNg04UGdHyAV0",
-            authDomain: "zad1-85d66.firebaseapp.com",
-            projectId: "zad1-85d66",
-            storageBucket: "zad1-85d66.firebasestorage.app",
-            messagingSenderId: "130593925562",
-            appId: "1:130593925562:web:709293e6c0827103d31583"
-        };
+        const firebaseConfig = { apiKey: "AIzaSyAJgwaMBo5wxM5BEK9nRrrNg04UGdHyAV0", authDomain: "zad1-85d66.firebaseapp.com", projectId: "zad1-85d66", storageBucket: "zad1-85d66.firebasestorage.app", messagingSenderId: "130593925562", appId: "1:130593925562:web:709293e6c0827103d31583" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const ACCESS_CODE = "mayar218";
-        let allUsers = [];
-        let allCategories = [];
-        let allServices = [];
-        let currentCategoryId = null;
+        let allUsers = [], allCategories = [], allServices = [], currentCategoryId = null;
 
-        // ==================== إعدادات البوت ====================
         const DEFAULT_BOT_TOKEN = "8997771047:AAGaA40B6up-_mvYi0CFKZiqW5Jqnm1HPP8";
         let botToken = localStorage.getItem('telegram_bot_token') || DEFAULT_BOT_TOKEN;
         let botChatId = localStorage.getItem('telegram_chat_id') || '';
 
-        function openTelegramSettings() {
-            document.getElementById('botToken').value = botToken;
-            document.getElementById('botChatId').value = botChatId;
-            document.getElementById('telegramModal').classList.remove('hidden');
-        }
+        // ==================== دوال البوت ====================
+        function openTelegramSettings() { document.getElementById('botToken').value = botToken; document.getElementById('botChatId').value = botChatId; document.getElementById('telegramModal').classList.remove('hidden'); }
+        function closeTelegramSettings() { document.getElementById('telegramModal').classList.add('hidden'); }
+        function saveTelegramSettings() { botToken = document.getElementById('botToken').value.trim(); botChatId = document.getElementById('botChatId').value.trim(); localStorage.setItem('telegram_bot_token', botToken); localStorage.setItem('telegram_chat_id', botChatId); showNotification('✅ تم حفظ إعدادات البوت', 'success'); closeTelegramSettings(); }
+        async function testTelegramBot() { const token = document.getElementById('botToken').value.trim(); const chatId = document.getElementById('botChatId').value.trim(); const statusDiv = document.getElementById('telegramStatus'); if (!token || !chatId) { statusDiv.className = 'text-center text-xs text-red-400'; statusDiv.innerText = '❌ أدخل التوكن و Chat ID'; statusDiv.classList.remove('hidden'); return; } statusDiv.className = 'text-center text-xs text-blue-400'; statusDiv.innerText = '⏳ جاري الاختبار...'; statusDiv.classList.remove('hidden'); try { const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: chatId, text: '✅ *تم الاتصال بنجاح!*\n\n🟢 بوت Gaming Libya يعمل الآن.\n\nسوف تصلك إشعارات:\n📦 الطلبات الجديدة\n💰 الإيداعات الجديدة\n👤 المستخدمين الجدد', parse_mode: 'Markdown' }) }); const data = await response.json(); if (data.ok) { statusDiv.className = 'text-center text-xs text-green-400'; statusDiv.innerText = '✅ تم الإرسال بنجاح!'; } else { statusDiv.className = 'text-center text-xs text-red-400'; statusDiv.innerText = '❌ خطأ: ' + (data.description || 'تأكد من التوكن'); } } catch (e) { statusDiv.className = 'text-center text-xs text-red-400'; statusDiv.innerText = '❌ فشل الاتصال'; } }
+        async function sendTelegramNotification(message) { if (!botToken || !botChatId) return; try { await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: botChatId, text: message, parse_mode: 'Markdown' }) }); } catch (e) {} }
 
-        function closeTelegramSettings() {
-            document.getElementById('telegramModal').classList.add('hidden');
-        }
-
-        function saveTelegramSettings() {
-            botToken = document.getElementById('botToken').value.trim();
-            botChatId = document.getElementById('botChatId').value.trim();
-            localStorage.setItem('telegram_bot_token', botToken);
-            localStorage.setItem('telegram_chat_id', botChatId);
-            showNotification('✅ تم حفظ إعدادات البوت', 'success');
-            closeTelegramSettings();
-        }
-
-        async function testTelegramBot() {
-            const token = document.getElementById('botToken').value.trim();
-            const chatId = document.getElementById('botChatId').value.trim();
-            const statusDiv = document.getElementById('telegramStatus');
-            
-            if (!token || !chatId) {
-                statusDiv.className = 'text-center text-xs text-red-400';
-                statusDiv.innerText = '❌ أدخل التوكن و Chat ID';
-                statusDiv.classList.remove('hidden');
-                return;
-            }
-            
-            statusDiv.className = 'text-center text-xs text-blue-400';
-            statusDiv.innerText = '⏳ جاري الاختبار...';
-            statusDiv.classList.remove('hidden');
-            
-            try {
-                const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: chatId,
-                        text: '✅ *تم الاتصال بنجاح!*\n\n🟢 بوت Gaming Libya يعمل الآن.\n\nسوف تصلك إشعارات:\n📦 الطلبات الجديدة\n💰 الإيداعات الجديدة\n👤 المستخدمين الجدد',
-                        parse_mode: 'Markdown'
-                    })
-                });
-                const data = await response.json();
-                if (data.ok) {
-                    statusDiv.className = 'text-center text-xs text-green-400';
-                    statusDiv.innerText = '✅ تم الإرسال بنجاح! تفقد تيليجرام';
-                } else {
-                    statusDiv.className = 'text-center text-xs text-red-400';
-                    statusDiv.innerText = '❌ خطأ: ' + (data.description || 'تأكد من التوكن و Chat ID');
-                }
-            } catch (e) {
-                statusDiv.className = 'text-center text-xs text-red-400';
-                statusDiv.innerText = '❌ فشل الاتصال: ' + e.message;
-            }
-        }
-
-        // ✅ دالة إرسال إشعار للتليجرام
-        async function sendTelegramNotification(message) {
-            if (!botToken || !botChatId) return;
-            try {
-                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: botChatId,
-                        text: message,
-                        parse_mode: 'Markdown'
-                    })
-                });
-            } catch (e) {
-                console.log('Telegram notification failed:', e.message);
-            }
-        }
-
-        // ==================== دوال المصادقة ====================
-        function checkAccessCode() { 
-            if (document.getElementById("accessCode").value.trim() === ACCESS_CODE) { 
-                document.getElementById("adminGuardScreen").classList.add("hidden"); 
-                initDashboard(); 
-            } else { 
-                document.getElementById("accessError").classList.remove("hidden"); 
-                document.getElementById("guardCard").classList.add("shake"); 
-                setTimeout(() => { document.getElementById("guardCard").classList.remove("shake"); document.getElementById("accessError").classList.add("hidden"); }, 2000); 
-            } 
-        }
-        
-        function logout() { 
-            if (confirm("هل أنت متأكد من تسجيل الخروج؟")) { 
-                document.getElementById("adminGuardScreen").classList.remove("hidden"); 
-                document.getElementById("accessCode").value = ""; 
-            } 
-        }
-        
+        // ==================== الدوال الأساسية ====================
+        function checkAccessCode() { if (document.getElementById("accessCode").value.trim() === ACCESS_CODE) { document.getElementById("adminGuardScreen").classList.add("hidden"); initDashboard(); } else { document.getElementById("accessError").classList.remove("hidden"); document.getElementById("guardCard").classList.add("shake"); setTimeout(() => { document.getElementById("guardCard").classList.remove("shake"); document.getElementById("accessError").classList.add("hidden"); }, 2000); } }
+        function logout() { if (confirm("هل أنت متأكد؟")) { document.getElementById("adminGuardScreen").classList.remove("hidden"); document.getElementById("accessCode").value = ""; } }
         function getImageUrl(img) { if (!img) return ''; if (img.startsWith('http')) return img; return img; }
         function initDashboard() { loadStats(); loadOrders(); loadDeposits(); loadCategories(); loadServicesForAdmin(); loadUsers(); }
         function switchTab(tabId, btn) { document.querySelectorAll('.admin-tab').forEach(t => t.classList.add('hidden')); const tab = document.getElementById(tabId); if (tab) tab.classList.remove('hidden'); document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('gold-bg', 'text-black'); b.classList.add('text-gray-400'); }); if (btn) { btn.classList.add('gold-bg', 'text-black'); btn.classList.remove('text-gray-400'); } }
         function toggleSelectAll(className, master) { document.querySelectorAll(`.${className}`).forEach(cb => cb.checked = master.checked); }
+        function toggleQuantitySettings() { const enabled = document.getElementById('enableQuantity').checked; document.getElementById('quantitySettings').classList.toggle('hidden', !enabled); }
 
         function loadStats() { 
             db.collection("orders").get().then(snap => { let rev = 0, pend = 0; snap.forEach(doc => { const d = doc.data(); if (d.status === "completed") rev += Number(d.totalPrice || d.amount || d.price || 0); if (d.status === "pending") pend++; }); document.getElementById("statRevenue").innerText = rev.toFixed(2) + ' د.ل'; document.getElementById("statPendingOrders").innerText = pend; });
-            db.collection("users").get().then(s => { document.getElementById("statTotalUsers").innerText = s.size; });
+            db.collection("deposits").where("status", "==", "pending").get().then(s => { document.getElementById("statPendingDeposits").innerText = s.size; });
             db.collection("services").where("status", "==", true).get().then(s => { document.getElementById("statActiveServices").innerText = s.size; });
         }
 
+        // ✅ الطلبات مع إشعارات تيليجرام
         function loadOrders() { 
             db.collection("orders").orderBy("createdAt", "desc").limit(100).onSnapshot(snap => { 
-                const tbody = document.getElementById("ordersTableBody"); tbody.innerHTML = ""; 
-                if (snap.empty) { tbody.innerHTML = '<tr><td colspan="10" class="text-center p-6" style="color:var(--muted);">لا توجد طلبات</td></tr>'; return; } 
-                snap.docChanges().forEach(change => {
-                    if (change.type === "added") {
-                        const o = change.doc.data();
-                        const orderId = change.doc.id;
-                        // ✅ إرسال إشعار تيليجرام للطلب الجديد
+                const tbody = document.getElementById("ordersTableBody"); 
+                snap.docChanges().forEach(change => { 
+                    if (change.type === "added") { 
+                        const o = change.doc.data(); 
                         const typeIcon = o.serviceType === 'id' ? '🎮' : o.serviceType === 'phone' ? '📞' : o.serviceType === 'account' ? '🔗' : '📦';
-                        const telegramMsg = `📦 *طلب جديد!*\n\n👤 العميل: ${o.userName || '---'}\n🎮 الخدمة: ${o.serviceTitle || '---'}\n${typeIcon} النوع: ${o.serviceType || '---'}\n📝 البيانات: ${o.targetInput || '---'}\n📞 التواصل: ${o.contactPhone || '---'}\n💰 المبلغ: ${(o.totalPrice || 0).toFixed(2)} د.ل\n\n🕒 الحالة: معلق`;
-                        sendTelegramNotification(telegramMsg);
+                        sendTelegramNotification(`📦 *طلب جديد!*\n\n👤 ${o.userName || '---'}\n🎮 ${o.serviceTitle || '---'}\n${typeIcon} ${o.serviceType || '---'}\n📝 ${o.targetInput || '---'}\n📞 ${o.contactPhone || '---'}\n🔢 الكمية: ${o.quantity || 1}\n💰 ${(o.totalPrice || 0).toFixed(2)} د.ل\n\n🕒 الحالة: معلق - يحتاج مراجعة`);
                     }
                 });
-                // إعادة بناء الجدول
-                tbody.innerHTML = "";
+                tbody.innerHTML = ""; 
+                if (snap.empty) { tbody.innerHTML = '<tr><td colspan="11" class="text-center p-6" style="color:var(--muted);">لا توجد طلبات</td></tr>'; return; } 
                 snap.forEach(doc => { 
-                    const o = doc.data(); 
-                    const date = o.createdAt ? new Date(o.createdAt.seconds * 1000).toLocaleString('ar-LY') : '---';
-                    const statusText = o.status === 'completed' ? '✅ مكتمل' : o.status === 'processing' ? '⏳ جاري' : '🕒 معلق';
-                    const actionBtn = o.status === 'pending' ? `<button onclick="updateOrderStatus('${doc.id}')" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px]">قبول</button>` : '<span class="text-gray-500">تم</span>';
+                    const o = doc.data(); const date = o.createdAt ? new Date(o.createdAt.seconds * 1000).toLocaleString('ar-LY') : '---';
                     const typeIcon = o.serviceType === 'id' ? '🎮' : o.serviceType === 'phone' ? '📞' : o.serviceType === 'account' ? '🔗' : '📦';
                     const typeName = o.serviceType === 'id' ? 'ID' : o.serviceType === 'phone' ? 'هاتف' : o.serviceType === 'account' ? 'رابط' : 'مباشر';
-                    tbody.innerHTML += `<tr class="border-b" style="border-color:var(--border);"><td class="p-4"><input type="checkbox" value="${doc.id}" class="orderCheckbox accent-[#f5a623]"></td><td class="p-4">${o.userName || o.userId || '---'}</td><td class="p-4 gold-text">${o.serviceTitle || '---'}</td><td class="p-4">${typeIcon} ${typeName}</td><td class="p-4" style="direction:ltr;text-align:center;">${o.targetInput || '---'}</td><td class="p-4 gold-text" style="direction:ltr;text-align:center;">📞 ${o.contactPhone || '---'}</td><td class="p-4">${(o.totalPrice || 0).toFixed(2)} د.ل</td><td class="p-4 text-[10px]">${date}</td><td class="p-4">${statusText}</td><td class="p-4">${actionBtn}</td></tr>`; 
+                    const statusText = o.status === 'completed' ? '✅ مكتمل' : o.status === 'rejected' ? '❌ مرفوض' : o.status === 'processing' ? '⏳ جاري' : '🕒 معلق';
+                    const actionBtns = o.status === 'pending' ? `<button onclick="approveOrder('${doc.id}')" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px]">✅ قبول</button> <button onclick="rejectOrder('${doc.id}')" class="bg-red-600 text-white px-2 py-1 rounded text-[10px]">❌ رفض</button>` : '<span class="text-gray-500">تم</span>';
+                    tbody.innerHTML += `<tr class="border-b" style="border-color:var(--border);"><td class="p-4"><input type="checkbox" value="${doc.id}" class="orderCheckbox accent-[#f5a623]"></td><td class="p-4">${o.userName || o.userId || '---'}</td><td class="p-4 gold-text">${o.serviceTitle || '---'}</td><td class="p-4">${typeIcon} ${typeName}</td><td class="p-4" style="direction:ltr;text-align:center;">${o.targetInput || '---'}</td><td class="p-4 gold-text" style="direction:ltr;text-align:center;">📞 ${o.contactPhone || '---'}</td><td class="p-4">${o.quantity || 1}</td><td class="p-4">${(o.totalPrice || 0).toFixed(2)} د.ل</td><td class="p-4 text-[10px]">${date}</td><td class="p-4">${statusText}</td><td class="p-4">${actionBtns}</td></tr>`; 
                 }); 
             }); 
         }
-
-        function updateOrderStatus(id) { if (confirm("تأكيد اكتمال الطلب؟")) { db.collection("orders").doc(id).update({ status: "completed" }).then(() => loadStats()); } }
+        
+        async function approveOrder(id) { if (!confirm("تأكيد قبول الطلب؟")) return; try { await db.collection("orders").doc(id).update({ status: "completed" }); showNotification('✅ تم قبول الطلب', 'success'); loadStats(); } catch (e) { alert("❌ خطأ: " + e.message); } }
+        async function rejectOrder(id) { if (!confirm("تأكيد رفض الطلب وإرجاع المبلغ؟")) return; try { const orderDoc = await db.collection("orders").doc(id).get(); const o = orderDoc.data(); if (o && o.userId) { const userDoc = await db.collection("users").doc(o.userId).get(); const currentBalance = userDoc.exists ? (userDoc.data().balance || 0) : 0; await db.collection("users").doc(o.userId).update({ balance: currentBalance + (o.totalPrice || 0) }); } await db.collection("orders").doc(id).update({ status: "rejected" }); showNotification('❌ تم رفض الطلب وإرجاع المبلغ', 'error'); loadStats(); } catch (e) { alert("❌ خطأ: " + e.message); } }
         function deleteSelectedOrders() { const cbs = document.querySelectorAll('.orderCheckbox:checked'); if (!cbs.length) return alert("حدد طلباً"); if (!confirm(`حذف ${cbs.length} طلب؟`)) return; const batch = db.batch(); cbs.forEach(cb => batch.delete(db.collection("orders").doc(cb.value))); batch.commit().then(() => { document.getElementById("selectAllOrders").checked = false; loadStats(); }); }
 
+        // ✅ الإيداعات مع إشعارات تيليجرام
         function loadDeposits() { 
             db.collection("deposits").orderBy("createdAt", "desc").limit(100).onSnapshot(snap => { 
-                const tbody = document.getElementById("depositsTableBody"); tbody.innerHTML = ""; 
-                if (snap.empty) { tbody.innerHTML = '<tr><td colspan="7" class="text-center p-6" style="color:var(--muted);">لا توجد إيداعات</td></tr>'; return; } 
-                snap.docChanges().forEach(change => {
-                    if (change.type === "added") {
-                        const d = change.doc.data();
-                        // ✅ إرسال إشعار تيليجرام للإيداع الجديد
-                        const telegramMsg = `💰 *إيداع جديد!*\n\n👤 المستخدم: ${d.userName || '---'}\n📱 المزود: ${d.provider || '---'}\n💳 الكود: ${d.card_code || d.userPhone || '---'}\n💵 المبلغ: ${(d.amount || 0).toFixed(2)} د.ل\n\n🕒 الحالة: معلق - يحتاج مراجعة`;
-                        sendTelegramNotification(telegramMsg);
+                const tbody = document.getElementById("depositsTableBody"); 
+                snap.docChanges().forEach(change => { 
+                    if (change.type === "added") { 
+                        const d = change.doc.data(); 
+                        sendTelegramNotification(`💰 *إيداع جديد!*\n\n👤 ${d.userName || '---'}\n📱 ${d.provider || '---'}\n💳 ${d.card_code || d.userPhone || '---'}\n💵 ${(d.amount || 0).toFixed(2)} د.ل\n\n🕒 الحالة: معلق - يحتاج مراجعة`);
                     }
                 });
-                tbody.innerHTML = "";
+                tbody.innerHTML = ""; 
+                if (snap.empty) { tbody.innerHTML = '<tr><td colspan="7" class="text-center p-6" style="color:var(--muted);">لا توجد إيداعات</td></tr>'; return; } 
                 snap.forEach(doc => { 
                     const d = doc.data(); const date = d.createdAt ? new Date(d.createdAt.seconds * 1000).toLocaleString('ar-LY') : '---';
                     const statusText = d.status === 'approved' ? '✅ مقبول' : d.status === 'rejected' ? '❌ مرفوض' : '🕒 معلق';
-                    const actionBtns = d.status === 'pending' ? `<button onclick="approveDeposit('${doc.id}','${d.userId}','${d.amount || 0}')" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px]">قبول</button> <button onclick="rejectDeposit('${doc.id}')" class="bg-red-600 text-white px-2 py-1 rounded text-[10px]">رفض</button>` : '<span class="text-gray-500">تم</span>';
+                    const actionBtns = d.status === 'pending' ? `<button onclick="approveDeposit('${doc.id}','${d.userId}','${d.amount || 0}')" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px]">✅ قبول</button> <button onclick="rejectDeposit('${doc.id}')" class="bg-red-600 text-white px-2 py-1 rounded text-[10px]">❌ رفض</button>` : '<span class="text-gray-500">تم</span>';
                     tbody.innerHTML += `<tr class="border-b" style="border-color:var(--border);"><td class="p-4">${d.userName || d.userId || '---'}</td><td class="p-4">${d.provider || '---'}</td><td class="p-4 font-mono">${d.card_code || d.userPhone || '---'}</td><td class="p-4 gold-text">${(d.amount || 0).toFixed(2)} د.ل</td><td class="p-4 text-[10px]">${date}</td><td class="p-4">${statusText}</td><td class="p-4">${actionBtns}</td></tr>`; 
                 }); 
             }); 
         }
         
-        async function approveDeposit(id, userId, amount) { try { const amt = parseFloat(amount); const userDoc = await db.collection("users").doc(userId).get(); const currentBalance = userDoc.exists ? (userDoc.data().balance || 0) : 0; await db.collection("users").doc(userId).update({ balance: currentBalance + amt }); await db.collection("deposits").doc(id).update({ status: "approved" }); showNotification('✅ تمت الموافقة على الإيداع', 'success'); } catch (e) { alert("❌ خطأ: " + e.message); } }
-        async function rejectDeposit(id) { try { await db.collection("deposits").doc(id).update({ status: "rejected" }); showNotification('❌ تم رفض الإيداع', 'error'); } catch (e) { alert("❌ خطأ: " + e.message); } }
+        async function approveDeposit(id, userId, amount) { try { const amt = parseFloat(amount); const userDoc = await db.collection("users").doc(userId).get(); const currentBalance = userDoc.exists ? (userDoc.data().balance || 0) : 0; await db.collection("users").doc(userId).update({ balance: currentBalance + amt }); await db.collection("deposits").doc(id).update({ status: "approved" }); showNotification('✅ تمت الموافقة وإضافة الرصيد', 'success'); loadStats(); } catch (e) { alert("❌ خطأ: " + e.message); } }
+        async function rejectDeposit(id) { try { await db.collection("deposits").doc(id).update({ status: "rejected" }); showNotification('❌ تم رفض الإيداع', 'error'); loadStats(); } catch (e) { alert("❌ خطأ: " + e.message); } }
 
         function loadCategories() { db.collection("categories").get().then(snap => { allCategories = []; const tbody = document.getElementById("categoriesTableBody"); tbody.innerHTML = ""; if (snap.empty) { tbody.innerHTML = '<tr><td colspan="3" class="text-center p-6" style="color:var(--muted);">لا توجد أقسام</td></tr>'; return; } snap.forEach(doc => { const c = doc.data(); c.id = doc.id; allCategories.push(c); const img = getImageUrl(c.image || c.cover); tbody.innerHTML += `<tr class="border-b" style="border-color:var(--border);"><td class="p-4">${img ? `<img src="${img}" class="w-10 h-10 rounded-lg object-cover" onerror="this.style.display='none'">` : ''}</td><td class="p-4 font-bold">${c.name}</td><td class="p-4"><button onclick="editCategory('${doc.id}')" class="text-blue-400 text-[10px] ml-1"><i class="fa-solid fa-pen"></i></button> <button onclick="deleteCategory('${doc.id}')" class="text-red-400 text-[10px]"><i class="fa-solid fa-trash"></i></button></td></tr>`; }); updateCategorySelect(); loadAdminCats(); }); }
         function updateCategorySelect() { const select = document.getElementById("serviceCategory"); if (select) { select.innerHTML = '<option value="">اختر القسم...</option>'; allCategories.forEach(c => select.innerHTML += `<option value="${c.id}">${c.name}</option>`); } }
@@ -425,20 +208,20 @@
 
         function loadAdminCats() { const grid=document.getElementById("adminCatsGrid"); if(!allCategories.length){grid.innerHTML='<div class="col-span-full text-center p-6" style="color:var(--muted);">لا توجد أقسام</div>';return;} grid.innerHTML=allCategories.map(c=>{const img=getImageUrl(c.image||c.cover);return `<div class="cat-card-admin" onclick="openCategoryServices('${c.id}','${c.name}')">${img?`<img src="${img}" onerror="this.style.display='none'">`:''}<div><p class="text-xs font-bold">${c.name}</p></div></div>`;}).join(''); }
         function loadServicesForAdmin() { loadAdminCats(); }
-        function openCategoryServices(catId, catName) { currentCategoryId=catId; document.getElementById("adminCatsView").classList.add("hidden"); document.getElementById("adminServicesView").classList.remove("hidden"); document.getElementById("adminServicesTitle").innerText=catName; const tbody=document.getElementById("servicesTableBody"); tbody.innerHTML='<tr><td colspan="8" class="text-center p-6" style="color:var(--muted);">⏳ جاري الجلب...</td></tr>'; db.collection("services").where("category","==",catId).get().then(snap=>{allServices=[];tbody.innerHTML="";if(snap.empty){tbody.innerHTML='<tr><td colspan="8" class="text-center p-6" style="color:var(--muted);">لا توجد خدمات</td></tr>';return;} snap.forEach(doc=>{const s=doc.data();s.service_id=doc.id;allServices.push(s);}); allServices.sort((a,b)=>(a.order||0)-(b.order||0)); allServices.forEach(s=>{const discount=s.discount||0;const img=getImageUrl(s.image);const typeIcon=s.type==='id'?'🎮':s.type==='phone'?'📞':s.type==='account'?'🔗':'📦'; tbody.innerHTML+=`<tr class="border-b" style="border-color:var(--border);"><td class="p-4"><input type="checkbox" value="${s.service_id}" class="serviceCheckbox accent-[#f5a623]"></td><td class="p-4">${img?`<img src="${img}" class="w-10 h-10 rounded-lg object-cover" onerror="this.style.display='none'">`:''}</td><td class="p-4 font-bold">${s.title||'---'}</td><td class="p-4 gold-text">${(s.price||0).toFixed(3)}</td><td class="p-4">${discount>0?`<span class="discount-badge-admin">-${discount}%</span>`:'--'}</td><td class="p-4">${typeIcon}</td><td class="p-4">${s.status!==false?'✅':'❌'}</td><td class="p-4"><button onclick="editService('${s.service_id}')" class="text-blue-400 text-[10px] ml-1"><i class="fa-solid fa-pen"></i></button> <button onclick="deleteService('${s.service_id}')" class="text-red-400 text-[10px]"><i class="fa-solid fa-trash"></i></button></td></tr>`;});}); }
+        function openCategoryServices(catId, catName) { currentCategoryId=catId; document.getElementById("adminCatsView").classList.add("hidden"); document.getElementById("adminServicesView").classList.remove("hidden"); document.getElementById("adminServicesTitle").innerText=catName; const tbody=document.getElementById("servicesTableBody"); tbody.innerHTML='<tr><td colspan="9" class="text-center p-6" style="color:var(--muted);">⏳ جاري الجلب...</td></tr>'; db.collection("services").where("category","==",catId).get().then(snap=>{allServices=[];tbody.innerHTML="";if(snap.empty){tbody.innerHTML='<tr><td colspan="9" class="text-center p-6" style="color:var(--muted);">لا توجد خدمات</td></tr>';return;} snap.forEach(doc=>{const s=doc.data();s.service_id=doc.id;allServices.push(s);}); allServices.sort((a,b)=>(a.order||0)-(b.order||0)); allServices.forEach(s=>{const discount=s.discount||0;const img=getImageUrl(s.image);const typeIcon=s.type==='id'?'🎮':s.type==='phone'?'📞':s.type==='account'?'🔗':'📦';const hasSlider=s.enableQuantity?'✅':'❌'; tbody.innerHTML+=`<tr class="border-b" style="border-color:var(--border);"><td class="p-4"><input type="checkbox" value="${s.service_id}" class="serviceCheckbox accent-[#f5a623]"></td><td class="p-4">${img?`<img src="${img}" class="w-10 h-10 rounded-lg object-cover" onerror="this.style.display='none'">`:''}</td><td class="p-4 font-bold">${s.title||'---'}</td><td class="p-4 gold-text">${(s.price||0).toFixed(3)}</td><td class="p-4">${discount>0?`<span class="discount-badge-admin">-${discount}%</span>`:'--'}</td><td class="p-4">${typeIcon}</td><td class="p-4">${hasSlider}</td><td class="p-4">${s.status!==false?'✅':'❌'}</td><td class="p-4"><button onclick="editService('${s.service_id}')" class="text-blue-400 text-[10px] ml-1"><i class="fa-solid fa-pen"></i></button> <button onclick="deleteService('${s.service_id}')" class="text-red-400 text-[10px]"><i class="fa-solid fa-trash"></i></button></td></tr>`;});}); }
         function backToCats() { document.getElementById("adminServicesView").classList.add("hidden"); document.getElementById("adminCatsView").classList.remove("hidden"); currentCategoryId=null; }
-        function openServiceModal() { document.getElementById("serviceId").value="";document.getElementById("serviceTitle").value="";document.getElementById("servicePrice").value="";document.getElementById("serviceDiscount").value="0";document.getElementById("serviceImage").value="";document.getElementById("serviceDescription").value="";document.getElementById("serviceStatus").value="true";document.getElementById("serviceType").value="id";if(currentCategoryId)document.getElementById("serviceCategory").value=currentCategoryId;document.getElementById("serviceModalTitle").innerText="إضافة خدمة";document.getElementById("serviceModal").classList.remove("hidden"); }
-        function editService(id) { const s=allServices.find(x=>x.service_id===id);if(!s)return;document.getElementById("serviceId").value=id;document.getElementById("serviceTitle").value=s.title||"";document.getElementById("servicePrice").value=s.price||0;document.getElementById("serviceDiscount").value=s.discount||0;document.getElementById("serviceImage").value=s.image||"";document.getElementById("serviceDescription").value=s.description||"";document.getElementById("serviceStatus").value=String(s.status!==false);document.getElementById("serviceType").value=s.type||"id";document.getElementById("serviceCategory").value=s.category||"";document.getElementById("serviceModalTitle").innerText="تعديل خدمة";document.getElementById("serviceModal").classList.remove("hidden"); }
+        function openServiceModal() { document.getElementById("serviceId").value="";document.getElementById("serviceTitle").value="";document.getElementById("servicePrice").value="";document.getElementById("serviceDiscount").value="0";document.getElementById("serviceImage").value="";document.getElementById("serviceDescription").value="";document.getElementById("serviceStatus").value="true";document.getElementById("serviceType").value="id";document.getElementById("enableQuantity").checked=false;document.getElementById("qtyMin").value="30";document.getElementById("qtyMax").value="10000";document.getElementById("quantitySettings").classList.add("hidden");if(currentCategoryId)document.getElementById("serviceCategory").value=currentCategoryId;document.getElementById("serviceModalTitle").innerText="إضافة خدمة";document.getElementById("serviceModal").classList.remove("hidden"); }
+        function editService(id) { const s=allServices.find(x=>x.service_id===id);if(!s)return;document.getElementById("serviceId").value=id;document.getElementById("serviceTitle").value=s.title||"";document.getElementById("servicePrice").value=s.price||0;document.getElementById("serviceDiscount").value=s.discount||0;document.getElementById("serviceImage").value=s.image||"";document.getElementById("serviceDescription").value=s.description||"";document.getElementById("serviceStatus").value=String(s.status!==false);document.getElementById("serviceType").value=s.type||"id";document.getElementById("serviceCategory").value=s.category||"";document.getElementById("enableQuantity").checked=s.enableQuantity||false;document.getElementById("qtyMin").value=s.qtyMin||30;document.getElementById("qtyMax").value=s.qtyMax||10000;if(s.enableQuantity){document.getElementById("quantitySettings").classList.remove("hidden");}else{document.getElementById("quantitySettings").classList.add("hidden");}document.getElementById("serviceModalTitle").innerText="تعديل خدمة";document.getElementById("serviceModal").classList.remove("hidden"); }
         function closeServiceModal() { document.getElementById("serviceModal").classList.add("hidden"); }
-        function saveService(e) { e.preventDefault();const id=document.getElementById("serviceId").value;const data={title:document.getElementById("serviceTitle").value,category:document.getElementById("serviceCategory").value,price:parseFloat(document.getElementById("servicePrice").value)||0,discount:parseInt(document.getElementById("serviceDiscount").value)||0,image:document.getElementById("serviceImage").value,description:document.getElementById("serviceDescription").value,status:document.getElementById("serviceStatus").value==="true",type:document.getElementById("serviceType").value,order:Date.now()};if(id)db.collection("services").doc(id).update(data);else db.collection("services").add(data);closeServiceModal();loadStats();if(currentCategoryId)openCategoryServices(currentCategoryId,''); }
+        function saveService(e) { e.preventDefault();const id=document.getElementById("serviceId").value;const data={title:document.getElementById("serviceTitle").value,category:document.getElementById("serviceCategory").value,price:parseFloat(document.getElementById("servicePrice").value)||0,discount:parseInt(document.getElementById("serviceDiscount").value)||0,image:document.getElementById("serviceImage").value,description:document.getElementById("serviceDescription").value,status:document.getElementById("serviceStatus").value==="true",type:document.getElementById("serviceType").value,enableQuantity:document.getElementById("enableQuantity").checked,order:Date.now()};if(data.enableQuantity){data.qtyMin=parseInt(document.getElementById("qtyMin").value)||30;data.qtyMax=parseInt(document.getElementById("qtyMax").value)||10000;}if(id)db.collection("services").doc(id).update(data);else db.collection("services").add(data);closeServiceModal();loadStats();if(currentCategoryId)openCategoryServices(currentCategoryId,''); }
         function deleteService(id) { if(confirm("حذف الخدمة؟")){db.collection("services").doc(id).delete().then(()=>{if(currentCategoryId)openCategoryServices(currentCategoryId,'');});} }
         function deleteSelectedServices() { const cbs=document.querySelectorAll('.serviceCheckbox:checked');if(!cbs.length)return alert("حدد خدمات");if(!confirm(`حذف ${cbs.length} خدمة؟`))return;const batch=db.batch();cbs.forEach(cb=>batch.delete(db.collection("services").doc(cb.value)));batch.commit().then(()=>{document.getElementById("selectAllServices").checked=false;if(currentCategoryId)openCategoryServices(currentCategoryId,'');}); }
 
-        function loadUsers() { db.collection("users").limit(100).onSnapshot(snap=>{ snap.docChanges().forEach(change => { if (change.type === "added") { const u = change.doc.data(); const telegramMsg = `👤 *مستخدم جديد!*\n\n👤 الاسم: ${u.name || u.username || '---'}\n📧 الإيميل: ${u.email || '---'}\n📞 الهاتف: ${u.phone || '---'}\n💰 الرصيد: ${(u.balance || 0).toFixed(2)} د.ل`; sendTelegramNotification(telegramMsg); } }); allUsers=[];snap.forEach(doc=>{const u=doc.data();u.uid=doc.id;allUsers.push(u);});renderUsersTable(allUsers); }); }
+        function loadUsers() { db.collection("users").limit(100).onSnapshot(snap=>{ snap.docChanges().forEach(change => { if (change.type === "added") { const u = change.doc.data(); sendTelegramNotification(`👤 *مستخدم جديد!*\n\n👤 ${u.name || u.username || '---'}\n📧 ${u.email || '---'}\n📞 ${u.phone || '---'}\n💰 ${(u.balance || 0).toFixed(2)} د.ل`); } }); allUsers=[];snap.forEach(doc=>{const u=doc.data();u.uid=doc.id;allUsers.push(u);});renderUsersTable(allUsers); }); }
         function renderUsersTable(arr) { const t=document.getElementById("usersTableBody");t.innerHTML="";if(!arr.length){t.innerHTML='<tr><td colspan="6" class="text-center p-6" style="color:var(--muted);">لا يوجد مستخدمين</td></tr>';return;} arr.forEach(u=>{t.innerHTML+=`<tr class="border-b" style="border-color:var(--border);"><td class="p-4">${u.name||u.username||'---'}</td><td class="p-4 font-mono">${u.phone||'---'}</td><td class="p-4 text-[11px]">${u.email||'---'}</td><td class="p-4 gold-text">${(u.balance||0).toFixed(4)} د.ل</td><td class="p-4">${u.role==='admin'?'👑 مدير':'👤 مستخدم'}</td><td class="p-4"><input type="number" step="0.01" id="wallet_${u.uid}" class="w-16 rounded p-1 text-center text-xs" placeholder="مبلغ" style="background:#0a0a0a;border:1px solid var(--border);color:#fff;"><button onclick="updateWallet('${u.uid}','add')" class="bg-emerald-600 text-white px-2 py-0.5 rounded text-[10px]">+</button> <button onclick="updateWallet('${u.uid}','sub')" class="bg-red-600 text-white px-2 py-0.5 rounded text-[10px]">-</button></td></tr>`;}); }
         function updateWallet(uid, type) { const v=parseFloat(document.getElementById(`wallet_${uid}`).value);if(!v||v<=0)return alert("أدخل مبلغ صحيح");const u=allUsers.find(x=>x.uid===uid);if(!u)return;const newBalance=type==='add'?(u.balance||0)+v:Math.max(0,(u.balance||0)-v);db.collection("users").doc(uid).update({balance:newBalance}).then(()=>{document.getElementById(`wallet_${uid}`).value="";loadStats();showNotification(`✅ تم ${type==='add'?'شحن':'خصم'} ${v.toFixed(2)} د.ل`,'success');}); }
         function searchUsers(term) { const t=term.toLowerCase().trim();if(!t){renderUsersTable(allUsers);return;} renderUsersTable(allUsers.filter(u=>(u.name||u.username||'').toLowerCase().includes(t)||(u.phone||'').includes(t)||(u.email||'').toLowerCase().includes(t))); }
         function showNotification(message, type) { const notification=document.createElement('div');notification.className=`notification ${type}`;notification.textContent=message;document.body.appendChild(notification);setTimeout(()=>notification.remove(),3000); }
     </script>
 </body>
-</html>
+                                                                                                                                                                                                                                                                                        </html>
