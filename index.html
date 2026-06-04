@@ -25,6 +25,7 @@
         .container { max-width: 900px; margin: 0 auto; padding: 0 12px; }
         .section-title { font-size: 16px; font-weight: 700; margin: 20px 0 12px; display: flex; align-items: center; gap: 8px; color: var(--gold); }
         .section-title::before { content: ''; width: 4px; height: 22px; background: linear-gradient(180deg, var(--gold), #b8860b); border-radius: 2px; }
+        /* ✅ الأقسام: سطرين */
         .cats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .cat-card { background: var(--card-bg); backdrop-filter: blur(10px); border: var(--border-gold); border-radius: 20px; padding: 16px 12px; text-align: center; cursor: pointer; box-shadow: var(--neon-gold); transition: all 0.3s; }
         .cat-card:active { transform: scale(0.96); border-color: var(--gold); }
@@ -32,14 +33,14 @@
         .cat-card h3 { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 3px; } .cat-card .desc { font-size: 10px; color: var(--muted); }
         .cat-card .btn { display: inline-block; background: linear-gradient(135deg, #b8860b, var(--gold)); color: #000; padding: 5px 14px; border-radius: 20px; font-size: 10px; font-weight: 700; margin-top: 8px; }
         .back-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--card-bg); border: var(--border-gold); border-radius: 25px; padding: 7px 16px; font-size: 12px; font-weight: 600; cursor: pointer; margin-bottom: 12px; color: var(--gold); }
-        .prods-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        /* ✅ المنتجات: 3 في السطر */
+        .prods-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .prod-card { background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid rgba(245,166,35,0.2); border-radius: 16px; padding: 12px 8px; text-align: center; cursor: pointer; box-shadow: 0 0 8px rgba(245,166,35,0.1); transition: all 0.3s; position: relative; }
         .prod-card:active { transform: scale(0.95); border-color: var(--gold); }
-        /* ✅ تم تعديل أبعاد صور المنتجات لتطابق الأقسام */
         .prod-card img { width: 55px; height: 55px; border-radius: 16px; object-fit: cover; margin: 0 auto 6px; display: block; background: rgba(245,166,35,0.08); padding: 6px; }
-        .prod-card h4 { font-size: 11px; font-weight: 700; color: var(--white); margin-bottom: 2px; } .prod-card .price { font-size: 13px; color: var(--gold); font-weight: 900; }
-        .prod-card .old-price { font-size: 10px; color: var(--muted); text-decoration: line-through; }
-        .discount-badge { position: absolute; top: 6px; left: 6px; background: var(--red); color: #fff; font-size: 9px; font-weight: 900; padding: 2px 6px; border-radius: 6px; z-index: 5; }
+        .prod-card h4 { font-size: 10px; font-weight: 700; color: var(--white); margin-bottom: 2px; } .prod-card .price { font-size: 12px; color: var(--gold); font-weight: 900; }
+        .prod-card .old-price { font-size: 9px; color: var(--muted); text-decoration: line-through; }
+        .discount-badge { position: absolute; top: 4px; left: 4px; background: var(--red); color: #fff; font-size: 8px; font-weight: 900; padding: 2px 5px; border-radius: 5px; z-index: 5; }
         .wallet-card { background: var(--card-bg); backdrop-filter: blur(10px); border: var(--border-gold); border-radius: 20px; padding: 18px; box-shadow: var(--neon-gold); margin-bottom: 14px; }
         .big-number { font-size: 32px; font-weight: 900; color: var(--gold); text-align: center; }
         .bank-row { background: rgba(0,0,0,0.3); border: 1px solid rgba(245,166,35,0.2); border-radius: 14px; padding: 12px 14px; margin: 8px 0; display: flex; justify-content: space-between; align-items: center; }
@@ -53,36 +54,33 @@
         .payment-methods-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
         .payment-method-btn { background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.3); border-radius: 12px; padding: 10px 6px; text-align: center; cursor: pointer; transition: all 0.3s; font-size: 10px; font-weight: 700; color: var(--white); }
         .payment-method-btn.active { background: linear-gradient(135deg, #b8860b, var(--gold)); color: #000; border-color: var(--gold); box-shadow: var(--neon-gold); }
-        .payment-method-btn .icon { font-size: 20px; display: block; margin-bottom: 4px; }
-        
-        /* ✅ خيارات المصرف الفرعية */
+        .payment-method-btn .icon { font-size: 18px; display: block; margin-bottom: 4px; }
         .bank-sub-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px; }
-        .bank-sub-option { background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.25); border-radius: 12px; padding: 12px 8px; text-align: center; cursor: pointer; transition: all 0.3s; font-size: 10px; font-weight: 700; color: var(--white); }
+        .bank-sub-option { background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.25); border-radius: 12px; padding: 10px 6px; text-align: center; cursor: pointer; transition: all 0.3s; font-size: 10px; font-weight: 700; color: var(--white); }
         .bank-sub-option.active { background: linear-gradient(135deg, #b8860b, var(--gold)); color: #000; border-color: var(--gold); box-shadow: var(--neon-gold); }
-        .bank-sub-option .icon { font-size: 18px; display: block; margin-bottom: 3px; }
+        .bank-sub-option .icon { font-size: 16px; display: block; margin-bottom: 2px; }
         
-        .quantity-section-new { background: #1a1a1a; padding: 16px; border-radius: 12px; margin-bottom: 12px; border: 1px solid rgba(245,166,35,0.2); }
-        .quantity-section-new label { font-weight: 700; display: block; margin-bottom: 10px; color: var(--gold); font-size: 13px; }
-        .quantity-input-new { width: 100%; padding: 12px; font-size: 18px; background: #0a0a0a; color: #fff; border: 2px solid rgba(245,166,35,0.4); border-radius: 8px; text-align: center; margin-bottom: 12px; font-family: 'Cairo', sans-serif; }
-        .quantity-input-new:focus { border-color: var(--gold); outline: none; box-shadow: var(--neon-gold); }
-        /* ✅ العداد المتسلسل */
-        .quantity-slider-new { width: 100%; accent-color: var(--gold); cursor: pointer; height: 8px; transition: all 0.1s ease; }
-        .quantity-display { text-align: center; font-size: 20px; font-weight: 900; color: var(--white); margin: 8px 0; }
-        .quantity-display span { color: var(--gold); font-size: 24px; }
-        .price-display-new { font-size: 18px; font-weight: 900; margin: 16px 0; text-align: center; color: var(--white); }
+        /* ✅ العداد المطور */
+        .quantity-section-new { background: #1a1a1a; padding: 16px; border-radius: 12px; margin-bottom: 12px; border: 1px solid rgba(245,166,35,0.2); text-align: center; }
+        .quantity-section-new label { font-weight: 700; display: block; margin-bottom: 12px; color: var(--gold); font-size: 13px; }
+        .quantity-display-box { display: inline-block; background: #0a0a0a; border: 2px solid rgba(245,166,35,0.4); border-radius: 10px; padding: 8px 16px; margin-bottom: 12px; min-width: 80px; }
+        .quantity-display-box input { width: 70px; background: transparent; border: none; color: var(--gold); font-size: 24px; font-weight: 900; text-align: center; outline: none; font-family: 'Cairo', sans-serif; }
+        .quantity-slider-new { width: 100%; accent-color: var(--gold); cursor: pointer; height: 8px; margin: 8px 0; }
+        .quantity-range-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); margin-top: 4px; }
+        .price-display-new { font-size: 18px; font-weight: 900; margin: 12px 0; text-align: center; color: var(--white); }
         .price-display-new span { color: var(--gold); font-size: 22px; }
         .next-btn-new { width: 100%; background: linear-gradient(135deg, #b8860b, var(--gold)); color: #000; border: none; padding: 14px; font-size: 16px; font-weight: 900; border-radius: 8px; cursor: pointer; transition: 0.3s; font-family: 'Cairo', sans-serif; box-shadow: var(--neon-gold); }
         .next-btn-new:active { transform: scale(0.95); }
         .step-divider { border-top: 2px dashed rgba(245,166,35,0.3); padding-top: 16px; margin-top: 16px; }
         .submit-btn-new { width: 100%; background: var(--gold); color: #000; border: none; padding: 14px; font-size: 16px; font-weight: 900; border-radius: 8px; cursor: pointer; margin-top: 16px; font-family: 'Cairo', sans-serif; box-shadow: var(--neon-gold); }
         .order-summary { background: #1a1a1a; border: 1px solid rgba(245,166,35,0.3); border-radius: 12px; padding: 12px; margin-bottom: 12px; text-align: center; }
-        .order-summary .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: 13px; }
+        .order-summary .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: 12px; }
         .order-summary .summary-label { color: var(--muted); }
         .order-summary .summary-value { color: var(--gold); font-weight: 900; }
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 12px; }
-        .modal { background: rgba(20,20,20,0.98); backdrop-filter: blur(15px); border: 1px solid rgba(245,166,35,0.4); border-radius: 24px; padding: 18px; max-width: 450px; width: 100%; max-height: 90vh; overflow-y: auto; color: #fff; position: relative; box-shadow: var(--neon-gold); }
+        .modal { background: rgba(20,20,20,0.98); backdrop-filter: blur(15px); border: 1px solid rgba(245,166,35,0.4); border-radius: 24px; padding: 18px; max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; color: #fff; position: relative; box-shadow: var(--neon-gold); }
         .modal .close { position: absolute; top: 12px; left: 12px; background: rgba(255,255,255,0.1); border: none; color: #fff; width: 30px; height: 30px; border-radius: 50%; font-size: 15px; cursor: pointer; z-index: 10; }
-        .modal img { width: 80px; height: 80px; object-fit: contain; border-radius: 14px; margin: 0 auto 8px; display: block; background: rgba(245,166,35,0.05); border: 1px solid rgba(245,166,35,0.2); }
+        .modal img { width: 70px; height: 70px; object-fit: contain; border-radius: 14px; margin: 0 auto 8px; display: block; background: rgba(245,166,35,0.05); border: 1px solid rgba(245,166,35,0.2); }
         .modal h3 { text-align: center; font-size: 16px; font-weight: 900; margin-bottom: 2px; }
         .modal .modal-desc { text-align: center; font-size: 11px; color: var(--muted); margin-bottom: 10px; }
         .modal .rules { background: rgba(0,0,0,0.4); border-radius: 12px; padding: 10px; margin: 8px 0; font-size: 10px; text-align: right; border: 1px solid rgba(245,166,35,0.1); }
@@ -96,7 +94,7 @@
         .note-box { background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.25); border-radius: 10px; padding: 8px 12px; margin: 8px 0; font-size: 10px; color: var(--gold); text-align: center; }
         .discount-badge-big { background: var(--red); color: #fff; font-size: 12px; font-weight: 900; padding: 4px 10px; border-radius: 10px; display: inline-block; margin-bottom: 6px; }
         .old-price-big { text-align: center; font-size: 14px; color: #999; text-decoration: line-through; }
-        @media (min-width: 768px) { .cats-grid { grid-template-columns: repeat(3, 1fr); } .prods-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 768px) { .cats-grid { grid-template-columns: repeat(2, 1fr); } .prods-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (min-width: 1024px) { .cats-grid { grid-template-columns: repeat(4, 1fr); } .prods-grid { grid-template-columns: repeat(4, 1fr); } }
     </style>
 </head>
@@ -105,38 +103,19 @@
 
     <div id="homePage" class="page active"><div class="hero"><h1>Gaming Libya</h1><p>شحن فوري | بطاقات | اشتراكات | بأفضل الأسعار</p></div><div class="container"><div id="categoriesView"><div class="section-title">الأقسام المتاحة</div><div class="cats-grid" id="catsGrid"><div class="loading">⏳ جاري جلب الأقسام...</div></div></div><div id="productsView" class="hidden"><button class="back-btn" onclick="showCategories()">⬅ رجوع للأقسام</button><div class="section-title" id="productsTitle"></div><div class="prods-grid" id="prodsGrid"></div></div></div></div>
 
-    <!-- ✅ المحفظة مع دمج ون باي ولي باي تحت "المصرف" -->
+    <!-- المحفظة -->
     <div id="walletPage" class="page hidden"><div class="container" style="margin-top:10px;"><div class="section-title">💰 المحفظة وشحن الرصيد</div><div class="wallet-card" style="text-align:center;"><div style="font-size:12px;color:var(--muted);">رصيدك الحالي</div><div class="big-number"><span id="walletBalance">0.000</span> د.ل</div></div><div class="wallet-card"><h3 style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--gold);text-align:center;">💳 اختر طريقة الدفع</h3><div class="payment-methods-grid"><div class="payment-method-btn active" onclick="switchPaymentMethod('libyana', this)"><span class="icon">📞</span>ليبيانا ومدار</div><div class="payment-method-btn" onclick="switchPaymentMethod('binance', this)"><span class="icon">₿</span>بايننس وبايبت</div><div class="payment-method-btn" onclick="switchPaymentMethod('bank', this)"><span class="icon">🏦</span>المصرف</div><div class="payment-method-btn" onclick="switchPaymentMethod('cards', this)"><span class="icon">💳</span>كروت تعبئة</div></div></div>
-    
-    <!-- ليبيانا ومدار -->
     <div id="paymentLibyana" class="wallet-card"><h3 style="color:var(--gold);margin-bottom:8px;">📞 تحويل ليبيانا ومدار</h3><div class="bank-row"><div><span style="color:var(--muted);">ليبيانا</span></div><div class="num">0946730213</div></div><button class="copy-btn" onclick="copyText('0946730213')" style="width:100%;margin-bottom:4px;">📋 نسخ</button><div class="bank-row"><div><span style="color:var(--muted);">مدار</span></div><div class="num">0915307725</div></div><button class="copy-btn" onclick="copyText('0915307725')" style="width:100%;margin-bottom:10px;">📋 نسخ</button><p style="font-size:11px;color:var(--muted);margin-bottom:8px;">بعد التحويل، أدخل رقم هاتفك والمبلغ</p><input type="text" id="phone_libyana" class="notify-input" placeholder="رقم الهاتف" dir="ltr"><input type="number" id="amount_libyana" class="notify-input" placeholder="المبلغ (د.ل)" dir="ltr"><button class="notify-btn" onclick="submitTransfer('Libyana/Madar')">✅ تأكيد</button></div>
-    
-    <!-- بايننس وبايبت -->
     <div id="paymentBinance" class="wallet-card hidden"><h3 style="color:var(--gold);margin-bottom:8px;">₿ بايننس وبايبت</h3><div class="bank-row"><div><span style="color:var(--muted);">بايننس</span></div><div class="num">1132499294</div></div><button class="copy-btn" onclick="copyText('1132499294')" style="width:100%;margin-bottom:4px;">📋 نسخ</button><div class="bank-row"><div><span style="color:var(--muted);">بايبت</span></div><div class="num">450397558</div></div><button class="copy-btn" onclick="copyText('450397558')" style="width:100%;margin-bottom:10px;">📋 نسخ</button><div class="note-box">💡 1 دولار = 12 دينار</div><input type="text" id="crypto_id" class="notify-input" placeholder="المعرف (ID)" dir="ltr"><input type="number" id="crypto_amount" class="notify-input" placeholder="المبلغ ($)" dir="ltr"><button class="notify-btn" onclick="submitCryptoTransfer()">✅ تأكيد</button></div>
-    
-    <!-- ✅ المصرف - يجمع ون باي ولي باي -->
-    <div id="paymentBank" class="wallet-card hidden">
-        <h3 style="color:var(--gold);margin-bottom:8px;">🏦 المصرف</h3>
-        <p style="font-size:10px;color:var(--muted);margin-bottom:10px;">اختر طريقة الدفع المصرفي</p>
-        <div class="bank-sub-options">
-            <div class="bank-sub-option active" onclick="switchBankSubOption('onepay', this)"><span class="icon">🏦</span>ون باي OnePay</div>
-            <div class="bank-sub-option" onclick="switchBankSubOption('lypay', this)"><span class="icon">🏦</span>لي باي LYPAY</div>
-        </div>
-        <!-- ون باي -->
-        <div id="subOnepay"><div class="bank-row"><div><span style="color:var(--muted);">رقم الحساب / الآيبان</span></div><div class="num" style="font-size:12px;">LY82005101101017366700013</div></div><button class="copy-btn" onclick="copyText('LY82005101101017366700013')" style="width:100%;margin-bottom:10px;">📋 نسخ</button><p style="font-size:11px;color:var(--muted);margin-bottom:8px;">بعد التحويل، أدخل اسمك والمبلغ</p><input type="text" id="onepay_sender_name" class="notify-input" placeholder="اسم المحول" dir="ltr"><input type="number" id="onepay_amount" class="notify-input" placeholder="المبلغ (د.ل)" dir="ltr"><button class="notify-btn" onclick="submitOnepayTransfer()">✅ تأكيد</button></div>
-        <!-- لي باي -->
-        <div id="subLypay" class="hidden"><div class="bank-row"><div><span style="color:var(--muted);">رقم الحساب</span></div><div class="num">101017366700013</div></div><button class="copy-btn" onclick="copyText('101017366700013')" style="width:100%;margin-bottom:10px;">📋 نسخ</button><p style="font-size:11px;color:var(--muted);margin-bottom:8px;">بعد التحويل، أدخل اسمك والمبلغ</p><input type="text" id="lypay_sender_name" class="notify-input" placeholder="اسم المحول" dir="ltr"><input type="number" id="lypay_amount" class="notify-input" placeholder="المبلغ (د.ل)" dir="ltr"><button class="notify-btn" onclick="submitLypayTransfer()">✅ تأكيد</button></div>
-    </div>
-    
-    <!-- كروت تعبئة -->
+    <div id="paymentBank" class="wallet-card hidden"><h3 style="color:var(--gold);margin-bottom:8px;">🏦 المصرف</h3><p style="font-size:10px;color:var(--muted);margin-bottom:10px;">اختر طريقة الدفع المصرفي</p><div class="bank-sub-options"><div class="bank-sub-option active" onclick="switchBankSubOption('onepay', this)"><span class="icon">🏦</span>ون باي</div><div class="bank-sub-option" onclick="switchBankSubOption('lypay', this)"><span class="icon">🏦</span>لي باي</div></div><div id="subOnepay"><div class="bank-row"><div><span style="color:var(--muted);">الآيبان</span></div><div class="num" style="font-size:12px;">LY82005101101017366700013</div></div><button class="copy-btn" onclick="copyText('LY82005101101017366700013')" style="width:100%;margin-bottom:10px;">📋 نسخ</button><input type="text" id="onepay_sender_name" class="notify-input" placeholder="اسم المحول" dir="ltr"><input type="number" id="onepay_amount" class="notify-input" placeholder="المبلغ (د.ل)" dir="ltr"><button class="notify-btn" onclick="submitOnepayTransfer()">✅ تأكيد</button></div><div id="subLypay" class="hidden"><div class="bank-row"><div><span style="color:var(--muted);">رقم الحساب</span></div><div class="num">101017366700013</div></div><button class="copy-btn" onclick="copyText('101017366700013')" style="width:100%;margin-bottom:10px;">📋 نسخ</button><input type="text" id="lypay_sender_name" class="notify-input" placeholder="اسم المحول" dir="ltr"><input type="number" id="lypay_amount" class="notify-input" placeholder="المبلغ (د.ل)" dir="ltr"><button class="notify-btn" onclick="submitLypayTransfer()">✅ تأكيد</button></div></div>
     <div id="paymentCards" class="wallet-card hidden"><h3 style="color:var(--gold);margin-bottom:8px;">💳 كروت التعبئة</h3><select id="depositProvider" class="notify-input" style="text-align:right;direction:rtl;"><option value="Libyana">ليبيانا</option><option value="Madar">مدار</option></select><input type="text" id="depositCardCode" class="notify-input" placeholder="رقم الكرت" dir="ltr"><input type="number" id="depositAmount" class="notify-input" placeholder="قيمة الكرت" dir="ltr"><button class="notify-btn" onclick="submitDeposit()">✅ إرسال</button></div></div></div>
 
     <div id="accountPage" class="page hidden"><div class="container" style="margin-top:10px;"><div class="section-title">👤 حسابي</div><div class="wallet-card" style="text-align:center;"><div style="width:55px;height:55px;background:rgba(245,166,35,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:28px;border:var(--border-gold);">👤</div><div style="font-size:16px;font-weight:700;" id="accName">---</div><div style="font-size:11px;color:var(--muted);" id="accEmail">---</div></div><div class="wallet-card"><div class="info-row"><span>الاسم</span><span id="accName2" style="font-weight:700;">---</span></div><div class="info-row"><span>الإيميل</span><span id="accEmail2" style="font-weight:700;font-size:11px;">---</span></div><div class="info-row"><span>الهاتف</span><span id="accPhone" style="font-weight:700;">---</span></div><div class="info-row"><span>الرصيد</span><span id="accBalance" style="font-weight:700;color:var(--gold);">0.000 د.ل</span></div></div><button class="btn-red" onclick="logout()">🚪 تسجيل الخروج</button></div></div>
 
     <div class="bottom-nav"><div class="nav-item active" data-tab="home" onclick="switchTab('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>الرئيسية</div><div class="nav-item" data-tab="wallet" onclick="switchTab('wallet')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3"/></svg>المحفظة</div><div class="nav-item" data-tab="account" onclick="switchTab('account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>حسابي</div></div>
 
-    <!-- المودال -->
-    <div id="detailModal" class="modal-overlay hidden" onclick="closeDetailModal()"><div class="modal" onclick="event.stopPropagation()"><button class="close" onclick="closeDetailModal()">✕</button><img id="dImg" src="" alt=""><h3 id="dName"></h3><div id="dDiscountBadge" style="text-align:center;"></div><div class="old-price-big hidden" id="dOldPrice"></div><p class="modal-desc" id="dDesc"></p><div id="stepQuantityNew" class="modal-step"><div id="quantitySectionNew" class="quantity-section-new hidden"><label>🔢 الكمية المطلوبة</label><div class="quantity-display"><span id="quantityDisplayValue">30</span></div><input type="range" id="coinSliderNew" class="quantity-slider-new" min="30" max="100" value="30" step="1" oninput="updateQuantityNew(this.value)"></div><div id="fixedPriceSection" class="price-display-new hidden">السعر: <span id="fixedPriceDisplay">0.000</span> د.ل</div><div id="dynamicPriceSection" class="price-display-new hidden">السعر الإجمالي: <span id="totalPriceNew">0.000</span> د.ل</div><button class="next-btn-new" id="nextBtnNew" onclick="goToStep2()">✅ متابعة</button></div><div id="stepDataNew" class="modal-step hidden"><div class="step-divider"></div><div id="orderSummary" class="order-summary hidden"><div class="summary-row"><span class="summary-label">🔢 الكمية:</span><span class="summary-value" id="summaryQty">30</span></div><div class="summary-row"><span class="summary-label">💰 السعر الإجمالي:</span><span class="summary-value" id="summaryPrice">0.000</span> د.ل</div></div><h4 style="margin-bottom:12px;color:var(--gold);font-size:14px;">📋 بيانات الطلب</h4><div class="rules"><h5>⚠️ تنبيه</h5><ul><li>المنتج <b style="color:#f87171">غير قابل للاسترداد</b></li><li>تأكد من <b style="color:#fff">صحة البيانات</b></li><li>التعويض خلال <b style="color:#fff">24 ساعة</b></li></ul></div><div id="fieldId" class="hidden"><input type="text" id="targetInput" placeholder="🎮 معرف اللاعب (ID)" dir="ltr"></div><div id="fieldPhone" class="hidden"><input type="text" id="phoneInput" placeholder="📞 رقم الهاتف المطلوب شحنه" dir="ltr"></div><div id="fieldAccount" class="hidden"><input type="text" id="accountLinkInput" placeholder="🔗 رابط الحساب أو اليوزر" dir="ltr"></div><input type="text" id="contactPhone" placeholder="📞 رقم التواصل (للاتصال بك)" dir="ltr"><button class="submit-btn-new" onclick="confirmPurchase()">✅ تأكيد الطلب النهائي</button></div></div></div>
+    <!-- ✅ المودال مع العداد المطور -->
+    <div id="detailModal" class="modal-overlay hidden" onclick="closeDetailModal()"><div class="modal" onclick="event.stopPropagation()"><button class="close" onclick="closeDetailModal()">✕</button><img id="dImg" src="" alt=""><h3 id="dName"></h3><div id="dDiscountBadge" style="text-align:center;"></div><div class="old-price-big hidden" id="dOldPrice"></div><p class="modal-desc" id="dDesc"></p><div id="stepQuantityNew" class="modal-step"><div id="quantitySectionNew" class="quantity-section-new hidden"><label>🔢 الكمية المطلوبة</label><div class="quantity-display-box"><input type="number" id="quantityInput" value="30" min="30" max="100" oninput="updateSliderFromInput(this.value)"></div><input type="range" id="coinSliderNew" class="quantity-slider-new" min="30" max="100" value="30" step="1" oninput="updateQuantityFromSlider(this.value)"><div class="quantity-range-labels"><span id="qtyMinLabel">الحد الأدنى: 30</span><span id="qtyMaxLabel">الحد الأقصى: 100</span></div></div><div id="fixedPriceSection" class="price-display-new hidden">السعر: <span id="fixedPriceDisplay">0.000</span> د.ل</div><div id="dynamicPriceSection" class="price-display-new hidden">السعر الإجمالي: <span id="totalPriceNew">0.000</span> د.ل</div><button class="next-btn-new" id="nextBtnNew" onclick="goToStep2()">✅ متابعة</button></div><div id="stepDataNew" class="modal-step hidden"><div class="step-divider"></div><div id="orderSummary" class="order-summary hidden"><div class="summary-row"><span class="summary-label">🔢 الكمية:</span><span class="summary-value" id="summaryQty">30</span></div><div class="summary-row"><span class="summary-label">💰 السعر الإجمالي:</span><span class="summary-value" id="summaryPrice">0.000</span> د.ل</div></div><h4 style="margin-bottom:12px;color:var(--gold);font-size:14px;">📋 بيانات الطلب</h4><div class="rules"><h5>⚠️ تنبيه</h5><ul><li>المنتج <b style="color:#f87171">غير قابل للاسترداد</b></li><li>تأكد من <b style="color:#fff">صحة البيانات</b></li><li>التعويض خلال <b style="color:#fff">24 ساعة</b></li></ul></div><div id="fieldId" class="hidden"><input type="text" id="targetInput" placeholder="🎮 معرف اللاعب (ID)" dir="ltr"></div><div id="fieldPhone" class="hidden"><input type="text" id="phoneInput" placeholder="📞 رقم الهاتف المطلوب شحنه" dir="ltr"></div><div id="fieldAccount" class="hidden"><input type="text" id="accountLinkInput" placeholder="🔗 رابط الحساب أو اليوزر" dir="ltr"></div><input type="text" id="contactPhone" placeholder="📞 رقم التواصل (للاتصال بك)" dir="ltr"><button class="submit-btn-new" onclick="confirmPurchase()">✅ تأكيد الطلب النهائي</button></div></div></div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script>
@@ -144,41 +123,28 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
-        
         const WEBHOOK_URL = "https://eofwux25vjx7gge.m.pipedream.net";
-        async function sendWebhookNotification(data) {
-            try { await fetch(WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); } catch (e) {}
-        }
+        async function sendWebhookNotification(data) { try { await fetch(WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); } catch (e) {} }
         
-        let allCategories=[], allProducts=[], userData=null, userBalance=0, currentProduct=null, unitPrice=0, currentQtyMin=30, isQuantityMode=false, currentServiceType='id';
+        let allCategories=[], allProducts=[], userData=null, userBalance=0, currentProduct=null, unitPrice=0, currentQtyMin=30, currentQtyMax=100, isQuantityMode=false, currentServiceType='id';
 
         function switchTab(tab){document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));document.getElementById(tab+'Page').classList.remove('hidden');document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const navItem=document.querySelector(`[data-tab="${tab}"]`);if(navItem)navItem.classList.add('active');}
+        function switchPaymentMethod(type,btn){document.getElementById('paymentLibyana').classList.add('hidden');document.getElementById('paymentBinance').classList.add('hidden');document.getElementById('paymentBank').classList.add('hidden');document.getElementById('paymentCards').classList.add('hidden');const map={libyana:'paymentLibyana',binance:'paymentBinance',bank:'paymentBank',cards:'paymentCards'};if(map[type])document.getElementById(map[type]).classList.remove('hidden');document.querySelectorAll('.payment-method-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');}
+        function switchBankSubOption(type, btn){document.getElementById('subOnepay').classList.add('hidden');document.getElementById('subLypay').classList.add('hidden');if(type==='onepay')document.getElementById('subOnepay').classList.remove('hidden');else document.getElementById('subLypay').classList.remove('hidden');document.querySelectorAll('.bank-sub-option').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');}
         
-        function switchPaymentMethod(type,btn){
-            document.getElementById('paymentLibyana').classList.add('hidden');
-            document.getElementById('paymentBinance').classList.add('hidden');
-            document.getElementById('paymentBank').classList.add('hidden');
-            document.getElementById('paymentCards').classList.add('hidden');
-            const map={libyana:'paymentLibyana',binance:'paymentBinance',bank:'paymentBank',cards:'paymentCards'};
-            if(map[type])document.getElementById(map[type]).classList.remove('hidden');
-            document.querySelectorAll('.payment-method-btn').forEach(b=>b.classList.remove('active'));
-            if(btn)btn.classList.add('active');
-        }
-        
-        // ✅ تبديل الخيارات الفرعية للمصرف
-        function switchBankSubOption(type, btn) {
-            document.getElementById('subOnepay').classList.add('hidden');
-            document.getElementById('subLypay').classList.add('hidden');
-            if (type === 'onepay') document.getElementById('subOnepay').classList.remove('hidden');
-            else if (type === 'lypay') document.getElementById('subLypay').classList.remove('hidden');
-            document.querySelectorAll('.bank-sub-option').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
-        }
-        
-        // ✅ العداد المتسلسل
-        function updateQuantityNew(val){
+        // ✅ العداد المطور - السلايدر يتحكم بالمربع والعكس
+        function updateQuantityFromSlider(val){
             val = parseInt(val);
-            document.getElementById('quantityDisplayValue').innerText = val;
+            document.getElementById('quantityInput').value = val;
+            updateDynamicPriceNew(val);
+        }
+        function updateSliderFromInput(val){
+            val = parseInt(val);
+            if (isNaN(val)) val = currentQtyMin;
+            if (val < currentQtyMin) val = currentQtyMin;
+            if (val > currentQtyMax) val = currentQtyMax;
+            document.getElementById('quantityInput').value = val;
+            document.getElementById('coinSliderNew').value = val;
             updateDynamicPriceNew(val);
         }
         function updateDynamicPriceNew(quantity){
@@ -188,11 +154,15 @@
         
         function goToStep2(){
             if(!currentProduct)return;
+            if(isQuantityMode){
+                const qty=parseInt(document.getElementById('quantityInput').value);
+                if(isNaN(qty)||qty<currentQtyMin)return alert(`⚠️ الكمية تحت الحد الأدنى (${currentQtyMin}). الحد الأدنى لهذا المنتج هو ${currentQtyMin} قطعة.`);
+                if(qty>currentQtyMax)return alert(`⚠️ الكمية فوق الحد الأقصى (${currentQtyMax}).`);
+            }
             document.getElementById('stepQuantityNew').classList.add('hidden');
             document.getElementById('stepDataNew').classList.remove('hidden');
             if(isQuantityMode){
-                const qty=parseInt(document.getElementById('coinSliderNew').value);
-                if(qty<currentQtyMin)return alert(`⚠️ الحد الأدنى ${currentQtyMin} قطعة`);
+                const qty=parseInt(document.getElementById('quantityInput').value);
                 const total=unitPrice*qty;
                 document.getElementById('orderSummary').classList.remove('hidden');
                 document.getElementById('summaryQty').innerText=qty;
@@ -215,7 +185,7 @@
         
         function loadAllData(){db.collection("categories").get().then(catsSnap=>{allCategories=[];catsSnap.forEach(doc=>{const c=doc.data();c.id=doc.id;allCategories.push(c);});db.collection("services").get().then(servicesSnap=>{allProducts=[];servicesSnap.forEach(doc=>{const s=doc.data();s.service_id=doc.id;allProducts.push(s);});renderCategories();});});}
         function renderCategories(){const grid=document.getElementById('catsGrid');if(!allCategories.length){grid.innerHTML='<div class="loading">لا توجد أقسام</div>';return;}grid.innerHTML=allCategories.map(cat=>{const img=getImageUrl(cat.image||cat.cover);return`<div class="cat-card" onclick="openCategory('${cat.id}','${cat.name}')">${img?`<img src="${img}" loading="lazy" onerror="this.style.display='none'">`:`<div style="font-size:35px;">📂</div>`}<h3>${cat.name}</h3><div class="desc">تصفح الخدمات</div><span class="btn">تصفح القسم</span></div>`;}).join('');}
-        function openCategory(catId,catName){document.getElementById('categoriesView').classList.add('hidden');document.getElementById('productsView').classList.remove('hidden');document.getElementById('productsTitle').innerText=catName;const prods=allProducts.filter(p=>p.category===catId&&p.status!==false);const grid=document.getElementById('prodsGrid');if(!prods.length){grid.innerHTML='<div class="loading">لا توجد خدمات</div>';return;}grid.innerHTML=prods.map(p=>{const img=getImageUrl(p.image);const discount=p.discount||0;const finalPrice=discount>0?(p.price||0)-((p.price||0)*discount/100):(p.price||0);return`<div class="prod-card" onclick="openDetail('${p.service_id}')">${discount>0?`<div class="discount-badge">-${discount}%</div>`:''}${img?`<img src="${img}" loading="lazy" onerror="this.style.display='none'">`:`<div style="font-size:35px;">📦</div>`}<h4>${p.title}</h4>${discount>0?`<div class="old-price">${(p.price||0).toFixed(3)} د.ل</div>`:''}<div class="price">${finalPrice.toFixed(3)} د.ل</div></div>`;}).join('');}
+        function openCategory(catId,catName){document.getElementById('categoriesView').classList.add('hidden');document.getElementById('productsView').classList.remove('hidden');document.getElementById('productsTitle').innerText=catName;const prods=allProducts.filter(p=>p.category===catId&&p.status!==false);const grid=document.getElementById('prodsGrid');if(!prods.length){grid.innerHTML='<div class="loading">لا توجد خدمات</div>';return;}grid.innerHTML=prods.map(p=>{const img=getImageUrl(p.image);const discount=p.discount||0;const finalPrice=discount>0?(p.price||0)-((p.price||0)*discount/100):(p.price||0);return`<div class="prod-card" onclick="openDetail('${p.service_id}')">${discount>0?`<div class="discount-badge">-${discount}%</div>`:''}${img?`<img src="${img}" loading="lazy" onerror="this.style.display='none'">`:`<div style="font-size:30px;">📦</div>`}<h4>${p.title}</h4>${discount>0?`<div class="old-price">${(p.price||0).toFixed(3)} د.ل</div>`:''}<div class="price">${finalPrice.toFixed(3)} د.ل</div></div>`;}).join('');}
         function showCategories(){document.getElementById('productsView').classList.add('hidden');document.getElementById('categoriesView').classList.remove('hidden');}
         
         function openDetail(serviceId){
@@ -239,14 +209,20 @@
             if(prod.enableQuantity){
                 isQuantityMode=true;
                 currentQtyMin=prod.qtyMin||30;
-                const qtyMax=prod.qtyMax||100;
+                currentQtyMax=prod.qtyMax||100;
                 unitPrice=(prod.price||0)/currentQtyMin;
-                document.getElementById('coinSliderNew').min=currentQtyMin;document.getElementById('coinSliderNew').max=qtyMax;document.getElementById('coinSliderNew').value=currentQtyMin;
-                document.getElementById('quantityDisplayValue').innerText=currentQtyMin;
+                document.getElementById('coinSliderNew').min=currentQtyMin;
+                document.getElementById('coinSliderNew').max=currentQtyMax;
+                document.getElementById('coinSliderNew').value=currentQtyMin;
+                document.getElementById('quantityInput').min=currentQtyMin;
+                document.getElementById('quantityInput').max=currentQtyMax;
+                document.getElementById('quantityInput').value=currentQtyMin;
+                document.getElementById('qtyMinLabel').innerText=`الحد الأدنى: ${currentQtyMin}`;
+                document.getElementById('qtyMaxLabel').innerText=`الحد الأقصى: ${currentQtyMax}`;
                 document.getElementById('quantitySectionNew').classList.remove('hidden');
                 document.getElementById('dynamicPriceSection').classList.remove('hidden');
                 updateDynamicPriceNew(currentQtyMin);
-                document.getElementById('dDesc').innerText=`عداد متحرك (${currentQtyMin}-${qtyMax}) - حرك العداد للاختيار`;
+                document.getElementById('dDesc').innerText=`عداد متحرك (${currentQtyMin}-${currentQtyMax})`;
             }else{
                 document.getElementById('fixedPriceSection').classList.remove('hidden');
                 document.getElementById('fixedPriceDisplay').innerText=finalPrice.toFixed(3);
@@ -261,21 +237,19 @@
             if(discount>0&&!prod.enableQuantity){document.getElementById('dDiscountBadge').innerHTML=`<span class="discount-badge-big">🔥 خصم ${discount}%</span>`;document.getElementById('dOldPrice').classList.remove('hidden');document.getElementById('dOldPrice').innerText=`${(prod.price||0).toFixed(3)} د.ل`;}
             document.getElementById('detailModal').classList.remove('hidden');
         }
-        
         function closeDetailModal(){document.getElementById('detailModal').classList.add('hidden');}
         
         async function confirmPurchase(){
             if(!currentProduct)return;
-            const user=auth.currentUser;
-            if(!user)return alert('⚠️ سجل دخول أولاً');
+            const user=auth.currentUser;if(!user)return alert('⚠️ سجل دخول أولاً');
             const contactPhone=document.getElementById('contactPhone').value.trim();
             if(!contactPhone)return alert('⚠️ أدخل رقم التواصل');
             let finalPrice,quantity=1,orderData='';
             if(isQuantityMode){
-                quantity=parseInt(document.getElementById('coinSliderNew').value);
-                if(quantity<currentQtyMin)return alert(`⚠️ الحد الأدنى ${currentQtyMin}`);
-                finalPrice=unitPrice*quantity;
-                orderData=`${quantity} قطعة`;
+                quantity=parseInt(document.getElementById('quantityInput').value);
+                if(isNaN(quantity)||quantity<currentQtyMin)return alert(`⚠️ الكمية تحت الحد الأدنى (${currentQtyMin}).`);
+                if(quantity>currentQtyMax)return alert(`⚠️ الكمية فوق الحد الأقصى (${currentQtyMax}).`);
+                finalPrice=unitPrice*quantity;orderData=`${quantity} قطعة`;
             }else{
                 const discount=currentProduct.discount||0;
                 finalPrice=discount>0?(currentProduct.price||0)-((currentProduct.price||0)*discount/100):(currentProduct.price||0);
@@ -290,8 +264,7 @@
                 await db.collection("users").doc(user.uid).update({balance:newBalance});
                 await db.collection("orders").add({userId:user.uid,userName:userData?.name||'',serviceTitle:currentProduct.title,serviceType:currentServiceType,targetInput:orderData,quantity:quantity,contactPhone:contactPhone,totalPrice:finalPrice,status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()});
                 await sendWebhookNotification({user_name:userData?.name||userData?.username||'---',user_email:userData?.email||'---',user_phone:userData?.phone||contactPhone||'---',action_type:'طلب جديد 📦',details:`🎮 ${currentProduct.title}\n📝 ${orderData}\n📞 ${contactPhone}\n🔢 الكمية: ${quantity}\n💰 ${finalPrice.toFixed(2)} د.ل\n📅 ${new Date().toLocaleString('ar-LY')}`});
-                closeDetailModal();
-                alert(`🎉 تم الطلب بنجاح!\n${currentProduct.title}\n${finalPrice.toFixed(3)} د.ل`);
+                closeDetailModal();alert(`🎉 تم الطلب بنجاح!\n${currentProduct.title}\n${finalPrice.toFixed(3)} د.ل`);
             }catch(e){alert('❌ خطأ: '+e.message);}
         }
 
